@@ -1,11 +1,4 @@
-const fs = require('fs');
-
-const readfile = () => new Promise((resolve, reject) => {
-  fs.readFile('talker.json', (err, content) => {
-    if (err) reject(err);
-    resolve(JSON.parse(content));
-  });
-});
+const readfile = require('../Services/readfile');
 
 module.exports = (_req, res) => {
   readfile()

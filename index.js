@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const {
   readTalker,
+  getTalkerById,
 } = require('./Middlewares/index');
 
 const app = express();
@@ -16,6 +17,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker/:id', getTalkerById);
 app.get('/talker', readTalker);
 
 app.listen(PORT, () => {
