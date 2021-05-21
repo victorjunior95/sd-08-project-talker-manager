@@ -1,8 +1,8 @@
-const fs = require('fs/promises');
+const fs = require('fs');
 
 const readFile = async (fileName) => {
   try {
-    const response = await fs.readFile(fileName, 'utf8');
+    const response = await fs.promises.readFile(fileName, 'utf8');
     const data = await JSON.parse(response);
     return data;
   } catch (err) {
