@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 
 module.exports = async function f(path) {
   if (typeof path !== 'string') throw new TypeError('path shoud be a string');
