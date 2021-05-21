@@ -96,4 +96,16 @@ router.post('/', [authenticate.auth,
   res.status(201).json(newTalker);
 })]);
 
+router.delete('/:id',
+  authenticate.auth, 
+  rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const talkers = await talkersUtils.getTalker();
+  const talker = talkers.filter((talk) => talk.id !== +id);
+
+  await talkersUtils.setTalker(JSON.stringify(talker, null, 2));
+  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+}));
+
 module.exports = router;
