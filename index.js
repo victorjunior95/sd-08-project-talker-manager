@@ -52,12 +52,12 @@ if (!password) return res.status(400).send({ message: 'O campo "password" é obr
 });
 
 /* app.post('/talker', (req, res) => {
-	const conteudo = JSON.parse(fs.readFileSync('./talker.json'));
-	const token = tokenGenerate();
-	req.headers.authorization = token;
-	const { name, age } = req.body;
-	const estrutura = { name, age };
-	const newArray = conteudo.push(estrutura.toString());
+const conteudo = JSON.parse(fs.readFileSync('./talker.json'));
+const token = tokenGenerate();
+req.headers.authorization = token;
+const { name, age } = req.body;
+const estrutura = { name, age };
+const newArray = conteudo.push(estrutura.toString());
 
 fs.writeFile('./talker.json', newArray); 
 }); */
