@@ -36,8 +36,7 @@ app.get('/talker/:id', async (req, res) => {
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  
-  const validadeRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const validadeRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
   if (!email) {
     return res.status(400).json({ message: 'O campo "email" é obrigatório' });
   }
@@ -49,7 +48,6 @@ app.post('/login', (req, res) => {
   if (!password) {
     return res.status(400).json({ message: 'O campo "password" é obrigatório' });
   }
-
   if (password.length < 6) {
     return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres',
   });
