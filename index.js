@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const middlewares = require('./middlewares');
+// const login = require('./routes/login');
 
 const app = express();
 app.use(bodyParser.json());
@@ -36,6 +38,8 @@ app.get('/talker', async (_req, res) => {
   const data = await JSON.parse(dataJSON);
   res.status(200).json(data);  
 });
+
+app.post('/login', middlewares.login);
 
 app.listen(PORT, () => {
   console.log('Online');
