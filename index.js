@@ -1,8 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 
-const talker = fs.readFileSync('talker.json');
-const rawTalker = JSON.parse(talker);
+const talker = () => JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
 
 const app = express();
 app.use(express.json());
@@ -16,6 +15,8 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', (_req, res) => {
+  const rawTalker = talker();
+  if (rawTalker.length === 0) return res.status(200).json([]);
   res.status(200).json(rawTalker);
 });
 
