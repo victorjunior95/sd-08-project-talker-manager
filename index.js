@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const data = require('./talker.json');
 
 const app = express();
 app.use(bodyParser.json());
@@ -8,9 +9,13 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
+// app.get('/', (_request, response) => {
+//   response.status(HTTP_OK_STATUS).sendFile(path.join(__dirname, '/index.html'));
+// }); para brincar dps
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
-  response.status(HTTP_OK_STATUS).sendFile(path.join(__dirname, '/index.html'));
+  response.status(HTTP_OK_STATUS).send();
 });
 
 app.listen(PORT, () => {
