@@ -9,7 +9,7 @@ const {
 const readfile = require('../Services/readfile');
 const writeInFIle = require('../Services/writeInFile');
 
-const editData = (data, id, newInfo, res) => {
+const editData = (data, id, newInfo) => {
   const index = data.findIndex((elem) => elem.id === Number(id));
   const newData = data;
 
@@ -17,13 +17,7 @@ const editData = (data, id, newInfo, res) => {
   newData[index].age = newInfo.age;
   newData[index].talk = newInfo.talk;
 
-  writeInFIle('talker.json', JSON.stringify(newData))
-  .then(() => res.status(200).json(
-      {
-        id: Number(id),
-        ...newInfo,
-      },
-    ));
+  return newData;
 };
 
 module.exports = (req, res) => {
@@ -38,8 +32,8 @@ module.exports = (req, res) => {
   verifyTalk(talker.talk, res);
 
   readfile()
-  .then((data) => {
-    editData(data, id, talker, res);
-  })
+  .then((data) => editData(data, id, talker))
+  .then((newData) => writeInFIle('talker.json', JSON.stringify(newData)))
+  .then(() => res.status(200).json({ id: Number(id), ...talker }))
   .catch((err) => console.log(err.message));
 };
