@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const {
   readTalker,
   getTalkerById,
+  login,
 } = require('./Middlewares/index');
 
 const app = express();
@@ -19,6 +20,7 @@ app.get('/', (_request, response) => {
 
 app.get('/talker/:id', getTalkerById);
 app.get('/talker', readTalker);
+app.post('/login', login);
 
 app.listen(PORT, () => {
   console.log('Online');
