@@ -2,9 +2,7 @@ const express = require('express');
 const {
   getAllTalkersMiddleware,
   getTalkerByIdMiddleware,
-  checkTokenMiddleware,
-  checkNewTalkerNameMiddleware,
-  checkAgeMiddleware,
+  addNewTalkerMiddleware,
 } = require('../middlewares');
 
 const router = express.Router();
@@ -16,9 +14,6 @@ router.get('/talker/:id', getTalkerByIdMiddleware);
 router.get('/talker', getAllTalkersMiddleware);
 
 // Requisito 04
-router.post('/talker',
-  checkTokenMiddleware,
-  checkNewTalkerNameMiddleware,
-  checkAgeMiddleware);
+router.post('/talker', addNewTalkerMiddleware);
 
 module.exports = router;
