@@ -57,4 +57,12 @@ talker.put('/:id', [
   }),
 ]);
 
+talker.delete('/:id', middlewares.authentication, rescue(async (req, res) => {
+  const { id } = req.params;
+  const talkers = await getFileContent(TALKERFILE);
+  const newTalkers = talkers.filter((currentTalker) => currentTalker.id !== Number(id));
+  await setFileContent(TALKERFILE, JSON.stringify(newTalkers, null, 2));
+  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+}));
+
 module.exports = talker;
