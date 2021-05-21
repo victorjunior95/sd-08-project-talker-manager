@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const getTalkers = (req, res, next) => {
+const getTalkers = (req, res, _) => {
   try {
     const talkers = fs.readFileSync('./talker.json', 'utf8');
     return res.status(200).send(talkers);
