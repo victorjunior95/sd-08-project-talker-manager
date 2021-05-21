@@ -13,9 +13,9 @@ router.get('/:id', (req, res) => {
       (talker) => talker.id === parseInt(req.params.id, 10),
     );
     if (filterTalker) {
-      res.status(SUCCESS_STATUS).send(filterTalker);
+      return res.status(SUCCESS_STATUS).send(filterTalker);
     }
-    res
+    return res
       .status(NOT_FOUND_STATUS)
       .json({ message: 'Pessoa palestrante não encontrada' });
   });
