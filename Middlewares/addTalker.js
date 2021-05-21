@@ -30,14 +30,26 @@ const verifyEmptyTalk = (talk, res) => {
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
   }
 };
+const verifyTalk = (talk, res) => {
+  const rate = Number(talk.rate);
+  const validDate = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+  if (!validDate.test(talk.watchedAt)) {
+  return res.status(400)
+    .json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' }); 
+  }
+  if (rate < 1 || rate > 5) {
+  return res.status(400)
+    .json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' }); 
+  }
+};
 
 module.exports = (req, res) => {
   const talker = req.body;
   const auth = req.headers.authorization;
-  console.log(auth);
 
   verifyToken(auth, res);
   verifyName(talker.name, res);
   verifyAge(talker.age, res);
   verifyEmptyTalk(talker.talk, res);
+  verifyTalk(talker.talk, res);
 };
