@@ -4,6 +4,7 @@ const { genrateToken, validaEmail } = require('./servicosReq3');
 const login = express.Router();
 const HTTP_OK_STATUS = 200;
 const VAZIO = 400;
+const SEIS = 6;
 
 login.post('/', (req, res) => {
   const { email, password } = req.body;
@@ -13,7 +14,7 @@ login.post('/', (req, res) => {
     return res.status(VAZIO).send({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
   if (!password) return res.status(VAZIO).send({ message: 'O campo "password" é obrigatório' });
-  if (String(password).length < 6) {
+  if (String(password).length < SEIS) {
     return res.status(VAZIO).send({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
 
