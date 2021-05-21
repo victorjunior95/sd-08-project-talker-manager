@@ -1,3 +1,8 @@
+<!-- 
+https://github.com/tryber/sd-08-project-talker-manager/pull/22
+killall node
+npm run restore
+-->
 ### Termos e acordos
 
 Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e Conduta e do Manual da Pessoa Estudante da Trybe.
@@ -14,27 +19,39 @@ Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu
 
 # Sumário
 
+- [Boas vindas ao repositório do Talker Manager!](#boas-vindas-ao-repositório-do-talker-manager)
+- [Sumário](#sumário)
 - [Habilidades](#habilidades)
+  - [- Criar rotas e aplicar middlewares.](#--criar-rotas-e-aplicar-middlewares)
 - [Entregáveis](#entregáveis)
   - [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido)
   - [Desenvolvimento](#desenvolvimento)
-  - [Data de entrega](#data-de-entrega)
+    - [Data de Entrega](#data-de-entrega)
 - [Instruções para entregar seu projeto](#instruções-para-entregar-seu-projeto)
-  - [Antes de começar a desenvolver](#antes-de-começar-a-desenvolver)
+  - [Antes de começar a desenvolver:](#antes-de-começar-a-desenvolver)
   - [Durante o desenvolvimento](#durante-o-desenvolvimento)
-  - [Depois de terminar o desenvolvimento (opcional)](#depois-de-terminar-o-desenvolvimento-opcional)
-- [Como desenvolver](#como-desenvolver)
+  - [Depois de terminar o desenvolvimento (opcional):](#depois-de-terminar-o-desenvolvimento-opcional)
+    - [Revisando um pull request](#revisando-um-pull-request)
+- [Como desenvolver:](#como-desenvolver)
+  - [Sobre o avaliador](#sobre-o-avaliador)
 - [Requisitos do projeto](#requisitos-do-projeto)
-  - [Linter](#linter)
+    - [Linter](#linter)
   - [Lista de requisitos](#lista-de-requisitos)
-    - [1 - Crie o endpoint GET /talker](#1---crie-o-endpoint-get-talker)
-    - [2 - Crie o endpoint GET /talker/:id](#2---crie-o-endpoint-get-talkerid)
-    - [3 - Crie o endpoint POST /login](#3---crie-o-endpoint-post-login)
-    - [4 - Crie o endpoint POST /talker](#4---crie-o-endpoint-post-talker)
-    - [5 - Crie o endpoint PUT /talker/:id](#5---crie-o-endpoint-put-talkerid)
-    - [6 - Crie o endpoint DELETE /talker/:id](#6---crie-o-endpoint-delete-talkerid)
-    - [7 - Crie o endpoint GET /talker/search?q=searchTerm](#7---crie-o-endpoint-get-talkersearchqsearchterm)
-- [Avisos Finais](#avisos-finais)
+    - [Observações](#observações)
+    - [1 - Crie o endpoint GET `/talker`](#1---crie-o-endpoint-get-talker)
+      - [Os seguintes pontos serão avaliados:](#os-seguintes-pontos-serão-avaliados)
+    - [2 - Crie o endpoint GET `/talker/:id`](#2---crie-o-endpoint-get-talkerid)
+    - [3 - Crie o endpoint POST `/login`](#3---crie-o-endpoint-post-login)
+      - [Os seguintes pontos serão avaliados:](#os-seguintes-pontos-serão-avaliados-1)
+    - [4 - Crie o endpoint POST `/talker`](#4---crie-o-endpoint-post-talker)
+      - [Os seguintes pontos serão avaliados:](#os-seguintes-pontos-serão-avaliados-2)
+    - [5 - Crie o endpoint PUT `/talker/:id`](#5---crie-o-endpoint-put-talkerid)
+      - [Os seguintes pontos serão avaliados:](#os-seguintes-pontos-serão-avaliados-3)
+    - [6 - Crie o endpoint DELETE `/talker/:id`](#6---crie-o-endpoint-delete-talkerid)
+      - [Os seguintes pontos serão avaliados:](#os-seguintes-pontos-serão-avaliados-4)
+    - [7 - Crie o endpoint GET `/talker/search?q=searchTerm`](#7---crie-o-endpoint-get-talkersearchqsearchterm)
+      - [Os seguintes pontos serão avaliados:](#os-seguintes-pontos-serão-avaliados-5)
+- [Avisos finais](#avisos-finais)
 
 ---
 
