@@ -16,9 +16,9 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', (_request, response) => {
   const fileContent = JSON.parse(functions.readFile(pathTalker));
-  emptyArray = [];
-  !fileContent ? response.status(HTTP_OK_STATUS).send(emptyArray) :
-    response.status(HTTP_OK_STATUS).json(fileContent);
+  const emptyArray = [];
+  if (!fileContent) response.status(HTTP_OK_STATUS).send(emptyArray);
+  response.status(HTTP_OK_STATUS).json(fileContent);
 });
 
 app.listen(PORT, () => {
