@@ -21,7 +21,7 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', (_req, res) => {
-  if (allData.length > 1) {
+  if (allData.length > 0) {
   return res.status(HTTP_OK_STATUS).send(allData);
   }
   return res.status(HTTP_OK_STATUS).send([]);
