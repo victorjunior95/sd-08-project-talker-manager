@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 // const path = require('path');
 
-const allData = JSON.parse(fs.readFileSync('./talker.json', 'utf8'));
+const allData = JSON.parse(fs.readFile('./talker.json', 'utf8'));
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,7 +17,7 @@ const PORT = '3000';
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
-  response.status(HTTP_OK_STATUS).send();
+  response.status(HTTP_OK_STATUS).send('Olá Mundo');
 });
 
 app.get('/talker', (_req, res) => {
@@ -41,4 +41,8 @@ if (!palestrantId) {
   });
 }
 res.status(HTTP_OK_STATUS).send(palestrantId);
+});
+
+app.post('/login', (req, res) => {
+res.status(HTTP_OK_STATUS).send(req.body);
 });
