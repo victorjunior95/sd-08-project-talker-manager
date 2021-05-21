@@ -49,7 +49,7 @@ app.post('/login', (request, response) => {
   }
   if (password.toString().length < 6) {
     return response.status(400)
-      .json({ message: 'O campo "password" deve ter pelo menos 6 caracteres' });
+      .json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
   response.status(200).json({ token: crypto.randomBytes(8).toString('hex') });
 });
