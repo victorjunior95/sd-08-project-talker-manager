@@ -1,37 +1,39 @@
-const validateEmail = (email, next) => {
+const validateEmail = (email) => {
   if (!email || email.length === 0) {
-    return next({
+    return {
       status: 400,
       message: 'O campo "email" é obrigatório',
-    });
+    };
   }
   const regex = /[a-zA-Z0-9._+-]{1,30}@[a-zA-Z0-9._+-]{1,10}\.com/;
   if (!email.match(regex)) {
-    return next({
+    return {
       status: 400,
       message: 'O "email" deve ter o formato "email@email.com"',
-    });
+    };
   }
+  return null;
 };
 
-const validatePassword = (password, next) => {
+const validatePassword = (password) => {
   if (!password) {
-    return next({
+    return {
       status: 400,
       message: 'O campo "password" é obrigatório',
-    });
+    };
   }
   if (password.length < 6) {
-    return next({
+    return {
       status: 400,
       message: 'O "password" deve ter pelo menos 6 caracteres',
-    });
+    };
   }
+  return null;
 };
 
 module.exports = (req, _res, next) => {
   const { email, password } = req.body;
-  validateEmail(email, next);
-  validatePassword(password, next);
-  next();
+  const validationError = validateEmail(email)
+    || validatePassword(password);
+  next(validationError);
 };

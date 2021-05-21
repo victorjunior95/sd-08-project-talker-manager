@@ -42,6 +42,18 @@ app.post('/login', [
   },
 ]);
 
+app.post('/talker', [
+  middlewares.validateNewTalker,
+  async (req, res) => {
+    const talkers = JSON.parse(await fs.readFile('./talker.json', 'utf-8'));
+    const newTalker = req.body;
+    newTalker.id = talkers.length + 1;
+    talkers.push(newTalker);
+    await fs.writeFile('./talker.json', JSON.stringify(talkers));
+    res.status(201).json(newTalker);
+  },
+]);
+
 app.use(middlewares.handleErrors);
 
 app.listen(PORT, () => {
