@@ -30,7 +30,7 @@ rotaTalker.get('/:id', rescue(async (req, res) => {
 
 rotaTalker.post('/', rescue(async (req, res, _next) => {
   const { authentication } = req.headers;
-  const { name } = req.body;
+  const { name, age } = req.body;
 
   if (!authentication) return res.status(TOKEN_ERRADO).send({ message: 'Token não encontrado' });
   if (authentication.length !== DEZESSEIS) {
@@ -41,6 +41,7 @@ rotaTalker.post('/', rescue(async (req, res, _next) => {
   if (name.length < TRES) {
     return res.status(NOME_ERRADO).send({ message: 'O "name" deve ter pelo menos 3 caracteres' });
   }
+  if (!age) return res.status
 }));
 
 module.exports = rotaTalker;
