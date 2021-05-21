@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const rescue = require('express-rescue');
+const middlewares = require('./middlewares');
 
 const registeredSpeakers = require('./fs-utils');
 
@@ -25,6 +26,8 @@ app.get('/talker/:id', rescue(async (req, res) => {
   }
   return res.status(200).json(talkerById);
 }));
+
+app.post('/login', middlewares.login);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
