@@ -19,10 +19,10 @@ module.exports = (req, res) => {
   const { email, password } = req.body;
   const emailValidate = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/i;
 
-  if (!email) res.status(400).json(emptyEmail);
-  if (!password) res.status(400).json(emptyPassword);
-  if (!emailValidate.test(email)) res.status(400).json(invalidEmail);
-  if (password.length < 6) res.status(400).json(invalidPassword);
+  if (!email) return res.status(400).json(emptyEmail);
+  if (!password) return res.status(400).json(emptyPassword);
+  if (!emailValidate.test(email)) return res.status(400).json(invalidEmail);
+  if (password.length < 6) return res.status(400).json(invalidPassword);
 
   return res.status(200).json({ token });
 };

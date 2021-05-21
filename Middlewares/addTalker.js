@@ -29,7 +29,7 @@ const verifyEmptyTalk = (talk, res) => {
   return res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
   }
-  if (!talk.watchedAt) {
+  if (!talk.rate) {
   return res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
   }
@@ -60,7 +60,8 @@ module.exports = (req, res) => {
   readfile()
   .then((data) => [...data, { id: data.length + 1, ...talker }])
   .then((data) => {
-    writeInFile('talker.json', JSON.stringify(data));
-    return res.status(201).json(data[data.length - 1]);
+    writeInFile('talker.json', JSON.stringify(data))
+    .then(() => res.status(201).json(data[data.length - 1]))
+    .catch((err) => console.log(err.message));
   });
 };
