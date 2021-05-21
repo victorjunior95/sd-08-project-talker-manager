@@ -14,6 +14,11 @@ app.get('/talker', rescue(async (_req, res) => {
   res.status(HTTP_OK_STATUS).json(talker);
 }));
 
+// app.get('/talker/:id', rescue(async (_req, res) => {
+//   const talker = await middlewares.lerJson();
+//   res.status(HTTP_OK_STATUS).json(talker);
+// }));
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
