@@ -1,4 +1,5 @@
 const readfile = require('../Services/readfile');
+const writeInFile = require('../Services/writeInFile');
 
 const verifyToken = (token, res) => {
   if (!token) res.status(401).json({ message: 'Token não encontrado' });
@@ -52,4 +53,11 @@ module.exports = (req, res) => {
   verifyAge(talker.age, res);
   verifyEmptyTalk(talker.talk, res);
   verifyTalk(talker.talk, res);
+
+  readfile()
+  .then((data) => [...data, { id: data.length, ...talker }])
+  .then((data) => {
+    writeInFile('talker.json', JSON.stringify(data));
+    res.status(201).json(data[data.length - 1]);
+  });
 };
