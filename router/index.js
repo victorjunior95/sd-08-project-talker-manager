@@ -1,1 +1,5 @@
-const express = require('express');
+const talkerRoute = require('./talker');
+
+module.exports = {
+  talkerRoute,
+};
