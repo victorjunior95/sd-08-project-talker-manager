@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
+app.get('/talker/:id', middlewares.talkerid);
 app.get('/talker', middlewares.registertalker);
 
 // não remova esse endpoint, e para o avaliador funcionar
