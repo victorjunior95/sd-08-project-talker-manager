@@ -1,5 +1,4 @@
 const express = require('express');
-// const bodyParser = require('body-parser');
 
 const router = express.Router();
 
@@ -12,6 +11,16 @@ router.get('/', async (_req, res) => {
     return res.status(401);
   }
   return res.status(200).json(content);
+});
+
+router.get('/:id', async (req, res) => {
+  let content = await getFsTalker();
+  const { id } = req.params;
+  if (!content.some((cont) => cont.id === +id)) {
+    return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+  }
+  content = content.find((c) => c.id === +id);
+  res.status(200).json(content);
 });
 
 module.exports = router;
