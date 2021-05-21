@@ -7,8 +7,11 @@ const getTalker = () => new Promise((resolve, reject) => {
   });
 });
 
-function setTalker(newTalker) {
-  return fs.writeFile('./talker.json', JSON.stringify(newTalker));
-}
+const setTalker = (newTalker) => new Promise((resolve, reject) => {
+  fs.writeFile('./talker.json', newTalker, 'utf-8', (err) => {
+    if (err) reject(new Error('Erro ao inserir arquivo.'));
+    resolve(true);
+  });
+});
 
 module.exports = { getTalker, setTalker };
