@@ -1,9 +1,9 @@
 const express = require('express');
-const { toReadData, useTalkerData } = require('../middlewares');
+const { readData } = require('../middlewares');
 
 const route = express.Router();
 
-route.use(useTalkerData, toReadData);
+route.use(readData('./talker.json'));
 
 route.get('/', (req, res) => {
   res.status(200).json(req.readData);

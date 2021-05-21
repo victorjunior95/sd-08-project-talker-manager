@@ -1,7 +1,5 @@
-const toReadData = require('./toReadData');
-const useTalkerData = require('./useTalkerData');
+const readData = require('./readData');
 
 module.exports = {
-  toReadData,
-  useTalkerData,
+  readData,
 };
