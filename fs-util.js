@@ -1,17 +1,14 @@
-// const fs = require('fs');
+const fs = require('fs');
 
-// getTalker = { Promise((resolve, reject) => {
-//     return fs.readFile('./talker.json', 'utf-8', (err, data) => {
-//       if (err) {
-//         console.error('Não foi possível ler o arquivo');
-//         process.exit(1);
-//       }
-//       return (JSON.parse(data));
-//   });
-// })}
+const getTalker = () => new Promise((resolve, reject) => {
+  fs.readFile('./talker.json', 'utf-8', (err, data) => {
+    if (err) reject(new Error('Erro ao ler arquivo.'));
+    resolve(JSON.parse(data));
+  });
+});
 
-// function setTalker(newTalker) {
-//   return fs.writeFile('./talker.json', JSON.stringify(newTalker));
-// }
+function setTalker(newTalker) {
+  return fs.writeFile('./talker.json', JSON.stringify(newTalker));
+}
 
-// module.exports = { getTalker, setTalker };
+module.exports = { getTalker, setTalker };
