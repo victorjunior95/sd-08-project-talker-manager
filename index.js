@@ -22,10 +22,9 @@ app.get('/', (_request, response) => {
 
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
-  const dataJSON = await fs.readFileSync('./talker.json');
+  const dataJSON = await fs.readFileSync('./talker.json', 'utf8');
   const data = await JSON.parse(dataJSON);
   const personById = data.find((person) => person.id === Number(id));
-  console.log(personById);
   if (personById) {
     res.status(200).json(personById);
   }
@@ -33,7 +32,7 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 app.get('/talker', async (_req, res) => {
-  const dataJSON = await fs.readFileSync('./talker.json');
+  const dataJSON = await fs.readFileSync('./talker.json', 'utf8');
   const data = await JSON.parse(dataJSON);
   res.status(200).json(data);  
 });
