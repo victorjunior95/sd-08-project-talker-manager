@@ -13,6 +13,17 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker/:id', (req, res) => {
+  const data = JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+  const { id } = req.params;
+  const talkerIdFilter = data.find((talker) => talker.id === Number(id));
+
+  if (!talkerIdFilter) {
+    return res.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante não encontrada' });
+  }
+  res.status(HTTP_OK_STATUS).json(talkerIdFilter);
+});
+
 app.get('/talker', (_req, res) => {
   const content = fs.readFileSync('talker.json', 'utf-8');
   const allTalkers = JSON.parse(content);
