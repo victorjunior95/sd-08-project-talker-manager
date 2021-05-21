@@ -8,6 +8,14 @@ const TALKERFILE = './talker.json';
 
 const talker = express.Router();
 
+talker.get('/search', middlewares.authentication, rescue(async (req, res) => {
+  const { q } = req.query;
+  const talkers = await getFileContent(TALKERFILE);
+  if (!q) return res.status(200).json(talkers);
+  const filteredTalkers = talkers.filter(({ name }) => name.includes(q));
+  res.status(200).json(filteredTalkers);
+}));
+
 talker.get('/', rescue(async (_req, res) => {
   const talkers = await getFileContent(TALKERFILE);
   res.status(200).json(talkers);
