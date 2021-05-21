@@ -36,7 +36,7 @@ const verifyEmptyTalk = (talk, res) => {
 };
 const verifyTalk = (talk, res) => {
   const rate = Number(talk.rate);
-  const validDate = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+  const validDate = /^(0?[1-9]|[12][0-9]|3[01])[/-](0?[1-9]|1[012])[/-]\d{4}$/;
   if (!validDate.test(talk.watchedAt)) {
   return res.status(400)
     .json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' }); 
@@ -58,7 +58,7 @@ module.exports = (req, res) => {
   verifyTalk(talker.talk, res);
 
   readfile()
-  .then((data) => [...data, { id: data.length, ...talker }])
+  .then((data) => [...data, { id: data.length + 1, ...talker }])
   .then((data) => {
     writeInFile('talker.json', JSON.stringify(data));
     return res.status(201).json(data[data.length - 1]);
