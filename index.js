@@ -22,6 +22,12 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker', async (_req, res) => {
+  const dataJSON = await fs.readFileSync('./talker.json', 'utf8');
+  const data = await JSON.parse(dataJSON);
+  res.status(200).json(data);  
+});
+
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
   const dataJSON = await fs.readFileSync('./talker.json', 'utf8');
@@ -31,12 +37,6 @@ app.get('/talker/:id', async (req, res) => {
     res.status(200).json(personById);
   }
   res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
-});
-
-app.get('/talker', async (_req, res) => {
-  const dataJSON = await fs.readFileSync('./talker.json', 'utf8');
-  const data = await JSON.parse(dataJSON);
-  res.status(200).json(data);  
 });
 
 app.post('/login', middlewares.login);
