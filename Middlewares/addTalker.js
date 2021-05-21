@@ -2,32 +2,35 @@ const readfile = require('../Services/readfile');
 const writeInFile = require('../Services/writeInFile');
 
 const verifyToken = (token, res) => {
-  if (!token) res.status(401).json({ message: 'Token não encontrado' });
-  if (token.length !== 16)res.status(401).json({ message: 'Token inválido' }); 
+  if (!token) return res.status(401).json({ message: 'Token não encontrado' });
+  if (token.length !== 16) return res.status(401).json({ message: 'Token inválido' }); 
 };
 const verifyName = (name, res) => {
-  if (!name) res.status(400).json({ message: 'O campo "name" é obrigatório' });
+  if (!name) return res.status(400).json({ message: 'O campo "name" é obrigatório' });
   if (name.length < 3) {
-  res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' }); 
+  return res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' }); 
   }
 };
 const verifyAge = (stringAge, res) => {
   const age = Number(stringAge);
-  if (!age) res.status(400).json({ message: 'O campo "age" é obrigatório' });
-  if (age < 18) res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
+  if (!age) return res.status(400).json({ message: 'O campo "age" é obrigatório' });
+  if (age < 18) {
+  return res.status(400)
+    .json({ message: 'A pessoa palestrante deve ser maior de idade' }); 
+}
 };
 
 const verifyEmptyTalk = (talk, res) => {
   if (!talk) {
-  res.status(400)
+  return res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
   }
   if (!talk.watchedAt) {
-  res.status(400)
+  return res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
   }
   if (!talk.watchedAt) {
-  res.status(400)
+  return res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
   }
 };
@@ -58,6 +61,6 @@ module.exports = (req, res) => {
   .then((data) => [...data, { id: data.length, ...talker }])
   .then((data) => {
     writeInFile('talker.json', JSON.stringify(data));
-    res.status(201).json(data[data.length - 1]);
+    return res.status(201).json(data[data.length - 1]);
   });
 };

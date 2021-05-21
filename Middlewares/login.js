@@ -24,5 +24,5 @@ module.exports = (req, res) => {
   if (!emailValidate.test(email)) res.status(400).json(invalidEmail);
   if (password.length < 6) res.status(400).json(invalidPassword);
 
-  res.status(200).json({ token });
+  return res.status(200).json({ token });
 };
