@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 
 module.exports = async (_req, res, _next) => {
   const data = await fs.readFile('./talker.json');

@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 
 module.exports = async (req, res, _next) => {
   const bodyMessage = req.body;
