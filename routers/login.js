@@ -10,8 +10,6 @@ router.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
 
-router.get('/', (req, res) => {
-  return res.status(HTTP_OK_STATUS).send('LOGIN');
-});
+router.get('/', (req, res) => res.status(HTTP_OK_STATUS).send('LOGIN'));
 
 module.exports = router;

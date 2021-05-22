@@ -29,8 +29,4 @@ router.get('/:id', (req, response) => {
   response.status(HTTP_OK_STATUS).json(person[0]);
 });
 
-router.get('/', (req, res) => {
-  return res.status(HTTP_OK_STATUS).send('LOGIN');
-});
-
 module.exports = router;
