@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 const path = require('path');
 
 const TALKER_FILE_PATH = path.resolve(__dirname, '..', 'talker.json');
