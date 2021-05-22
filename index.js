@@ -14,6 +14,8 @@ const talkValidator = require('./talkValidator');
 const talkerValidator = require('./talkerValidator');
 const tokenValidator = require('./tokenValidator');
 const tokenValid = require('./tokenValid');
+const emailValidator = require('./emailValidator');
+const passwordValidator = require('./passwordValidator');
 
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
@@ -94,26 +96,8 @@ app.delete('/talker/:id', tokenValidator, tokenValid, async (req, res) => {
   }
 });
 
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  const validadeRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-  if (!email) {
-    return res.status(400).json({ message: 'O campo "email" é obrigatório' });
-  }
-
-  if (!validadeRegex.test(email)) {
-    return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
-  } 
-
-  if (!password) {
-    return res.status(400).json({ message: 'O campo "password" é obrigatório' });
-  }
-  if (password.length < 6) {
-    return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres',
-  });
-  }
-    return res.status(200).json({ token: token() });
-});
+app.post('/login', emailValidator, passwordValidator, 
+(req, res) => res.status(200).json({ token: token() }));
 
 app.listen(PORT, () => {
   console.log('Online');
