@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+// const rescue = require('express-rescue');
+const middlewares = require('./middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -11,6 +13,12 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
+app.get('/talker', middlewares.getAllPeople);
+
+app.get('/talker/:id', middlewares.getPeopleById);
+
+app.use(middlewares.error);
 
 app.listen(PORT, () => {
   console.log('Online');
