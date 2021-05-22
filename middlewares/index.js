@@ -5,6 +5,7 @@ const updateToken = require('./updateToken');
 const verifyToken = require('./verifyToken');
 const updateTalkers = require('./updateTalkers');
 const verifyTalkerBody = require('./verifyTalkerBody');
+const filterName = require('./filterName');
 
 module.exports = {
   readData,
@@ -14,4 +15,5 @@ module.exports = {
   verifyToken,
   updateTalkers,
   verifyTalkerBody,
+  filterName,
 };

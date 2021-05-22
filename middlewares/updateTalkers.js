@@ -1,5 +1,5 @@
 const rescue = require('express-rescue');
-const { readJSON, writeJSON } = require('../utils');
+const { writeJSON } = require('../utils');
 
 function parseIfExists(arg) {
   if (arg) return parseInt(arg, 10);
@@ -12,7 +12,7 @@ function shouldThrow(method, oldData, intId) {
   return false;
 }
 
-function newDataByMethod({ method, oldData, intId, body }) {
+function newDataByMethod(method, oldData, intId, body) {
   let curTalker;
   switch (method) {
     case 'PUT':
@@ -34,16 +34,14 @@ function newDataByMethod({ method, oldData, intId, body }) {
 }
 
 module.exports = rescue(async (req, _res, next) => {
-  const dataPath = './talker.json';
-  const { body, params: { id }, method } = req;
+  const { body, params: { id }, method, readData } = req;
   const intId = parseIfExists(id);
-  const oldData = await readJSON(dataPath);
-  if (shouldThrow(method, oldData, intId)) {
+  if (shouldThrow(method, readData, intId)) {
     return next({ status: 404, message: 'Talker não encontrado' });
   }
-  const [newData, curTalker] = newDataByMethod({ method, oldData, intId, body });
+  const [newData, curTalker] = newDataByMethod(method, readData, intId, body);
   req.talker = curTalker;
   const strData = JSON.stringify(newData, null, 2);
-  await writeJSON(dataPath, strData, true);
+  await writeJSON('./talker.json', strData, true);
   next();
 });
