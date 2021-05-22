@@ -74,16 +74,16 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 app.delete('/talker/:id', tokenValidator, tokenValid, async (req, res) => {
-  const {id} = req.params
+  const { id } = req.params;
   const talkers = await fs.readFile(FILEPATH, 'utf8');
   const jason = await JSON.parse(talkers);
   if (jason.some((item) => item.id === +id)) {
     const filtered = jason.filter((item) => item.id !== +id);
     const writer = await fs.writeFile(FILEPATH, JSON.stringify(filtered));
     console.log(writer);
-    return res.status(200).json({ message: "Pessoa palestrante deletada com sucesso"  });
+    return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
   }
-})
+});
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
