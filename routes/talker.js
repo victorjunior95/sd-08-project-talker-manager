@@ -1,7 +1,10 @@
 const express = require('express');
-const { readData } = require('../middlewares');
+const { readData, verifyToken, verifyTalkerBody, updateTalkers } = require('../middlewares');
 
 const route = express.Router();
+
+const deleteMiddles = updateTalkers;
+const postAndPutMiddles = [...verifyTalkerBody, updateTalkers];
 
 route.use(readData('./talker.json'));
 
@@ -15,5 +18,19 @@ route.get('/:id', ((req, res) => {
   if (!choosedTalker) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   res.status(200).json(choosedTalker);
 }));
+
+route.use(verifyToken);
+
+route.post('/', postAndPutMiddles, (req, res) => {
+  res.status(201).json(req.talker);
+});
+
+route.put('/:id', postAndPutMiddles, (req, res) => {
+  res.status(200).json(req.talker);
+});
+
+route.delete('/:id', deleteMiddles, (_req, res) => {
+  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+});
 
 module.exports = route;

@@ -1,13 +1,12 @@
 const express = require('express');
-const { nanoid } = require('nanoid');
-const { verifyLoginInput } = require('../middlewares');
+const { verifyLoginInput, updateToken } = require('../middlewares');
 
 const route = express.Router();
 
-route.use(verifyLoginInput);
+route.use(verifyLoginInput, updateToken('./data/token.json'));
 
-route.post('/', (_req, res) => {
-  res.status(200).json({ token: nanoid(16) });
+route.post('/', (req, res) => {
+  res.status(200).json({ token: req.token });
 });
 
 module.exports = route;
