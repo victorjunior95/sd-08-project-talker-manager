@@ -8,6 +8,19 @@ const authenticate = require('./authentication');
 
 const HTTP_OK_STATUS = 200;
 
+router.get('/search',
+  authenticate.auth, 
+  rescue(async (req, res) => {
+  const { q } = req.query;
+
+  const talkers = await talkersUtils.getTalker();
+  if (!q) {
+    res.status(HTTP_OK_STATUS).json(talkers);
+  }
+  const talker = talkers.filter((talk) => talk.name.includes(q));
+  res.status(HTTP_OK_STATUS).json(talker);
+}));
+
 router.get('/:id', rescue(async (req, res) => {
   const { id } = req.params;
   const talkers = await talkersUtils.getTalker();
@@ -105,7 +118,7 @@ router.delete('/:id',
   const talker = talkers.filter((talk) => talk.id !== +id);
 
   await talkersUtils.setTalker(JSON.stringify(talker, null, 2));
-  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+  res.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante deletada com sucesso' });
 }));
 
 module.exports = router;
