@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const login = require('./routes/login');
 
 const app = express();
 app.use(bodyParser.json());
@@ -26,6 +27,8 @@ app.get('/talker/:id', (req, res) => {
   }
   res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
+
+app.post('/login', login);
 
 app.listen(PORT, () => {
   console.log('Online');
