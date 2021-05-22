@@ -9,7 +9,7 @@ const {
   checkTalWatchedAt,
   checkTalkRate } = require('../helpers');
 
-module.exports = async (request, response, next) => {
+module.exports = async (request, response) => {
   const token = request.headers.authorization;
   const { name, age, talk } = request.body;
   const { watchedAt, rate } = talk;
@@ -27,5 +27,4 @@ module.exports = async (request, response, next) => {
   talkersData.push(newTalker);
   await fs.writeFile(`${__dirname}/../talker.json`, JSON.stringify(talkersData))
     .then(() => response.status(200).json(talkersData));
-  next();
 };
