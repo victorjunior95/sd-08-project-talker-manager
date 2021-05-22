@@ -33,43 +33,36 @@ const idGenerator = () =>
     }
   });
 
-const findAll = (entity) => entity;
+exports.findAll = () => loadRepository().then((entity) => entity);
 
-const findById = (id) =>
-  loadRepository().then((entity) =>
-    entity.find((entityId) => +id === entityId.id));
+exports.findById = async (id) => {
+  const entity = await loadRepository().then((result) => result);
+  console.log(id);
+  return entity.find((entityId) => +id === entityId.id);
+};
 
-const save = async (entry) => {
+exports.save = async (entry) => {
   const entity = await loadRepository().then((result) => result);
   const id = await idGenerator().then((result) => result);
   const newData = await { ...entry, id };
-  const newEntity = await { ...entity, newData };
+  const newEntity = await [...entity, newData];
   saveRepository(newEntity);
   return newData;
 };
 
-const deleteById = async (id) => {
+exports.deleteById = async (id) => {
   const entity = await loadRepository().then((result) => result);
   const newEntity = await entity.filter((entityId) => +id !== entityId.id);
   saveRepository(newEntity);
 };
 
-const edit = async (entry) => {
+exports.edit = async (entry) => {
   const entity = await loadRepository().then((result) => result);
   const newEntity = { ...entity, entry };
   saveRepository(newEntity);
 };
 
-const existById = async (id) => {
+exports.existById = async (id) => {
   const entity = await loadRepository().then((result) => result);
   return entity.some((entityId) => id === entityId.id);
-};
-
-module.exports = {
-  findAll: () => loadRepository().then(findAll),
-  findById: () => loadRepository().then(findById),
-  save: (entry) => save(entry),
-  edit: (entry) => edit(entry),
-  deleteById: (id) => deleteById(id),
-  existById,
 };
