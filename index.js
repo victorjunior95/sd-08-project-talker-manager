@@ -43,6 +43,15 @@ app.post('/talker', tokenValidator, tokenValid, nameValidador,
   return res.status(201).json(newCommer);
 });
 
+app.get('/talker/search', tokenValidator, tokenValid, async (req, res) => {
+  const search = req.query.q;
+  const talkerss = await fs.readFile(FILEPATH, 'utf8');
+  const jason = await JSON.parse(talkerss);
+  const filtered = await jason.filter((item) => item.name.includes(search));
+  // const data = jason.name.includes(search)
+  return res.status(200).json(filtered);
+});
+
 app.put('/talker/:id', tokenValidator, tokenValid, nameValidador,
 ageValidador, talkerValidator, talkValidator, rateValidador, dateValidador, async (req, res) => {
   const { id } = req.params;
