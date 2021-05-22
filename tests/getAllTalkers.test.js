@@ -9,13 +9,13 @@ describe('1 - Crie o endpoint GET /talker', () => {
   beforeEach(() => {
     const talkerSeed = fs.readFileSync(
       path.join(__dirname, 'seed.json'),
-      'utf8'
+      'utf8',
     );
 
     fs.writeFileSync(
       path.join(__dirname, '..', 'talker.json'),
       talkerSeed,
-      'utf8'
+      'utf8',
     );
   });
 
