@@ -37,7 +37,6 @@ exports.findAll = () => loadRepository().then((entity) => entity);
 
 exports.findById = async (id) => {
   const entity = await loadRepository().then((result) => result);
-  console.log(id);
   return entity.find((entityId) => +id === entityId.id);
 };
 
