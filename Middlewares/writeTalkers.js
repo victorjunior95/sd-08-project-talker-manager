@@ -6,8 +6,8 @@ function writeTalkers(talkers) {
     try {
         fs.writeFileSync(database, menssage);
     } catch (err) {
-        console.error(`Erro ao ler o arquivo: ${err.path}`);
-        console.log(err);
+        // console.error(`Erro ao ler o arquivo: ${err.path}`);
+        // console.log(err);
     }
 }
 module.exports = writeTalkers;

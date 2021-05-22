@@ -6,8 +6,8 @@ function readTalkers(talkers) {
     try {
         menssage = JSON.parse(fs.readFileSync(database));
     } catch (err) {
-        console.error(`Erro ao ler o arquivo: ${err.path}`);
-        console.log(err);
+        // console.error(`Erro ao ler o arquivo: ${err.path}`);
+        // console.log(err);
     }
     return menssage;
 }
