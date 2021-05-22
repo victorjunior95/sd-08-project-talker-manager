@@ -29,6 +29,17 @@ app.get('/talker/:id', rescue(async (req, res) => {
 
 app.post('/login', middlewares.login);
 
+app.post('/talker', middlewares.tokenValidation, middlewares.nameValidation,
+ middlewares.ageValidation, middlewares.talkValidation, middlewares.watchedAtValidation,
+  middlewares.rateValidation, rescue(async (req, res) => {
+    const talkers = await registeredSpeakers.getRegisteredSpeakers();
+    const newTalker = req.body;
+    newTalker.id = talkers.length + 1;
+    talkers.push(newTalker);
+    await registeredSpeakers.setRegisteredSpeakers(talkers);
+    res.status(201).json(newTalker);
+  }));
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();

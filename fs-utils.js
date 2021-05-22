@@ -5,8 +5,8 @@ function getRegisteredSpeakers() {
   .then((fileContent) => JSON.parse(fileContent));
 }
 
-function setRegisteredSpeakers(newSpeaker) {
-  return fs.writeFile('./talker.json', JSON.stringify(newSpeaker));
+function setRegisteredSpeakers(newTalker) {
+  return fs.writeFile('./talker.json', JSON.stringify(newTalker));
 }
 
 module.exports = { getRegisteredSpeakers, setRegisteredSpeakers };
