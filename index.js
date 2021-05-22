@@ -1,10 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const {
   readFile,
   generateToken,
   emailValidation,
   passwordValidation,
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  dateValidation,
+  talkValidationExists,
 } = require('./midlewares');
 
 const app = express();
@@ -31,7 +37,7 @@ app.get('/talker/:id', (req, res) => {
     .then((data) => {
       const getTalker = data.find((talker) => talker.id === parseInt(id, 10));
       if (!getTalker) res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
-      res.status(200).send(getTalker);
+      return res.status(200).send(getTalker);
     })
     .catch(() => res.status(404).send({ message: 'Pessoa palestrante não encontrada' }));
 });
@@ -42,15 +48,39 @@ app.post('/login', (req, res) => {
   const emailValidated = emailValidation(email);
   const passwordValidated = passwordValidation(password);
   if (!emailValidated.validation) {
-    res.status(400).send({ message: emailValidated.message });
+    return res.status(400).send({ message: emailValidated.message });
   }
 
   if (!passwordValidated.validation) {
-    res.status(400).send({ message: passwordValidated.message });
+    return res.status(400).send({ message: passwordValidated.message });
   }
 
   res.status(200).send(token);
 });
+
+app.post(
+  '/talker',
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidationExists,
+  dateValidation,
+  (req, res) => {
+    const { name, age, talk } = req.body;
+    readFile(talkerPath)
+      .then((data) => {
+        const id = data.length + 1;
+        const newTalker = { id, name, age, talk };
+        data.push(newTalker);
+        const newData = JSON.stringify(data);
+        fs.writeFile(talkerPath, newData, (err) => {
+          if (err) res.status(404).send('Palestrante não adicionado');
+        });
+        res.status(201).send(newTalker);
+      })
+      .catch(() => res.status(200).send());
+  },
+);
 
 app.listen(PORT, () => {
   console.log('Online');
