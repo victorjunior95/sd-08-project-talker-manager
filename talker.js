@@ -1,12 +1,14 @@
 const express = require('express');
+const middleware = require('./middlewares');
 
 const router = express.Router();
 
 const getFsTalker = require('./fsFile.js');
+const setFsTalker = require('./fsWrite');
 
 router.get('/', async (_req, res) => {
   const content = await getFsTalker();
-  console.log(content);
+  // console.log(content);
   if (!content) {
     return res.status(401);
   }
@@ -22,5 +24,32 @@ router.get('/:id', async (req, res) => {
   content = content.find((c) => c.id === +id);
   res.status(200).json(content);
 });
+
+const newUser = (id, data) => ({
+  id,
+  name: data.name,
+  age: data.age,
+  talk: {
+    watchedAt: data.talk.watchedAt,
+    rate: data.talk.rate,
+  },
+});
+
+router.post('/', [
+  middleware.authorization, 
+  middleware.name,
+  middleware.age,
+  middleware.talk,
+  middleware.watchedAt,
+  middleware.rate,
+  async (req, res) => {
+    const content = await getFsTalker();
+    
+    const insertObj = newUser(content.length + 1, req.body); 
+      content.push(insertObj);
+    await setFsTalker(JSON.stringify(content, null, 2));
+    res.status(201).json(insertObj);
+  },
+]);
 
 module.exports = router;
