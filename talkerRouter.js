@@ -1,28 +1,32 @@
 const express = require('express');
-const fs = require('fs');
+const testToken = require('./Middlewares/checkToken');
+const checkTalker = require('./Middlewares/checkTalker');
+const readTalkers = require('./Middlewares/readTalkers');
+const writeTalkers = require('./Middlewares/writeTalkers');
 
-const database = 'talker.json';
 let talkers = [];
 
 const router = express.Router();
+
+router.post('/', (req, res) => {
+  testToken(req.headers.authorization, res);
+  checkTalker(req, res);
+  talkers = readTalkers(talkers);
+  const newId = talkers.length + 1;
+  // const sNewId = String(newId);
+  talkers[newId] = { id: newId, ...req.body };
+  console.log(talkers);
+  writeTalkers(talkers);
+  return res.status(201).json({ id: newId, ...req.body });
+});
+
 router.get('/', (_req, res) => {
-  try {
-    talkers = JSON.parse(fs.readFileSync(database));
-    // console.log(talkers);
-  } catch (err) {
-    // console.error(`Erro ao ler o arquivo: ${err.path}`);
-    // console.log(err);
-  }
+  talkers = readTalkers(talkers);
   res.status(200).json(talkers);
 });
+
 router.get('/:id', (req, res) => {
-  try {
-    talkers = JSON.parse(fs.readFileSync(database));
-    // console.log(talkers);
-  } catch (err) {
-    // console.error(`Erro ao ler o arquivo: ${err.path}`);
-    // console.log(err);
-  }
+  talkers = readTalkers(talkers);
   const { id } = req.params;
   const talkerId = talkers.find((talker) => talker.id === Number(id));
   if (!talkerId) {
