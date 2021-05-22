@@ -1,4 +1,5 @@
 const express = require('express');
+const rescue = require('express-rescue');
 const middleware = require('./middlewares');
 
 const router = express.Router();
@@ -51,5 +52,17 @@ router.post('/', [
     res.status(201).json(insertObj);
   },
 ]);
+
+router.delete('/:id',
+middleware.authorization, 
+  rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const content = await getFsTalker();
+  const deleteTalker = content.filter((talk) => talk.id !== +id);
+
+  await setFsTalker(JSON.stringify(deleteTalker, null, 2));
+  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+}));
 
 module.exports = router;
