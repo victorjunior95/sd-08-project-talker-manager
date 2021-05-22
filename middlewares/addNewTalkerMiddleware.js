@@ -1,3 +1,6 @@
+const fs = require('fs').promises;
+const talkersData = require('../talker.json');
+
 const {
   checkToken,
   checkName,
@@ -5,9 +8,6 @@ const {
   checkTalk,
   checkTalWatchedAt,
   checkTalkRate } = require('../helpers');
-
-const fs = require('fs').promises;
-const talkersData = require('../talker.json');
 
 module.exports = async (request, response, next) => {
   const token = request.headers.authorization;
@@ -25,6 +25,7 @@ module.exports = async (request, response, next) => {
   checkTalWatchedAt(watchedAt, response);
   checkTalkRate(rate, response);
   talkersData.push(newTalker);
-  await fs.writeFile(`${__dirname}/../talker.json`, talkersData);
+  await fs.writeFile(`${__dirname}/../talker.json`, JSON.stringify(talkersData))
+    .then(() => response.status(200).json(talkersData));
   next();
 };
