@@ -9,4 +9,15 @@ const fsTalker = (file) => new Promise((resolve, reject) => {
     });
   });
 
-module.exports = fsTalker;
+const fsAdd = (content) => new Promise((resolve, reject) => {
+  fs.writeFile('./talker.json', content, 'utf8', (err) => {
+    if (err) {
+      reject(new Error('Erro ao adicionar ao arquivo'));
+    }
+    resolve(console.log('Deu tudo certo'));
+  });
+});
+
+module.exports = {
+  fsTalker, fsAdd,
+};
