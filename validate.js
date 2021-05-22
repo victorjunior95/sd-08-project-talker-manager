@@ -23,6 +23,16 @@ const password = (userPassword) => {
   return true;
 };
 
+const token = (req, res, next) => {
+  if (!req.headers.authorization) {
+    return res.status(UNAUTHORIZED).send({ message: 'Token não encontrado' });
+  }
+  if (req.headers.authorization.length < 16) {
+    return res.status(UNAUTHORIZED).send({ message: 'Token inválido' });
+  }
+  next();
+};
+
 const name = (req, res, next) => {
   if (!req.body.name) {
     return res
@@ -77,16 +87,6 @@ const rate = (req, res, next) => {
     res
       .status(BAD_REQUEST)
       .send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
-  }
-  next();
-};
-
-const token = (req, res, next) => {
-  if (!req.headers.authorization) {
-    return res.status(UNAUTHORIZED).send({ message: 'Token não encontrado' });
-  }
-  if (req.headers.authorization.length < 16) {
-    return res.status(UNAUTHORIZED).send({ message: 'Token inválido' });
   }
   next();
 };

@@ -72,12 +72,12 @@ app.post('/login', (req, res) => {
 // Reqisito 04
 app.post(
   '/talker',
+  validate.token,
   validate.name,
   validate.age,
   validate.talk,
   validate.rate,
   validate.watchedAt,
-  validate.token,
   async (req, res) => {
     const file = await fs.readFile(TALKER_FILE);
     const talkers = JSON.parse(file);
