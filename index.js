@@ -19,7 +19,7 @@ app.get('/talker/:id', (req, res) => {
   const talkerIdFilter = data.find((talker) => talker.id === Number(id));
 
   if (!talkerIdFilter) {
-    return res.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante não encontrada' });
+    return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   }
   res.status(HTTP_OK_STATUS).json(talkerIdFilter);
 });
