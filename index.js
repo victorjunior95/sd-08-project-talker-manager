@@ -15,6 +15,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.use('/login', router.loginRoute);
 app.use('/talker', router.talkerRoute);
 
 app.listen(PORT, () => {
