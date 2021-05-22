@@ -5,6 +5,7 @@ const age = require('./age');
 const talk = require('./talk');
 const watchedAt = require('./watchedAt');
 const rate = require('./rate');
+const talker = require('./talker');
 
 module.exports = {
   authentication,
@@ -14,4 +15,5 @@ module.exports = {
   talk,
   watchedAt,
   rate,
+  talker,
 };
