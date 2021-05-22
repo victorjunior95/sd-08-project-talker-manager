@@ -2,21 +2,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const randtoken = require('rand-token');
+const validate = require('./validate');
 // const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
 
 const SUCCESS = 200;
-// const CREATED = 201;
+const CREATED = 201;
 const BAD_REQUEST = 400;
 // const UNAUTHORIZED = 401;
 const NOT_FOUND = 404;
-// const PORT_3000 = 3000;
 const PORT = '3000';
 
 const TALKER_FILE = 'talker.json';
-const VALID_EMAIL_REGEX = /\S+@\S+\.\S+/;
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -51,31 +50,11 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(SUCCESS).send(findTalker);
 });
 
-const validateEmail = (email) => {
-  if (!email || email === '') {
-    return { message: 'O campo "email" é obrigatório' };
-  }
-  if (!VALID_EMAIL_REGEX.test(email)) {
-    return { message: 'O "email" deve ter o formato "email@email.com"' };
-  }
-  return true;
-};
-
-const validatePassword = (password) => {
-  if (!password || password === '') {
-    return { message: 'O campo "password" é obrigatório' };
-  }
-  if (password.toString().length < 6) {
-    return { message: 'O "password" deve ter pelo menos 6 caracteres' };
-  }
-  return true;
-};
-
 // Requisito 03
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  const isEmailValid = validateEmail(email);
-  const isPasswordValid = validatePassword(password);
+  const isEmailValid = validate.email(email);
+  const isPasswordValid = validate.password(password);
 
   if (typeof isEmailValid === 'object') {
     return res.status(BAD_REQUEST).send(isEmailValid);
@@ -89,6 +68,37 @@ app.post('/login', (req, res) => {
 
   return res.status(SUCCESS).send({ token: `${token}` });
 });
+
+// Reqisito 04
+app.post(
+  '/talker',
+  validate.name,
+  validate.age,
+  validate.talk,
+  validate.rate,
+  validate.watchedAt,
+  validate.token,
+  async (req, res) => {
+    const file = await fs.readFile(TALKER_FILE);
+    const talkers = JSON.parse(file);
+    const { name, age, talk } = req.body;
+
+    const newTalker = {
+      name,
+      age,
+      id: talkers.length + 1,
+      talk: {
+        watchedAt: talk.watchedAt,
+        rate: talk.rate,
+      },
+    };
+
+    talkers.push(newTalker);
+    const jsonTalkers = JSON.stringify(talkers);
+    await fs.writeFile('talker.json', jsonTalkers);
+    return res.status(CREATED).json(newTalker);
+  },
+);
 
 app.listen(PORT, () => {
   console.log('Online');
