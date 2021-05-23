@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const CryptoJS = require('crypto-js');
 
-const FILE_PATH = '../talker.json';
+const FILE_PATH = './talker.json';
 
 function getAllPeople() {
   return fs.readFile(FILE_PATH, 'utf-8')
