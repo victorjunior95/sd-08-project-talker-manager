@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
-const randtoken = require('rand-token');
+const crypto = require('crypto');
 const validate = require('./validate');
 // const path = require('path');
 
@@ -64,7 +64,7 @@ app.post('/login', (req, res) => {
     return res.status(BAD_REQUEST).send(isPasswordValid);
   }
 
-  const token = randtoken.generate(16);
+  const token = crypto.randomBytes(8).toString('hex');
 
   return res.status(SUCCESS).send({ token: `${token}` });
 });
