@@ -1,6 +1,11 @@
-module.exports = (req, res, next) => {
+const boom = require('@hapi/boom');
+
+module.exports = (req, _res, next) => {
   const { authorization } = req.headers;
-  if (!authorization) return res.status(401).send({ message: 'Token não encontrado' });
-  if (authorization.length !== 16) return res.status(401).send({ message: 'Token inválido' });
+
+  if (!authorization) throw boom.unauthorized('Token não encontrado');
+
+  if (authorization.length !== 16) throw boom.unauthorized('Token inválido');
+  
   next();
 };

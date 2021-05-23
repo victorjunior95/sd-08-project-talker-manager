@@ -13,6 +13,7 @@ module.exports = rescue(async (req, res, next) => {
     ...req.body,
   };
   talkers.push(newTalker);
+  
   await setTalkers(talkers);
 
   res.status(201).json(newTalker);
