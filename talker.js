@@ -16,6 +16,18 @@ router.get('/', async (_req, res) => {
   return res.status(200).json(content);
 });
 
+router.get('/search', middleware.authorization, rescue(async (req, res) => {
+  const { name } = req.params;
+// req body x req params
+// https://stackoverflow.com/questions/14417592/node-js-difference-between-req-query-and-req-params
+  const content = await getFsTalker();
+  if (!name) {
+    res.status(200).json(content);
+  }
+  const newTalker = content.filter((ppl) => ppl.name.includes(content));
+  res.status(200).json(newTalker);
+})); 
+
 router.get('/:id', async (req, res) => {
   let content = await getFsTalker();
   const { id } = req.params;
@@ -59,7 +71,8 @@ middleware.authorization,
   const { id } = req.params;
 
   const content = await getFsTalker();
-  const deleteTalker = content.filter((talk) => talk.id !== +id);
+  const deleteTalker = content.filter((talk) => talk.id !== +id); 
+  // o + converte o id em numero, pq ele vem como string, mesma função que o Number()
 
   await setFsTalker(JSON.stringify(deleteTalker, null, 2));
   res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
