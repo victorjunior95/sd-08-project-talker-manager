@@ -75,7 +75,8 @@ const createTalker = rescue(async (req, res, next) => {
   if (!result) {
     const talkers = await getAllPeople();
     const length = Math.max(...talkers.map((el) => el.id));
-    talker.id = length;
+    talker.id = length + 1;
+    console.log(talker);
     talkers.push(talker);
     await setNewTalker(talkers);
     res.status(201).json(talker);
