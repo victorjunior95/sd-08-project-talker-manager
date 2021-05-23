@@ -3,6 +3,12 @@ const getSingleTalker = require('./getSingleTalker');
 const errorMiddleware = require('./errorMiddleware');
 const login = require('./login');
 const addNewTalker = require('./addNewTalker');
+const alterTalker = require('./alterTalker');
+const checkToken = require('./checkToken');
+const checkName = require('./checkName');
+const checkAge = require('./checkAge');
+const checkDate = require('./checkDate');
+const checkRate = require('./checkRate');
 
 module.exports = {
   getAllTalkers,
@@ -10,4 +16,10 @@ module.exports = {
   errorMiddleware,
   login,
   addNewTalker,
+  alterTalker,
+  checkToken,
+  checkName,
+  checkAge,
+  checkDate,
+  checkRate,
 };
