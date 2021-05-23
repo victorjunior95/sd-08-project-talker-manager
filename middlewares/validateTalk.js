@@ -5,7 +5,7 @@ const validDateFormate = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
 const isAnyFieldEmpty = (talk) => {
   if (!talk) return true;
   const { watchedAt, rate } = talk;
-  if (!watchedAt || !rate) return true;
+  if (!watchedAt || (!rate && rate !== 0)) return true;
   return false;
 };
 
