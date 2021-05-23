@@ -59,7 +59,7 @@ function validityWatchedAtTalker(req, _res, next) {
 function validityRateTalker(req, _res, next) {
   const talker = req.body;
   const { rate } = talker.talk;
-  if (typeof rate === 'string' || Number(rate) % 1 !== 0 || Number(rate) > 5) {
+  if (typeof rate === 'string' || Number(rate) % 1 !== 0 || Number(rate) > 5 || Number(rate) < 1) {
     next({ status: 400, message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   } else {
     next();
@@ -72,7 +72,7 @@ function createTalker(req, res, next) {
   try {
     // const data = fs.readFileSync(PATH_FILE, 'utf-8');
     // const newData = JSON.parse(data).concat(talker);
-    fs.writeFile(PATH_FILE, talker, (err) => {
+    fs.writeFile(PATH_FILE, JSON.stringify(talker), (err) => {
       if (err) next(err);
       console.log('Saved!');
     });
