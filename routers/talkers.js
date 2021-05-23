@@ -31,6 +31,16 @@ router.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send(ops);
 });
 
+router.get('/search', validateToken, (req, res) => {
+  // console.log(req.query.q);
+  const { q } = req.query;
+  const actualTalkers = kombi();
+  const talkerFound = actualTalkers
+  .filter((each) => each.name.toLowerCase()
+  .includes(q.toLowerCase()));
+  res.status(200).send(talkerFound);
+});
+
 router.get('/:id', (req, response) => {
   const ops = kombi();
   const { id } = req.params;
