@@ -3,6 +3,7 @@ const getAllPeople = require('./getPeople');
 const getPeopleById = require('./getPeopleById');
 const { loginThisCorrect, logged } = require('./login');
 const createTalker = require('./createTalker');
+const updateTalker = require('./updateTalker');
 
 module.exports = {
   error,
@@ -11,4 +12,5 @@ module.exports = {
   loginThisCorrect,
   logged,
   createTalker,
+  updateTalker,
 };
