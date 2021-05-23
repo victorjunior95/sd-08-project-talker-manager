@@ -31,7 +31,7 @@ function validadeTalkKey(req, res, next) {
     .send({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
   const { talk: { watchedAt, rate } } = req.body;
-  if (!watchedAt || !rate) {
+  if (!watchedAt || (!rate && rate !== 0)) {
     return res.status(400).send(
       { message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' },
     );

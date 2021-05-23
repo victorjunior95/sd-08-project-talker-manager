@@ -17,6 +17,12 @@ router.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
 
+function updateFile(newData) {
+  fs.writeFile('./talker.json', JSON.stringify(newData), (err) => {
+    if (err) console.error(err);
+  });
+}
+
 router.get('/', (_request, response) => {
   const ops = kombi();
   if (ops.length === 0) {
@@ -47,12 +53,29 @@ router.post('/', (req, res) => {
   const actualTalkers = kombi();
   const newTalkerWithID = { id: actualTalkers.length + 1, ...newTalker };
   actualTalkers.push(newTalkerWithID);
-
-fs.writeFile('./talker.json', JSON.stringify(actualTalkers), (err) => {
-  if (err) console.error(err);
-});
-console.log(newTalkerWithID);
+updateFile(actualTalkers);
   res.status(201).send(newTalkerWithID);
+});
+
+router.put('/:id', (req, res) => {
+  let { id } = req.params;
+  id = parseInt(id, 10);
+  const newTalkerInfo = req.body;
+  const actualTalkers = kombi();
+  const talkerToEdit = actualTalkers.map((each) => {
+    if (each.id === Number(id)) {
+      return { ...each,
+        name: newTalkerInfo.name,
+        age: newTalkerInfo.age,
+        talk: {
+          watchedAt: newTalkerInfo.talk.watchedAt,
+          rate: newTalkerInfo.talk.rate,
+        },
+      };
+    } return each;
+  });
+  updateFile(talkerToEdit);
+  res.status(200).send({ id, ...newTalkerInfo });
 });
 
 module.exports = router;
