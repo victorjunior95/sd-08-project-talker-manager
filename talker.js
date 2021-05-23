@@ -12,6 +12,19 @@ const fileToRead = './talker.json';
 
 const router = express.Router();
 
+router.get('/search', authorizationMid, async (req, res) => {
+  const { query } = req.query;
+  const talkers = await fsTalker(fileToRead);
+  if (!query) {
+    return res.status(200).json(talkers);
+  }
+  const matching = talkers.find((talker) => talker.name.includes(query));
+  if (!matching) {
+    return res.status(200).json([]);
+  }
+  return res.status(200).json(matching);
+});
+
 const addNewTalker = (id, data) => ({
   id,
   name: data.name,
