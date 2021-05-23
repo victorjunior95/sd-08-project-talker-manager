@@ -14,13 +14,13 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker', middlewares.getAllPeople);
+app.route('/talker')
+  .get(middlewares.getAllPeople)
+  .post(middlewares.createTalker);
 
 app.get('/talker/:id', middlewares.getPeopleById);
 
 app.post('/login', middlewares.loginThisCorrect, middlewares.logged);
-
-// app.use(middlewares.router);
 
 app.use(middlewares.error);
 

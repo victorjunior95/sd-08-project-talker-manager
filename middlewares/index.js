@@ -1,7 +1,8 @@
 const error = require('./error');
 const getAllPeople = require('./getPeople');
 const getPeopleById = require('./getPeopleById');
-const { loginThisCorrect, logged, router } = require('./login');
+const { loginThisCorrect, logged } = require('./login');
+const createTalker = require('./createTalker');
 
 module.exports = {
   error,
@@ -9,5 +10,5 @@ module.exports = {
   getPeopleById,
   loginThisCorrect,
   logged,
-  router,
+  createTalker,
 };
