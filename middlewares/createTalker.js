@@ -1,9 +1,9 @@
 const fs = require('fs');
 
 function validityToken(req, _res, next) {
-  if (req.body.token && req.body.token.length === 16) {
+  if (req.headers.Authorization && req.headers.Authorization.length === 16) {
     next();
-  } else if (req.body.token && req.body.token.length < 16) {
+  } else if (req.headers.Authorization && req.headers.Authorization.length < 16) {
     next({ status: 401, message: 'Token inválido' });
   } else {
     next({ status: 401, message: 'Token não encontrado' });
