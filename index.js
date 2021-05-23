@@ -1,9 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
-const app = express();
 const middlewares = require('./middlewares');
 
+const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;

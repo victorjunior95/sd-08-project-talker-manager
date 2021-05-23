@@ -1,7 +1,8 @@
-const fs = require('fs/promises');
+const fs = require('fs');
 
-const arquivo = 'talker.json';
+const arquivo = fs.readFileSync('talker.json', 'utf8');
 
-module.exports = (req, res) => fs.readFile(arquivo, 'utf8')
-    .then((response) => res.status(200).json(JSON.parse(response)))
-    .catch(() => res.status(200).json([]));
+module.exports = (req, res) => {
+    if (arquivo.length === 0) return res.status(200).json([]);
+    return res.status(200).json(JSON.parse(arquivo));
+};
