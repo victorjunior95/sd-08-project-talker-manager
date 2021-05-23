@@ -80,6 +80,12 @@ const talk = (req, res, next) => {
 };
 
 const rate = (req, res, next) => {
+  if (
+    !req.body.talk
+      || typeof req.body.talk.rate !== 'number'
+  ) {
+    next();
+  }
   if (req.body.talk.rate < 1 || req.body.talk.rate > 5) {
     res
       .status(BAD_REQUEST)
@@ -96,15 +102,6 @@ const watchedAt = (req, res, next) => {
   }
   next();
 };
-
-// const rate = (req, res, next) => {
-//   if (req.body.talk.rate < 1 || req.body.talk.rate > 5) {
-//     res
-//       .status(BAD_REQUEST)
-//       .send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
-//   }
-//   next();
-// };
 
 const validate = {
   email,
