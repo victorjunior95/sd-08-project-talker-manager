@@ -43,6 +43,17 @@ router.get('/:id', (req, response) => {
 });
 
 router.use(validateToken);
+
+router.delete('/:id', (req, res) => {
+  let { id } = req.params;
+  id = parseInt(id, 10);
+  const actualTalkers = kombi();
+  const modifiedTalkers = actualTalkers.filter((each) => each.id !== id);
+  // console.log(modifiedTalkers);
+  updateFile(modifiedTalkers);
+  res.status(200).send({ message: 'Pessoa palestrante deletada com sucesso' });
+});
+
 router.use(validateName);
 router.use(validateAge);
 router.use(validadeTalkKey);
