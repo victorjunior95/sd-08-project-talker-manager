@@ -19,13 +19,13 @@ const verifyLogin = (req, res) => {
 };
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization;
+  const { authorization: token } = req.headers;
   const tokenRegex = /^(\d|\w){16}$/gm;
   if (!token) {
-    res.status(401).json({ message: 'Token não encontrado' });
+    return res.status(401).json({ message: 'Token não encontrado' });
   }
   if (!tokenRegex.test(token)) {
-    res.status(401).json({ message: 'Token inválido' });
+    return res.status(401).json({ message: 'Token inválido' });
   }
   next();
 };
@@ -33,10 +33,10 @@ const verifyToken = (req, res, next) => {
 const verifyName = (req, res, next) => {
   const { name } = req.body;
   if (!name) {
-    res.status(400).json({ message: 'O campo "name" é obrigatório' });
+    return res.status(400).json({ message: 'O campo "name" é obrigatório' });
   }
   if (name.length < 3) {
-    res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
+    return res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
   }
   next();
 };
@@ -44,10 +44,10 @@ const verifyName = (req, res, next) => {
 const verifyAge = (req, res, next) => {
   const { age } = req.body;
   if (!age) {
-    res.status(400).json({ message: 'O campo "age" é obrigatório' });
+    return res.status(400).json({ message: 'O campo "age" é obrigatório' });
   }
   if (age < 18) {
-    res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
+    return res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
   next();
 };
@@ -55,12 +55,12 @@ const verifyAge = (req, res, next) => {
 const verifyTalk = (req, res, next) => {
   const { talk } = req.body;
   if (!talk) {
-    res.status(400).json({ 
+    return res.status(400).json({ 
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
   }
-  if (!talk.watchedAt || !talk.rate) {
-    res.status(400).json({ 
+  if (talk.watchedAt === undefined || talk.rate === undefined) {
+    return res.status(400).json({ 
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
   }
@@ -71,10 +71,10 @@ const verifyTalkContent = (req, res, next) => {
   const dateRegex = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
   const { talk: { watchedAt, rate } } = req.body;
   if (!dateRegex.test(watchedAt)) {
-    res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
+    return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
   }
   if (rate < 1 || rate > 5) {
-    res.status(400).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
+    return res.status(400).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
   next();
 };

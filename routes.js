@@ -5,6 +5,7 @@ const router = express.Router();
 const getAllTalkers = require('./middlewares/getAllTalkers');
 const getTalkerById = require('./middlewares/getTalkerById');
 const createTalker = require('./middlewares/createTalker');
+const editTalker = require('./middlewares/editTalker');
 const {
   verifyLogin,
   verifyToken,
@@ -13,7 +14,6 @@ const {
   verifyTalk,
   verifyTalkContent,
 } = require('./helper/validation');
-// const login = require('./middlewares/login');
 
 router.get('/talker', getAllTalkers);
 router.get('/talker/:id', getTalkerById);
@@ -25,5 +25,12 @@ router.post('/talker',
   verifyTalk,
   verifyTalkContent,
   createTalker);
+  router.put('/talker/:id',
+    verifyToken,
+    verifyName,
+    verifyAge,
+    verifyTalk,
+    verifyTalkContent,
+    editTalker);
 
 module.exports = router;
