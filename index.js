@@ -87,16 +87,20 @@ app.put(
   tokenValidation,
   nameValidation,
   ageValidation,
-  dateValidation,
   talkValidationExists,
+  dateValidation,
   (req, res) => {
-    const { id } = req.params;
+    const idInt = parseInt(req.params.id, 10);
     const { name, age, talk } = req.body;
+    const newTalker = { id: idInt, name, age, talk };
     readFile(talkerPath)
       .then((data) => {
-        const talkers = data.filter((talker) => talker.id !== parseInt(id, 10));
-        const newTalker = { id, name, age, talk };
-        talkers.push(newTalker);
+        const talkers = data.map((talker) => {
+          if (talker.id === idInt) {
+            return { ...newTalker };
+          }
+        return talker;
+        });
         const newData = JSON.stringify(talkers);
         fs.writeFile(talkerPath, newData, (err) => {
           if (err) res.status(404).send('Palestrante não editado');
