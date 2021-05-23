@@ -9,6 +9,7 @@ const {
   checkWatchedAtMiddleware,
   checkTalkRateMiddleware,
   addNewTalkerMiddleware,
+  updateTalkerByIdMiddleware,
 } = require('../middlewares');
 
 const router = express.Router();
@@ -27,6 +28,17 @@ router.post('/talker',
   checkTalkMiddleware,
   checkWatchedAtMiddleware,
   checkTalkRateMiddleware,
+  addNewTalkerMiddleware);
+
+// Requisito 05
+router.put('/talker/:id',
+checkTokenMiddleware,
+  checkNameMiddleware,
+  checkAgeMiddleware,
+  checkTalkMiddleware,
+  checkTalkRateMiddleware,
+  checkWatchedAtMiddleware,
+  updateTalkerByIdMiddleware,
   addNewTalkerMiddleware);
 
 module.exports = router;

@@ -9,6 +9,7 @@ const checkAgeMiddleware = require('./checkAgeMiddleware');
 const checkTalkMiddleware = require('./checkTalkMiddleware');
 const checkWatchedAtMiddleware = require('./checkWatchedAtMiddleware');
 const checkTalkRateMiddleware = require('./checkTalkRateMiddleware');
+const updateTalkerByIdMiddleware = require('./updateTalkerByIdMiddleware');
 
 module.exports = {
   getAllTalkersMiddleware,
@@ -22,4 +23,5 @@ module.exports = {
   checkWatchedAtMiddleware,
   checkTalkRateMiddleware,
   addNewTalkerMiddleware,
+  updateTalkerByIdMiddleware,
 };
