@@ -6,6 +6,8 @@ const getAllTalkers = require('./middlewares/getAllTalkers');
 const getTalkerById = require('./middlewares/getTalkerById');
 const createTalker = require('./middlewares/createTalker');
 const editTalker = require('./middlewares/editTalker');
+const deleteTalker = require('./middlewares/deleteTalker');
+
 const {
   verifyLogin,
   verifyToken,
@@ -32,5 +34,6 @@ router.post('/talker',
     verifyTalk,
     verifyTalkContent,
     editTalker);
+  router.delete('/talker/:id', verifyToken, deleteTalker);
 
 module.exports = router;
