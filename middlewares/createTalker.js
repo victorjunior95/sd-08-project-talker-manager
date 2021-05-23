@@ -13,9 +13,9 @@ function validityToken(req, _res, next) {
 function validityNameTalker(req, _res, next) {
   const talker = req.body;
   if (!talker.name) {
-    next({ status: 400, message: 'O campo "name" é obrigatório ' });
+    next({ status: 400, message: 'O campo "name" é obrigatório' });
   } else if (talker.name.length < 3) {
-    next({ status: 400, message: 'O "name" deve ter pelo menos 3 caracteres ' });
+    next({ status: 400, message: 'O "name" deve ter pelo menos 3 caracteres' });
   } else {
     next();
   }
@@ -70,9 +70,9 @@ function createTalker(req, res, next) {
   const PATH_FILE = './talker.json';
   const talker = req.body;
   try {
-    const data = fs.readFileSync(PATH_FILE, 'utf-8');
-    const newData = JSON.parse(data).concat(talker);
-    fs.writeFile(PATH_FILE, JSON.stringify(newData), (err) => {
+    // const data = fs.readFileSync(PATH_FILE, 'utf-8');
+    // const newData = JSON.parse(data).concat(talker);
+    fs.writeFile(PATH_FILE, talker, (err) => {
       if (err) next(err);
       console.log('Saved!');
     });
@@ -86,8 +86,8 @@ module.exports = [
   validityToken,
   validityNameTalker,
   validityAgeTalker,
+  validityTalk,
   validityWatchedAtTalker,
   validityRateTalker,
-  validityTalk,
   createTalker,
 ];
