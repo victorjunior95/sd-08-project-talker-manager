@@ -1,6 +1,7 @@
-const arquivo = require('../talker.json');
+const fs = require('fs/promises');
 
-module.exports = (req, res) => {
-    if (arquivo.length === 0) return res.status(200).json([]);
-    return res.status(200).json(arquivo);
-};
+const arquivo = 'talker.json';
+
+module.exports = (req, res) => fs.readFile(arquivo, 'utf8')
+    .then((response) => res.status(200).json(JSON.parse(response)))
+    .catch(() => res.status(200).json([]));
