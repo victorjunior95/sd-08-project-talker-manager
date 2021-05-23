@@ -1,93 +1,87 @@
-const fs = require('fs');
+const rescue = require('express-rescue');
+const { getAllPeople, setNewTalker } = require('../util');
 
-function validityToken(req, _res, next) {
-  if (!req.headers.authorization) {
-    next({ status: 401, message: 'Token não encontrado' });
-  } else if (req.headers.authorization.length !== 16) {
-    next({ status: 401, message: 'Token inválido' });
-  } else {
-    next();
+function validityNameTalker(talker) {
+  const { name } = talker;
+  if (!name) {
+    return { status: 400, message: 'O campo "name" é obrigatório' };
+  } 
+  if (name.length < 3) {
+    return { status: 400, message: 'O "name" deve ter pelo menos 3 caracteres' };
   }
+  return true;
 }
 
-function validityNameTalker(req, _res, next) {
-  const talker = req.body;
-  if (!talker.name) {
-    next({ status: 400, message: 'O campo "name" é obrigatório' });
-  } else if (talker.name.length < 3) {
-    next({ status: 400, message: 'O "name" deve ter pelo menos 3 caracteres' });
-  } else {
-    next();
+function validityAgeTalker(talker) {
+  const { age } = talker;
+  if (!age) {
+    return { status: 400, message: 'O campo "age" é obrigatório' };
+  } 
+  if (age < 18 || age % 1 !== 0 || typeof age !== 'number') {
+    return { status: 400, message: 'A pessoa palestrante deve ser maior de idade' };
   }
+  return true;
 }
 
-function validityAgeTalker(req, _res, next) {
-  const talker = req.body;
-  if (!talker.age) {
-    next({ status: 400, message: 'O campo "age" é obrigatório' });
-  } else if (talker.age < 18 || talker.age % 1 !== 0 || typeof talker.age !== 'number') {
-    next({ status: 400, message: 'A pessoa palestrante deve ser maior de idade' });
-  } else {
-    next();
-  }
-}
-
-function validityTalk(req, _res, next) {
-  const talker = req.body;
+function validityTalk(talker) {
+  // const talker = req.body;
   const { talk } = talker;
   if (!talk || !talk.watchedAt || !talk.rate) {
-    next({
+    return {
       status: 400,
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
-    });
-  } else {
-    next();
-  }
+    };
+  } 
+  return true;
 }
 
-function validityWatchedAtTalker(req, _res, next) {
-  const talker = req.body;
+function validityWatchedAtTalker(talker) {
   const { talk } = talker;
+  const { watchedAt } = talk;
   const rgx = new RegExp(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/g); // https://www.regextester.com/99555
-  if (!talk.watchedAt || !talk.watchedAt.match(rgx)) {
-    next({ status: 400, message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
-  } else {
-    next();
+  if (!watchedAt || !watchedAt.match(rgx)) {
+    return {
+      status: 400,
+      message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' };
   }
+  return true;
 }
 
-function validityRateTalker(req, _res, next) {
-  const talker = req.body;
-  const { rate } = talker.talk;
-  if (typeof rate === 'string' || Number(rate) % 1 !== 0 || Number(rate) > 5 || Number(rate) < 1) {
-    next({ status: 400, message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
-  } else {
-    next();
+function validityRateTalker(talker) {
+  const { talk } = talker;
+  const { rate } = talk;
+  if (typeof rate === 'string' || Number(rate) % 1 !== 0 || Number(rate) < 1 || Number(rate) > 5) {
+    return { status: 400, message: 'O campo "rate" deve ser um inteiro de 1 à 5' };
   }
+  return true;
 }
 
-function createTalker(req, res, next) {
-  const PATH_FILE = './talker.json';
+function validityAll(talker) {
+  const isResolve = [
+    validityNameTalker,
+    validityAgeTalker,
+    validityTalk,
+    validityWatchedAtTalker,
+    validityRateTalker,
+  ];
+  return isResolve.map((el) => el(talker));
+}
+
+const createTalker = rescue(async (req, res, next) => {
   const talker = req.body;
-  try {
-    // const data = fs.readFileSync(PATH_FILE, 'utf-8');
-    // const newData = JSON.parse(data).concat(talker);
-    fs.writeFile(PATH_FILE, JSON.stringify(talker), (err) => {
-      if (err) next(err);
-      console.log('Saved!');
+  const result = validityAll(talker).find((el) => typeof el === 'object');
+  if (!result) {
+    const talkers = await getAllPeople();
+    const length = Math.max(...talkers.map((el) => el.id));
+    talkers.push({
+      id: length + 1,
+      ...talker, 
     });
+    await setNewTalker(talkers);
     res.status(201).json(talker);
-  } catch (err) {
-    next(err);
+  } else {
+    next(result);
   }
-}
+});
 
-module.exports = [
-  validityToken,
-  validityNameTalker,
-  validityAgeTalker,
-  validityTalk,
-  validityWatchedAtTalker,
-  validityRateTalker,
-  createTalker,
-];
+module.exports = createTalker;

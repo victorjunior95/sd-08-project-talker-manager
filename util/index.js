@@ -1,15 +1,15 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const CryptoJS = require('crypto-js');
 
 const FILE_PATH = './talker.json';
 
 function getAllPeople() {
-  try {
-    const data = fs.readFileSync(FILE_PATH, 'utf-8');
-    return JSON.parse(data);
-  } catch (err) {
-    return { message: err.message, path: err.path, status: 404 };
-  }
+  return fs.readFile(FILE_PATH, 'utf-8')
+  .then((result) => JSON.parse(result));
+}
+
+function setNewTalker(talker) {
+  return fs.writeFile(FILE_PATH, JSON.stringify(talker));
 }
 
 function getPeopleById(id) {
@@ -41,4 +41,5 @@ module.exports = {
   getPeopleById,
   token,
   isEmail,
+  setNewTalker,
 };

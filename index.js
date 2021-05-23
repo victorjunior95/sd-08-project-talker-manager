@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // const rescue = require('express-rescue');
 const middlewares = require('./middlewares');
+const routerTalker = require('./routes');
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,11 +15,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.route('/talker')
-  .get(middlewares.getAllPeople)
-  .post(middlewares.createTalker);
-
-app.get('/talker/:id', middlewares.getPeopleById);
+app.use('/talker', routerTalker);
 
 app.post('/login', middlewares.loginThisCorrect, middlewares.logged);
 
