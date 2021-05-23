@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
     "test": "jest --runInBand",
     "restore": "cp tests/seed.json talker.json",
     "start": "node index.js",
-    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
+    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json .",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,6 @@
     "crypto-js": "4.0.0",
     "express": "4.17.1",
     "express-rescue": "1.1.30",
-    "nodemon": "^2.0.7",
     "rand-token": "^1.0.1"
   },
   "devDependencies": {
