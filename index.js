@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const { getAllTalkers, getSingleTalker } = require('./middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,13 +17,6 @@ app.listen(PORT, () => {
   console.log('Online...');
 });
 
-const getAllTalkers = (_req, res, _next) => {
-  const rawdata = fs.readFileSync('talker.json');
-  const talkers = JSON.parse(rawdata);
-  if (!talkers.length) {
-    return res.status(200).json([]);
-  }
-  res.status(200).json(talkers);
-};
-
 app.get('/talker', getAllTalkers);
+
+app.get('/talker/:id', getSingleTalker);
