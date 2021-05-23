@@ -22,8 +22,6 @@ function validityAgeTalker(talker) {
 
 function validityTalk(talker) {
   // const talker = req.body;
-  console.log(talker.talk);
-  console.log(Object.keys(talker.talk));
   if (!talker.talk || Object.keys(talker.talk).length !== 2 
     || talker.talk.watchedAt === '' || talker.talk.rate === '') {
     return {
