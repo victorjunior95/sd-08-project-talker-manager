@@ -1,15 +1,21 @@
 const rescue = require('express-rescue');
 const { getTalkers, setTalkers } = require('../../utils/fsTalker');
-const createTalker = require('../../services/createTalker');
+const talkerSchema = require('../../schema/talker');
 
-module.exports = rescue(async (req, res) => {
+module.exports = rescue(async (req, res, next) => {
+  const { error } = talkerSchema.validate(req.body);
+
+  if (error) return next(error);
+
   const { id } = req.params;
+
   const talkers = await getTalkers();
-  const newTalker = createTalker(req.body, id);
+
   const newTalkers = talkers.map((currentTalker) => {
-    if (currentTalker.id === Number(id)) return newTalker;
+    if (currentTalker.id === Number(id)) return { ...currentTalker, ...req.body };
     return currentTalker;
   });
+
   await setTalkers(newTalkers);
-  res.status(200).json(newTalker);
+  res.status(200).json(newTalkers.find((currentTalker) => currentTalker.id === Number(id)));
 });

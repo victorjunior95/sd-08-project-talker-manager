@@ -9,25 +9,9 @@ talker.get('/', middlewares.talker.getAll);
 
 talker.get('/:id', middlewares.talker.getById);
 
-talker.post('/', [
-  middlewares.authentication,
-  middlewares.name,
-  middlewares.age,
-  middlewares.talk,
-  middlewares.watchedAt,
-  middlewares.rate,
-  middlewares.talker.create,
-]);
+talker.post('/', [middlewares.authentication, middlewares.talker.create]);
 
-talker.put('/:id', [
-  middlewares.authentication,
-  middlewares.name,
-  middlewares.age,
-  middlewares.talk,
-  middlewares.rate,
-  middlewares.watchedAt,
-  middlewares.talker.updateById,
-]);
+talker.put('/:id', [middlewares.authentication, middlewares.talker.updateById]);
 
 talker.delete('/:id', middlewares.authentication, middlewares.talker.deleteById);
 

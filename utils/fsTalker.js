@@ -8,7 +8,7 @@ const getTalkers = () => fs
   .then((content) => JSON.parse(content));
 
 const setTalkers = (newTalkers) => fs
-  .writeFile(TALKER_FILE_PATH, JSON.stringify(newTalkers, null, 0));
+  .writeFile(TALKER_FILE_PATH, JSON.stringify(newTalkers, null, 2));
 
 module.exports = {
   getTalkers,
