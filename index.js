@@ -111,6 +111,22 @@ app.put(
   },
 );
 
+app.delete('/talker/:id',
+tokenValidation,
+(req, res) => {
+  const idInt = parseInt(req.params.id, 10);
+  readFile(talkerPath)
+    .then((data) => {
+      const talkers = data.filter((talker) => talker.id !== idInt);
+      const newData = JSON.stringify(talkers);
+      fs.writeFile(talkerPath, newData, (err) => {
+        if (err) res.status(404).send('Palestrante não deletado');
+      });
+      res.status(200).send({ message: 'Pessoa palestrante deletada com sucesso' });
+    })
+    .catch(() => res.status(200).send());
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
