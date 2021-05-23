@@ -59,19 +59,11 @@ app.get('/talker/:id', (req, res) => {
     .catch(() => res.status(404).send({ message: 'Pessoa palestrante não encontrada' }));
 });
 
-app.post('/login', (req, res) => {
+app.post('/login',
+emailValidation,
+passwordValidation,
+(req, res) => {
   const token = generateToken();
-  const { email, password } = req.body;
-  const emailValidated = emailValidation(email);
-  const passwordValidated = passwordValidation(password);
-  if (!emailValidated.validation) {
-    return res.status(400).send({ message: emailValidated.message });
-  }
-
-  if (!passwordValidated.validation) {
-    return res.status(400).send({ message: passwordValidated.message });
-  }
-
   res.status(200).send(token);
 });
 
