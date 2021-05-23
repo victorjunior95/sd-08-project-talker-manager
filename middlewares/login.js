@@ -1,7 +1,8 @@
 const util = require('../util');
 
 function loginThisCorrect(req, res, next) {
-  const { email, password } = req.query;
+  console.log(Object.keys(req.headers));
+  const { email, password } = req.body;
   if (!email) {
     next({ status: 400, message: 'O campo "email" é obrigatório' }); 
   } else if (!util.isEmail(email)) {
