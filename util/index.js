@@ -12,14 +12,20 @@ function setNewTalker(talker) {
   return fs.writeFile(FILE_PATH, JSON.stringify(talker));
 }
 
-function getPeopleById(id) {
-  try {
-    const data = getAllPeople();
-    const peopleId = data.find((el) => Number(el.id) === Number(id));
-    return peopleId;
-  } catch (err) {
-    return { message: err.message, path: err.path, status: 404 };
-  }
+// function getPeopleById(id) {
+//   try {
+//     const data = getAllPeople();
+//     const peopleId = data.find((el) => Number(el.id) === Number(id));
+//     return peopleId;
+//   } catch (err) {
+//     return { message: err.message, path: err.path, status: 404 };
+//   }
+// }
+
+async function getPeopleById(id) {
+  const data = await getAllPeople();
+  const result = data.find((el) => el.id === Number(id));
+  return result;
 }
 
 function token(email) {
