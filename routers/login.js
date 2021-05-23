@@ -18,7 +18,6 @@ function validateEmail(email) {
 }
 
 router.post('/', (req, res) => {
-  console.log(req.body);
   const { email, password } = req.body;
   if (!email) {
     return res.status(400).send({ message: 'O campo "email" é obrigatório' });
