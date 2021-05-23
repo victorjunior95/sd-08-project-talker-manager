@@ -10,9 +10,7 @@ const findIdToDelete = (talkerIdToDelete) => {
   if (talkerToDelete === -1) {
     return null;
   }
-  console.log(talkerToDelete);
   const deletedElement = talkers.splice(talkerToDelete, 1)[0];
-  console.log(deletedElement);
   return deletedElement;
 };
 
