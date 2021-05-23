@@ -22,7 +22,7 @@ function validityAgeTalker(talker) {
 
 function validityTalk(talker) {
   // const talker = req.body;
-  if (!talker.talk || !talker.talk.watchedAt || !talker.talk.rate) {
+  if (!talker.talk || !talker.talk.watchedAt || !talker.talk.rate === '') {
     return {
       status: 400,
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
@@ -46,7 +46,7 @@ function validityWatchedAtTalker(talker) {
 function validityRateTalker(talker) {
   const { talk } = talker;
   const { rate } = talk;
-  if (typeof rate === 'string' || Number(rate) % 1 !== 0 || Number(rate) < 1 || Number(rate) > 5) {
+  if (typeof rate !== 'number' || Number(rate) % 1 !== 0 || Number(rate) < 1 || Number(rate) > 5) {
     return { status: 400, message: 'O campo "rate" deve ser um inteiro de 1 à 5' };
   }
   return true;
