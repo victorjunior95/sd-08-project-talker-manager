@@ -2,9 +2,10 @@ const fs = require('fs').promises;
 const talkersData = require('../talker.json');
 
 module.exports = async (request, response) => {
+  console.log('talkers data', talkersData);
   const talker = request.body;
   const newTalker = {
-    id: talkersData.length + 1,
+    id: talkersData[talkersData.length - 1].id + 1,
     ...talker,
   };
   talkersData.push(newTalker);
