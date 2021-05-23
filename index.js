@@ -82,6 +82,31 @@ app.post(
   },
 );
 
+app.put(
+  '/talker/:id',
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  dateValidation,
+  talkValidationExists,
+  (req, res) => {
+    const { id } = req.params;
+    const { name, age, talk } = req.body;
+    readFile(talkerPath)
+      .then((data) => {
+        const talkers = data.filter((talker) => talker.id !== parseInt(id, 10));
+        const newTalker = { id, name, age, talk };
+        talkers.push(newTalker);
+        const newData = JSON.stringify(talkers);
+        fs.writeFile(talkerPath, newData, (err) => {
+          if (err) res.status(404).send('Palestrante não editado');
+        });
+        res.status(200).send(newTalker);
+      })
+      .catch(() => res.status(200).send());
+  },
+);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
