@@ -22,7 +22,10 @@ function validityAgeTalker(talker) {
 
 function validityTalk(talker) {
   // const talker = req.body;
-  if (!talker.talk || !talker.talk.watchedAt || !talker.talk.rate === '') {
+  console.log(talker.talk);
+  console.log(Object.keys(talker.talk));
+  if (!talker.talk || Object.keys(talker.talk).length !== 2 
+    || talker.talk.watchedAt === '' || talker.talk.rate === '') {
     return {
       status: 400,
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
@@ -54,6 +57,7 @@ function validityRateTalker(talker) {
 
 function validityAll(talker) {
   if (!talker.talk) {
+    console.log('aqui');
     return [validityTalk(talker)];
   }
   const isResolve = [
@@ -63,7 +67,9 @@ function validityAll(talker) {
     validityWatchedAtTalker,
     validityRateTalker,
   ];
-  return isResolve.map((el) => el(talker));
+  const temp = isResolve.map((el) => el(talker));
+  console.log(temp);
+  return temp;
 }
 
 module.exports = validityAll;
