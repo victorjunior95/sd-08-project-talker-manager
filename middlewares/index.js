@@ -9,6 +9,8 @@ const checkName = require('./checkName');
 const checkAge = require('./checkAge');
 const checkDate = require('./checkDate');
 const checkRate = require('./checkRate');
+const deleteTalker = require('./deleteTalker');
+const searchTalker = require('./searchTalker');
 
 module.exports = {
   getAllTalkers,
@@ -22,4 +24,6 @@ module.exports = {
   checkAge,
   checkDate,
   checkRate,
+  deleteTalker,
+  searchTalker,
 };

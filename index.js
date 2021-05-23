@@ -11,6 +11,8 @@ const {
   checkAge,
   checkDate,
   checkRate,
+  deleteTalker,
+  searchTalker,
  } = require('./middlewares');
 
 const app = express();
@@ -30,7 +32,7 @@ app.listen(PORT, () => {
 
 app.get('/talker', getAllTalkers);
 
-app.get('/talker/:id', getSingleTalker);
+app.get('/talker/:id', [checkToken, searchTalker, getSingleTalker]);
 
 app.post('/login', login);
 
@@ -50,4 +52,9 @@ app.post('/talker/:id', [
   checkDate,
   checkRate,
   alterTalker,
+]);
+
+app.delete('/talker/:id', [
+  checkToken,
+  deleteTalker,
 ]);
