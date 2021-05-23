@@ -7,6 +7,7 @@ const authMiddleware = require('./middlewares/authMiddleware');
 const validateName = require('./middlewares/validateName');
 const validateAge = require('./middlewares/validateAge');
 const { dataValidate, fieldsValidate } = require('./middlewares/validateTalk');
+const editTalker = require('./routes/editTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -42,6 +43,15 @@ app.post(
   dataValidate,
   fieldsValidate,
   addNewTalker,
+);
+app.put(
+  '/talker/:id',
+  authMiddleware,
+  validateName,
+  validateAge,
+  dataValidate,
+  fieldsValidate,
+  editTalker,
 );
 
 app.listen(PORT, () => {
