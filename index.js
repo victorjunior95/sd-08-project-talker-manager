@@ -18,6 +18,8 @@ app.get('/talker', middlewares.getAllPeople);
 
 app.get('/talker/:id', middlewares.getPeopleById);
 
+app.post('/login', middlewares.loginThisCorrect, middlewares.logged);
+
 app.use(middlewares.error);
 
 app.listen(PORT, () => {
