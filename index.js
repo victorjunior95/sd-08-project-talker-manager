@@ -1,8 +1,9 @@
 const express = require('express');
 
-const getAllTalkers = require('./getAllTalkers.js');
-const getTalkerById = require('./getTalkerById.js');
-const login = require('./login.js');
+const getAllTalkers = require('./local-modules/getAllTalkers.js');
+const getTalkerById = require('./local-modules/getTalkerById.js');
+const login = require('./local-modules/login.js');
+const createTalker = require('./local-modules/createTalker.js');
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,8 @@ app.get('/talker', getAllTalkers);
 app.get('/talker/:id', getTalkerById);
 
 app.post('/login', login);
+
+app.post('/talker', createTalker);
 
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);
