@@ -15,7 +15,7 @@ router.get('/', async (_req, res) => {
   }
   return res.status(200).json(content);
 });
-
+// a ordem das rotas estava alterando resultado, sendo assim tive que subir com o /search)
 router.get('/search', middleware.authorization, rescue(async (req, res) => {
   const { name } = req.params;
 // req body x req params
