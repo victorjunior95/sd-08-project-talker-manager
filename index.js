@@ -20,6 +20,21 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
+app.get('/talker/search', authMiddleware, (req, res, next) => {
+  const getTalkers = () => JSON.parse(fs.readFileSync('talker.json', 'utf8'));
+  const query = req.query.q.toLowerCase();
+  try {
+    const talkers = getTalkers();
+    if (!query) return next();
+    const wantedTalker = talkers.filter((talker) =>
+      talker.name.toLowerCase().includes(query));
+    return res.status(200).json(wantedTalker);
+  } catch (err) {
+    return res.status(500).send({ err });
+  }
+});
+
 app.get('/talker', (req, res) => {
   const result = JSON.parse(fs.readFileSync('./talker.json', 'utf8'));
   res.status(200).json(result);
