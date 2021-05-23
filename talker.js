@@ -24,6 +24,9 @@ router.get('/search', middleware.authorization, rescue(async (req, res) => {
   if (!name) {
     res.status(200).json(content);
   }
+  // O método includes() determina se um array/objeto contém um determinado elemento ou não, 
+  // retornando true ou false , respectivamente. Em outras palavras, includes() retornará true se 
+  // o elemento existir no array/objeto.
   const newTalker = content.filter((ppl) => ppl.name.includes(content));
   res.status(200).json(newTalker);
 })); 
