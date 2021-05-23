@@ -1,4 +1,5 @@
-module.exports = (rate, response, next) => {
+module.exports = (request, response, next) => {
+  const { rate } = request.body.talk;
   if (typeof rate !== 'number' || rate < 1 || rate > 5) {
     return response.status(400)
       .json({
