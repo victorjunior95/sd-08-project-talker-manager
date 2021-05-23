@@ -25,6 +25,23 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker/search',
+tokenValidation,
+(req, res) => {
+  const { q } = req.query;
+  if (!q) {
+    readFile(talkerPath)
+      .then((data) => res.status(200).send(data))
+      .catch(() => res.status(200).send());
+  }
+  readFile(talkerPath)
+    .then((data) => {
+      const talkers = data.filter((talker) => talker.name.indexOf(q) !== -1);
+      res.status(200).send(talkers);
+    })
+    .catch(() => res.status(200).send());
+});
+
 app.get('/talker', (_req, res) => {
   readFile(talkerPath)
     .then((data) => res.status(200).send(data))
