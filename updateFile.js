@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const writeFile = async (fileName, arquivo, id) => {
+const updateFile = async (fileName, arquivo, id) => {
   try {
     await fs.promises.writeFile(fileName, JSON.stringify(arquivo));
     return arquivo.find((talker) => talker.id === id);
@@ -9,4 +9,4 @@ const writeFile = async (fileName, arquivo, id) => {
   }
 };
 
-module.exports = writeFile;
+module.exports = updateFile;

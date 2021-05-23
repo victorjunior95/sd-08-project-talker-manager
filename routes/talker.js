@@ -48,9 +48,11 @@ router.put(
         }
         return talker;
       });
-      updateFile(fileName, updatadedTalkers, parseInt(id, 10)).then((response) => {
-        res.status(UPDATE_SUCCESS_STATUS).json(response);
-      });
+      updateFile(fileName, updatadedTalkers, parseInt(id, 10)).then(
+        (response) => {
+          res.status(UPDATE_SUCCESS_STATUS).json(response);
+        },
+      );
     });
   },
 );
@@ -72,6 +74,20 @@ router.post(
 router.get('/', (_req, res) => {
   readFile(fileName).then((data) => {
     res.status(SUCCESS_STATUS).send(data);
+  });
+});
+
+router.delete('/:id', authToken, (req, res) => {
+  const { id } = req.params;
+  readFile(fileName).then((response) => {
+    const filteredTalkers = response.filter(
+      (talker) => talker.id !== parseInt(id, 10),
+    );
+    updateFile(fileName, filteredTalkers, parseInt(id, 10)).then((_talker) => {
+      res
+        .status(UPDATE_SUCCESS_STATUS)
+        .json({ message: 'Pessoa palestrante deletada com sucesso' });
+    });
   });
 });
 
