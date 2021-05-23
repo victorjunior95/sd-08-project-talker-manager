@@ -1,12 +1,12 @@
 const fs = require('fs');
 
 function validityToken(req, _res, next) {
-  if (req.headers.Authorization && req.headers.Authorization.length === 16) {
-    next();
-  } else if (req.headers.Authorization && req.headers.Authorization.length < 16) {
+  if (!req.headers.authorization) {
+    next({ status: 401, message: 'Token não encontrado' });
+  } else if (req.headers.authorization.length !== 16) {
     next({ status: 401, message: 'Token inválido' });
   } else {
-    next({ status: 401, message: 'Token não encontrado' });
+    next();
   }
 }
 
