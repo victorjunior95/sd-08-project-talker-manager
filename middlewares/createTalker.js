@@ -1,9 +1,9 @@
 const fs = require('fs');
 
 function validityToken(req, _res, next) {
-  if (req.headers.authorization && req.headers.authorization.length === 16) {
+  if (req.body.token && req.body.token.length === 16) {
     next();
-  } else if (req.headers.authorization && req.headers.authorization.length < 16) {
+  } else if (req.body.token && req.body.token.length < 16) {
     next({ status: 401, message: 'Token inválido' });
   } else {
     next({ status: 401, message: 'Token não encontrado' });
@@ -38,7 +38,7 @@ function validityTalk(req, _res, next) {
   if (!talk || !talk.watchedAt || !talk.rate) {
     next({
       status: 400,
-      message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não pode ser vazios',
+      message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
   } else {
     next();
