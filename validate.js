@@ -62,21 +62,18 @@ const age = (req, res, next) => {
 };
 
 const talk = (req, res, next) => {
-  if (!req.body.talk
-      || !req.body.talk.rate
-      || !req.body.talk.watchedAt) {
+  // const { body } = req;
+  // if (Object.keys(body).includes('talk')) {
+  //   next();
+  // }
+  if (
+    !req.body.talk
+      || typeof req.body.talk.rate !== 'number'
+      || typeof req.body.talk.watchedAt !== 'string'
+  ) {
     res.status(BAD_REQUEST).send({
       message:
         'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
-    });
-  }
-  next();
-};
-
-const watchedAt = (req, res, next) => {
-  if (!VALID_DATE.test(req.body.talk.watchedAt)) {
-    res.status(BAD_REQUEST).send({
-      message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
     });
   }
   next();
@@ -91,15 +88,33 @@ const rate = (req, res, next) => {
   next();
 };
 
+const watchedAt = (req, res, next) => {
+  if (!VALID_DATE.test(req.body.talk.watchedAt)) {
+    res.status(BAD_REQUEST).send({
+      message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
+    });
+  }
+  next();
+};
+
+// const rate = (req, res, next) => {
+//   if (req.body.talk.rate < 1 || req.body.talk.rate > 5) {
+//     res
+//       .status(BAD_REQUEST)
+//       .send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
+//   }
+//   next();
+// };
+
 const validate = {
   email,
   password,
+  token,
   name,
   age,
   talk,
   watchedAt,
   rate,
-  token,
 };
 
 module.exports = validate;

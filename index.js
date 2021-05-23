@@ -100,6 +100,47 @@ app.post(
   },
 );
 
+// Requisito 05
+const editTalker = (name, age, talk, id) => ({
+  name,
+  age,
+  id: parseInt(id, 10),
+  talk: {
+    watchedAt: talk.watchedAt,
+    rate: talk.rate,
+  },
+});
+
+app.put(
+  '/talker/:id',
+  validate.token,
+  validate.name,
+  validate.age,
+  validate.talk,
+  validate.rate,
+  validate.watchedAt,
+  async (req, res) => {
+  const { id } = req.params;
+  const file = await fs.readFile(TALKER_FILE);
+  const talkers = JSON.parse(file);
+  console.log('line 126', req.body);
+  const { name, age, talk } = req.body;
+
+  const editedTalker = editTalker(name, age, talk, id);
+  console.log('line 130', editedTalker);
+
+  const editedTalkers = [
+    ...talkers.slice(0, id - 1),
+    editedTalker,
+    ...talkers.slice(id - 1, talkers.length - 1),
+  ];
+
+  const jsonTalkers = JSON.stringify(editedTalkers);
+  await fs.writeFile(TALKER_FILE, jsonTalkers);
+  return res.status(SUCCESS).json(editedTalker);
+},
+);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
