@@ -32,13 +32,12 @@ router.post('/talker',
 
 // Requisito 05
 router.put('/talker/:id',
-checkTokenMiddleware,
+  checkTokenMiddleware,
   checkNameMiddleware,
   checkAgeMiddleware,
   checkTalkMiddleware,
   checkTalkRateMiddleware,
   checkWatchedAtMiddleware,
-  updateTalkerByIdMiddleware,
-  addNewTalkerMiddleware);
+  updateTalkerByIdMiddleware);
 
 module.exports = router;
