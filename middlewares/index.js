@@ -7,6 +7,7 @@ const verifyTalkBody = require('./verifyTalkBody.js');
 const talkerVerified = require('./talkerVerified.js');
 const editedTalker = require('./editedTalker.js');
 const deleteTalk = require('./deleteTalk.js');
+const searchName = require('./searchName.js');
 
 module.exports = {
   verifyName,
@@ -18,4 +19,5 @@ module.exports = {
   talkerVerified,
   editedTalker,
   deleteTalk,
+  searchName,
 };

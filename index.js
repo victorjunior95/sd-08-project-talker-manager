@@ -14,6 +14,8 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker/search', middlewares.verifyToken, middlewares.searchName);
+
 app.get('/talker', (_req, res) => {
   fs.readFile('./talker.json', (_err, data) => {
     res.status(HTTP_OK_STATUS).send(JSON.parse(data));
