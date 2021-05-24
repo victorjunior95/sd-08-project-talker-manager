@@ -5,7 +5,7 @@ const { verifyAuth, form: { verifyInfo, verifyTalk } } = require('../middlewere'
 
 const route = express.Router();
 
-route.get('/search', rescue(controller.getTalkByName));
+route.get('/search', verifyAuth, rescue(controller.getTalkByName));
 route.get('/:id', rescue(controller.getTalkerById));
 route.get('/', rescue(controller.get));
 route.post('/', verifyAuth, verifyInfo, verifyTalk, rescue(controller.post));

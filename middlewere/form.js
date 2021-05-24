@@ -101,7 +101,7 @@ exports.verifyTalk = (req, res, next) => {
   const isTalk = verifyFieldTalker(talk);
   if (!isTalk.isValid) return res.status(400).json({ message: isTalk.message }); 
   const isWatchedAt = verifyFieldTalkerWatchedArt(talk.watchedAt);
-  if (!isWatchedAt.isValid) return res.status(401).json({ message: isWatchedAt.message }); 
+  if (!isWatchedAt.isValid) return res.status(400).json({ message: isWatchedAt.message }); 
   const isRate = verifyFieldTalkerRate(talk.rate);
   if (!isRate.isValid) return res.status(400).json({ message: isRate.message }); 
   next();
