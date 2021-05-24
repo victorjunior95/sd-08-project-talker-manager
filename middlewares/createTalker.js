@@ -1,7 +1,4 @@
-const validateDate = require('validate-date');
-// https://www.npmjs.com/package/validate-date
-// const fs = require('fs');
-const talkers = require('../talker.json');
+const fs = require('fs');
 
 const verifyName = (name) => {
   if (name === undefined || name.length === 0) return 'O campo "name" é obrigatório';
@@ -27,13 +24,14 @@ const verifyTalk = (talk) => {
   if (isEmpty) {
     return 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios';
   }
-  const date = validateDate(talk.watchedAt, 'boolean', 'dd/mm/yyyy');
-  if (!date) return 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"';
   if (talk.rate < 1 || talk.rate > 5) return 'O campo "rate" deve ser um inteiro de 1 à 5';
+  const regex = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
+  if (!regex.test(talk.watchedAt)) return 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"';
   return '';
 };
 
 module.exports = (req, res) => {
+  const talkers = JSON.parse(fs.readFileSync('./talker.json', 'utf8'));
   const { name } = req.body;
   const { age } = req.body;
   const { talk } = req.body;
@@ -49,6 +47,6 @@ module.exports = (req, res) => {
     talk,
     id: talkers.length + 1,
   });
-  // fs.writeFileSync('../talker.json', JSON.stringify(talkers));
+  fs.writeFileSync('./talker.json', JSON.stringify(talkers));
   res.status(201).json(talkers[talkers.length - 1]);
 };

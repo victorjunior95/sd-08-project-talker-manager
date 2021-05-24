@@ -23,5 +23,5 @@ module.exports = (req, res) => {
   const passwordValid = verifyPassword(password);
   if (emailValid.length !== 0) return res.status(400).json({ message: emailValid });
   if (passwordValid.length !== 0) return res.status(400).json({ message: passwordValid });
-  res.status(200).send({ token: crypto.randomBytes(8).toString('hex') });
+  res.status(200).json({ token: crypto.randomBytes(8).toString('hex') });
 };
