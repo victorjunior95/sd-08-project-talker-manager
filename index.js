@@ -6,7 +6,8 @@ const {
   login, 
   createTalker, 
   editTalker, 
-  deleteTalker, 
+  deleteTalker,
+  searchTalker,
 } = require('./womps');
 
 const app = express();
@@ -19,6 +20,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker/search', searchTalker);
 app.get('/talker', getAllTalkers);
 app.get('/talker/:id', getTalkerById);
 app.post('/login', login);
