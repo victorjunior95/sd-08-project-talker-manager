@@ -12,7 +12,6 @@ module.exports = async (request, response) => {
     if (speaker.id === newId) return newTalker;
     return speaker;
   });
-  console.log('updatedTalkers', updatedTalkers);
   await fs.writeFile(`${__dirname}/../talker.json`, JSON.stringify(updatedTalkers));
   return response.status(200).json(newTalker);
 };
