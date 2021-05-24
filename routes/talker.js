@@ -38,6 +38,7 @@ router.put('/talker/:id',
   checkTalkMiddleware,
   checkTalkRateMiddleware,
   checkWatchedAtMiddleware,
-  updateTalkerByIdMiddleware);
+  updateTalkerByIdMiddleware,
+  addNewTalkerMiddleware);
 
 module.exports = router;
