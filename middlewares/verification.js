@@ -41,33 +41,31 @@ const ageVerification = (req, res, next) => {
   next();
 };
 
-const talkVerification = (req, res, next) => {
-  const { talk: { watchedAt, rate } } = req.body;
-  const formatDate = /^(0?[1-9]|[12][0-9]|3[01])[/-](0?[1-9]|1[012])[/-]\d{4}$/;
-  if (!formatDate.test(watchedAt)) {
-    res.status(HTTP_BAD_REQUEST_STATUS)
-      .json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
-  }
-  const intervalNumbers = /^([1-5])$/;
-  if (Number.isInteger(rate) && !intervalNumbers.test(rate)) {
-    res.status(HTTP_BAD_REQUEST_STATUS)
-      .json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
-  }
-  next();
-};
-
 const msgTalk = {
   message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
 };
 
+const talkVerification = (req, res, next) => {
+  const intervalNumbers = /^([1-5])$/;
+  if (Number.isInteger(req.body.talk.rate)
+    && !intervalNumbers.test(req.body.talk.rate)) {
+      res.status(HTTP_BAD_REQUEST_STATUS)
+        .json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
+  }
+  const formatDate = /^(0?[1-9]|[12][0-9]|3[01])[/-](0?[1-9]|1[012])[/-]\d{4}$/;
+  if (!formatDate.test(req.body.talk.watchedAt)) {
+    res.status(HTTP_BAD_REQUEST_STATUS)
+      .json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
+  }
+  next();
+};
+
 const rateAndWatchedAtVerification = (req, res, next) => {
-  const { talk } = req.body;
-  if (!talk) {
+  if (req.body.talk === undefined) {
     res.status(HTTP_BAD_REQUEST_STATUS)
     .json(msgTalk);
   }
-  const { talk: { watchedAt, rate } } = req.body;
-  if (!watchedAt || !rate) {
+  if (req.body.talk.watchedAt === undefined || req.body.talk.rate === undefined) {
     res.status(HTTP_BAD_REQUEST_STATUS)
       .json(msgTalk);
   }
@@ -78,6 +76,6 @@ module.exports = {
   tokenVerification,
   nameVerification,
   ageVerification,
-  talkVerification,
   rateAndWatchedAtVerification,
+  talkVerification,
 };

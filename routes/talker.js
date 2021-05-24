@@ -56,4 +56,31 @@ routeTalker.post(
   },
 );
 
+routeTalker.put(
+  '/:id',
+  verification.tokenVerification,
+  verification.nameVerification,
+  verification.ageVerification,
+  verification.rateAndWatchedAtVerification,
+  verification.talkVerification,
+  (req, res) => {
+    try {
+      const talkerArray = middlewares.readTalker();
+      const talkerId = Number(req.params.id);
+      const newTalker = req.body;
+      newTalker.id = talkerId;
+      const newTalkerArray = talkerArray.map((talker) => {
+        if (talker.id === talkerId) {
+          return { ...newTalker };
+        }
+        return talker;
+      });
+      middlewares.writeTalker(newTalkerArray);
+      res.status(HTTP_OK_STATUS).json(newTalker);
+    } catch (err) {
+      return res.status(500).send({ err });
+    }
+  },
+);
+
 module.exports = routeTalker;
