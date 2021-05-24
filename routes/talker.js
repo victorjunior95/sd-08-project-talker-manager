@@ -83,4 +83,17 @@ routeTalker.put(
   },
 );
 
+routeTalker.delete('/:id', verification.tokenVerification, (req, res) => {
+    try {
+      // const newTalkers = talkers.filter((talker) => talker.id !== deleteId);
+      const talkerArray = middlewares.readTalker();
+      const talkerIdToDelete = Number(req.params.id);
+      const newTalkerArray = talkerArray.filter((talker) => talker.id !== talkerIdToDelete);
+      middlewares.writeTalker(newTalkerArray);
+      res.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante deletada com sucesso' });
+    } catch (err) {
+      return res.status(500).send({ err });
+    }
+  });
+
 module.exports = routeTalker;
