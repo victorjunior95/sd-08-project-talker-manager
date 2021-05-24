@@ -12,6 +12,7 @@ const {
   tokenValidateMiddleware,
   watchedAtValidateMiddleware,
   createTalkerMiddleware,
+  editTalkerMiddleware,
 } = require('./middlewares');
 
 const app = express();
@@ -32,24 +33,31 @@ app.get('/talker', async (_request, response) => {
 
 app.get('/talker/:id', talkerByIdMiddleware, async (_request, _response) => {});
 
+app.post('/login', loginMiddleware, (_request, _response) => {});
+
 app.post(
   '/talker',
   tokenValidateMiddleware,
   nameValidateMiddleware,
   ageValidateMiddleware,
   talkValidateMiddleware,
-  watchedAtValidateMiddleware,
   rateValidateMiddleware,
+  watchedAtValidateMiddleware,
   createTalkerMiddleware,
-  async (request, _response) => {
-  console.log(request.headers);
-  console.log(request.body.name);
-},
+  async (_request, _response) => {},
 );
 
-app.post('/login', loginMiddleware, (request, response) => {
-  console.log(response.status);
-});
+app.put(
+  '/talker/:id',
+  tokenValidateMiddleware,
+  nameValidateMiddleware,
+  ageValidateMiddleware,
+  talkValidateMiddleware,
+  rateValidateMiddleware,
+  watchedAtValidateMiddleware,
+  editTalkerMiddleware,
+  async (_request, _response) => {},
+);
 
 app.listen(PORT, () => {
   console.log('Online');

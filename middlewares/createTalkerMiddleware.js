@@ -9,9 +9,8 @@ module.exports = async (request, response, _next) => {
   const newTalkersList = [...data, newTalker];
   try {
     await fs.writeFile(TALKER, JSON.stringify(newTalkersList));
-    console.log(await fs.readFile(TALKER, 'utf-8'));
+    return response.status(201).json(newTalker);
   } catch (error) {
-    console.log(`Error: ${error.message}`);
+    return response.status(400).json(`Error: ${error.message}`);
   }
-  return response.status(201).json(newTalker);
 };

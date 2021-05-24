@@ -6,7 +6,8 @@ const rateValidateMiddleware = require('./rateValidateMiddleware');
 const talkValidateMiddleware = require('./talkValidateMiddleware');
 const tokenValidateMiddleware = require('./tokenValidateMiddleware');
 const watchedAtValidateMiddleware = require('./watchedAtValidateMiddleware');
-const createTalkerMiddleware = require('./createTalkerMiddlware');
+const createTalkerMiddleware = require('./createTalkerMiddleware');
+const editTalkerMiddleware = require('./editTalkerMiddleware');
 
 module.exports = {
   talkerByIdMiddleware,
@@ -18,4 +19,5 @@ module.exports = {
   tokenValidateMiddleware,
   watchedAtValidateMiddleware,
   createTalkerMiddleware,
+  editTalkerMiddleware,
 };
