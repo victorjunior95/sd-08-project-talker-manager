@@ -57,7 +57,7 @@ const ageVerification = (req, res, next) => {
   if (!age) {
     res.status(HTTP_BAD_REQUEST_STATUS).json({ message: 'O campo "age" é obrigatório' });
   }
-  if (typeof (age) !== 'number' && Number.isInteger(age)) {
+  if (!Number.isInteger(age)) {
     res.status(HTTP_BAD_REQUEST_STATUS)
       .json({ message: 'A idade da pessoa palestrante deve ser um número inteiro' });
   }
