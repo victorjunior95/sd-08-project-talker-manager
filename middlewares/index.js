@@ -8,6 +8,7 @@ const tokenValidateMiddleware = require('./tokenValidateMiddleware');
 const watchedAtValidateMiddleware = require('./watchedAtValidateMiddleware');
 const createTalkerMiddleware = require('./createTalkerMiddleware');
 const editTalkerMiddleware = require('./editTalkerMiddleware');
+const deleteTalkerMiddleware = require('./deleteTalkerMiddleware');
 
 module.exports = {
   talkerByIdMiddleware,
@@ -20,4 +21,5 @@ module.exports = {
   watchedAtValidateMiddleware,
   createTalkerMiddleware,
   editTalkerMiddleware,
+  deleteTalkerMiddleware,
 };

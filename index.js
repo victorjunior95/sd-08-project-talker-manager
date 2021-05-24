@@ -13,6 +13,7 @@ const {
   watchedAtValidateMiddleware,
   createTalkerMiddleware,
   editTalkerMiddleware,
+  deleteTalkerMiddleware,
 } = require('./middlewares');
 
 const app = express();
@@ -56,6 +57,13 @@ app.put(
   rateValidateMiddleware,
   watchedAtValidateMiddleware,
   editTalkerMiddleware,
+  async (_request, _response) => {},
+);
+
+app.delete(
+  '/talker/:id',
+  tokenValidateMiddleware,
+  deleteTalkerMiddleware,
   async (_request, _response) => {},
 );
 
