@@ -34,6 +34,6 @@ module.exports = (req, res) => {
   readfile()
   .then((data) => editData(data, id, talker))
   .then((newData) => writeInFIle('talker.json', JSON.stringify(newData)))
-  .then(() => res.status(200).json({ id: Number(id), ...talker }))
+  .then(() => res.status(200).json({ id: Number(id), ...talker, rate: Number(talker.rate) }))
   .catch((err) => console.log(err.message));
 };

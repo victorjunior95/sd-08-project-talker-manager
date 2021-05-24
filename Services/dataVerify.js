@@ -25,7 +25,7 @@ const verifyEmptyTalk = (talk, res) => {
   return res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
   }
-  if (!talk.rate) {
+  if (!talk.rate && talk.rate !== 0) {
   return res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
   }
