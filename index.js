@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const middlewares = require('./middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,13 +13,19 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker', async (_req, res) => {
-  try {
-    const response = await fs.promises.readFile('./talker.json', 'utf-8');
-    res.send(response);
-  } catch (error) {
-    res.status(401).send('Erro');
+app.get('/talker', middlewares.allTalkers, (req, res) => {
+  res.status(200).json(req.talkersAll);
+});
+
+app.get('/talker/:id', middlewares.talkerById, (req, res) => {
+  if (req.talkerID) {
+    res.status(200).json(req.talkerID);
+    return;
   }
+
+  res.status(404).json({
+    message: 'Pessoa palestrante não encontrada',
+  });
 });
 
 app.listen(PORT, () => {
