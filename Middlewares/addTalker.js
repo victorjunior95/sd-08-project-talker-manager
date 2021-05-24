@@ -9,15 +9,20 @@ const {
   verifyTalk,
 } = require('../Services/dataVerify');
 
+const verifyAllTalk = (talker, res) => {
+  if (verifyEmptyTalk(talker.talk, res)) return true;
+  if (verifyTalk(talker.talk, res)) return true;
+  return false;
+};
+
 module.exports = (req, res) => {
   const talker = req.body;
   const auth = req.headers.authorization;
 
-  verifyToken(auth, res);
-  verifyName(talker.name, res);
-  verifyAge(talker.age, res);
-  verifyEmptyTalk(talker.talk, res);
-  verifyTalk(talker.talk, res);
+  if (verifyToken(auth, res)) return;
+  if (verifyName(talker.name, res)) return;
+  if (verifyAge(talker.age, res)) return;
+  if (verifyAllTalk(talker, res)) return;
 
   readfile()
   .then((data) => [...data, { id: data.length + 1, ...talker }])
