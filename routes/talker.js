@@ -11,6 +11,19 @@ const NOT_FOUND = 404;
 
 const talker = express.Router();
 
+talker.get('/search',
+  middleware.authentication,
+  rescue(async (request, response) => {
+  const fileTalkerContent = await fs.readFile(FILE_PATH);
+  const { q } = request.query;
+
+  if (!q) return response.status(OK).json(fileTalkerContent);
+
+  const filteredFileTalkerContent = fileTalkerContent.filter(({ name }) => name.includes(q));
+
+  response.status(OK).json(filteredFileTalkerContent);
+}));
+
 talker.get('/', rescue(async (_request, response) => {
   const fileTalkerContent = await fs.readFile(FILE_PATH);
 
