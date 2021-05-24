@@ -120,26 +120,41 @@ app.put(
   validate.rate,
   validate.watchedAt,
   async (req, res) => {
+    const { id } = req.params;
+    const file = await fs.readFile(TALKER_FILE);
+    const talkers = JSON.parse(file);
+    const { name, age, talk } = req.body;
+
+    const editedTalker = editTalker(name, age, talk, id);
+
+    const editedTalkers = [
+      ...talkers.slice(0, id - 1),
+      editedTalker,
+      ...talkers.slice(id - 1, talkers.length - 1),
+    ];
+
+    const jsonTalkers = JSON.stringify(editedTalkers);
+    await fs.writeFile(TALKER_FILE, jsonTalkers);
+    return res.status(SUCCESS).json(editedTalker);
+  },
+);
+
+app.delete('/talker/:id', validate.token, async (req, res) => {
   const { id } = req.params;
   const file = await fs.readFile(TALKER_FILE);
   const talkers = JSON.parse(file);
-  console.log('line 126', req.body);
-  const { name, age, talk } = req.body;
-
-  const editedTalker = editTalker(name, age, talk, id);
-  console.log('line 130', editedTalker);
 
   const editedTalkers = [
-    ...talkers.slice(0, id - 1),
-    editedTalker,
-    ...talkers.slice(id - 1, talkers.length - 1),
+    ...talkers.slice(0, id - 2),
+    ...talkers.slice(id - 2, talkers.length - 1),
   ];
 
   const jsonTalkers = JSON.stringify(editedTalkers);
   await fs.writeFile(TALKER_FILE, jsonTalkers);
-  return res.status(SUCCESS).json(editedTalker);
-},
-);
+  return res
+    .status(SUCCESS)
+    .json({ message: 'Pessoa palestrante deletada com sucesso' });
+});
 
 app.listen(PORT, () => {
   console.log('Online');
