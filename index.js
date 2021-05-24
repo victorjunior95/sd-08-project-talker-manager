@@ -16,9 +16,16 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', rescue(async (req, res) => {
   const file = await middlewares.talker();
-  if (file.length === 0) return res.status(200).json([]);
-  return res.status(200).json(file);
- }));
+  if (file) return res.status(200).json(file);  
+  return res.status(200).json([]);
+}));
+
+app.get('/talker/:id', rescue(async (req, res) => {
+  const file = await middlewares.talker();
+  const result = file.find(({ id }) => id === Number(req.params.id));
+  if (result) return res.status(200).json(result);
+  return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+}));
 
 app.listen(PORT, () => {
   console.log('Online');
