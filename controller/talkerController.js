@@ -34,5 +34,16 @@ exports.put = async (req, res) => {
     });
   }
   const talker = await talkerRepository.edit(newTalk, id);
-  return res.status(201).json(talker);
+  return res.status(200).json(talker);
+};
+
+exports.delete = async (req, res) => {
+  const { id } = await req.params;
+  if (!await talkerRepository.existById(id)) {
+    return res.status(404).json({
+      message: 'Pessoa palestrante não encontrada',
+    });
+  }
+  await talkerRepository.deleteById(id);
+  return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
 };
