@@ -5,4 +5,11 @@ const talkers = path.resolve(__dirname, '..', './talker.json');
 
 const lerPalestrantes = () => fs.readFile(talkers, 'utf-8').then((content) => JSON.parse(content));
 
-module.exports = lerPalestrantes;
+const inserirPalestrantes = async (newTalkers) => {
+  await fs.writeFile(talkers, JSON.stringify(newTalkers, null, 2));
+};
+
+module.exports = {
+  lerPalestrantes, 
+  inserirPalestrantes,
+};

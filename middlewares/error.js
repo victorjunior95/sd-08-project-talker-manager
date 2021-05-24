@@ -5,7 +5,7 @@ module.exports = (err, _req, res, _next) => {
   }
 
   if (err.isJoi) {
-    const errorMessages = err.details.map(({ message }) => message).join(';      ');
+    const errorMessages = err.details.map(({ message }) => message).join(';  ');
     return res.status(400).json({ message: errorMessages });
   }
 
