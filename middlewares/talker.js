@@ -1,5 +1,5 @@
 const fs = require('fs');
 
-const arquivo = fs.readFileSync('talker.json', 'utf8');
+const arquivo = async () => JSON.parse(fs.readFileSync('./talker.json', 'utf8'));
 
-module.exports = () => JSON.parse(arquivo);
+module.exports = arquivo;
