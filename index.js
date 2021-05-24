@@ -16,4 +16,17 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-// To first commit
+// 1 - Crie o endpoint GET /talker
+
+const rescue = require('express-rescue');
+const fs = require('fs').promises;
+
+function getTalker() {
+  return fs.readFile('./talker.json', 'utf-8')
+  .then((file) => JSON.parse(file));
+}
+
+app.get('/talker', rescue(async (_req, res) => {
+  const talkers = await getTalker();
+  res.status(200).json(talkers);
+}));
