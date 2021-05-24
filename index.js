@@ -8,6 +8,8 @@ const autorization = require('./autorizationMid');
 const nameVali = require('./nameValidation');
 const ageVali = require('./ageValidation');
 const { dataValidate, fieldsValidate } = require('./validationTalk');
+const modTalker = require('./modTalker');
+const deleteTalker = require('./deleteTalker');
 
 const app = express();
 
@@ -58,10 +60,15 @@ if (!password) return res.status(400).send({ message: 'O campo "password" é obr
 
 app.post('/talker', autorization, nameVali, ageVali, dataValidate, fieldsValidate, addNewTalker); 
 
+app.put('/talker:id', autorization, nameVali, ageVali, dataValidate, fieldsValidate, modTalker); 
+
+app.delete('/talker:id', autorization, deleteTalker);
+
 /* app.put('/talker/:id', (req, res) => {
 const { id } = req.params;
 const jsonData = fs.readFileSync('./talker.json');
 const data = JSON.parse(jsonData);
+const editedTalker = req.body;
 const filter = data.find((element) => element.id === Number(id));
 const index = data.indexOf(filter);
 const arrNovo = {
