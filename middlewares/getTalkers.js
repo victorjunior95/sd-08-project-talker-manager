@@ -2,11 +2,11 @@ const fs = require('fs');
 
 const getTalkers = (req, res, _) => {
   try {
-    const talkers = fs.readFileSync('./talker.json', 'utf8');
-    return res.status(200).send(talkers);
+    const fileContent = fs.readFileSync('./talker.json', 'utf8');
+    const talkers = JSON.parse(fileContent) || [];
+    return res.status(200).json({ "json": talkers });
   } catch (err) {
-    console.error(`[-] ${err}`);
-    return res.status(400).json(err);
+    return res.status(500).send(err);
   }
 };
 
