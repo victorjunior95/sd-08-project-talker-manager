@@ -7,6 +7,7 @@ const {
   login,
   addTalker,
   editTalker,
+  deleteTalker,
 } = require('./Middlewares/index');
 
 const app = express();
@@ -25,6 +26,7 @@ app.get('/talker', readTalker);
 app.post('/login', login);
 app.post('/talker', addTalker);
 app.put('/talker/:id', editTalker);
+app.delete('/talker/:id', deleteTalker);
 
 app.listen(PORT, () => {
   console.log('Online');

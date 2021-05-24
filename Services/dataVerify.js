@@ -1,6 +1,13 @@
 const verifyToken = (token, res) => {
-  if (!token) return res.status(401).json({ message: 'Token não encontrado' });
-  if (token.length !== 16) return res.status(401).json({ message: 'Token inválido' }); 
+  if (!token) {
+    res.status(401).json({ message: 'Token não encontrado' });
+    return true;
+  }
+  if (token.length !== 16) {
+    res.status(401).json({ message: 'Token inválido' });
+    return true;
+  }
+  return false;
 };
 const verifyName = (name, res) => {
   if (!name) return res.status(400).json({ message: 'O campo "name" é obrigatório' });
