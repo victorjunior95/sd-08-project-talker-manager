@@ -40,6 +40,11 @@ exports.findById = async (id) => {
   return entity.find((entityId) => +id === entityId.id);
 };
 
+exports.findByName = async (name) => {
+  const entity = await loadRepository().then((result) => result);
+  return entity.filter((entityName) => entityName.name.includes(name));
+};
+
 exports.save = async (entry) => {
   const entity = await loadRepository().then((result) => result);
   const id = await idGenerator().then((result) => result);

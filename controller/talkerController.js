@@ -19,6 +19,15 @@ exports.getTalkerById = async (req, res) => {
   return res.status(200).json(talker);
 };
 
+exports.getTalkByName = async (req, res) => {
+  const { q: search } = await req.query;
+  const talker = await talkerRepository.findByName(search);
+  if (!talker) {
+    return res.status(200).json({});
+  }
+  return res.status(200).json(talker);
+};
+
 exports.post = async (req, res) => {
   const newTalk = await req.body;
   const talker = await talkerRepository.save(newTalk);
