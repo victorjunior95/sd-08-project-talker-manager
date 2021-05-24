@@ -1,10 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const talkerMidware = require('./Middlewares/talkerMiddleware');
+const talker = require('./Middlewares/talkerMiddleware');
 
 const app = express();
 app.use(bodyParser.json());
-console.log(talkerMidware);
 
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
@@ -14,7 +13,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker', talkerMidware);
+app.get('/talker', talker);
 
 app.listen(PORT, () => {
   console.log('Online');
