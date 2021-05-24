@@ -2,7 +2,7 @@ const readSync = require('./helpers/readSync');
 
 function getById(req, res) {
   const { id } = req.params;
-  const idNumber = parseInt(id);
+  const idNumber = Number(id);
   const errorMessage = readSync('./errorMessage.json');
   const file = readSync('./talker.json');
   const personById = file.filter((item) => item.id === idNumber);
