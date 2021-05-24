@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const crypto = require('crypto');
 
 const app = express();
 app.use(bodyParser.json());
@@ -35,6 +36,26 @@ app.get('/talker/:id', (req, res) => {
   } catch (err) {
     return res.status(500).send({ err });
   }
+});
+
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  const regex = /.+@[A-z]+[.]com/;
+  const isValidEmail = regex.test(email);
+  console.log(req.body);
+  if (!email) { 
+    return res.status(400).json({ message: 'O campo "email" é obrigatório' });
+  }
+  if (!isValidEmail) { 
+    return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
+  }
+  if (!password) { 
+    return res.status(400).json({ message: 'O campo "password" é obrigatório' });
+  }
+  if (password.toString().length < 6) { 
+    return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
+  }
+  res.status(200).json({ token: crypto.randomBytes(8).toString('hex') });
 });
 
 app.listen(PORT, () => {
