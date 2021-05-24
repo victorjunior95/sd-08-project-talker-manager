@@ -1,4 +1,7 @@
 const fs = require('fs');
+const path = require('path');
+
+const filePath = path.resolve(__dirname, '..', 'talker.json');
 
 const addNewTalker = (req, res, _next) => {
   const rawdata = fs.readFileSync('talker.json');
@@ -13,7 +16,7 @@ const addNewTalker = (req, res, _next) => {
     },
   };
   talkers.push(newTalker);
-  fs.writeFileSync('../talker.json', JSON.stringify(talkers));
+  fs.writeFileSync(filePath, JSON.stringify(talkers));
   res.status(201).json(newTalker);
 };
 
