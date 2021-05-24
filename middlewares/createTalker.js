@@ -1,6 +1,6 @@
 const validateDate = require('validate-date');
 // https://www.npmjs.com/package/validate-date
-const fs = require('fs');
+// const fs = require('fs');
 const talkers = require('../talker.json');
 
 const verifyName = (name) => {
@@ -49,6 +49,6 @@ module.exports = (req, res) => {
     talk,
     id: talkers.length + 1,
   });
-  fs.writeFileSync('talker.json', JSON.stringify(talkers));
-  res.status(200).json(talkers[talkers.length - 1]);
+  // fs.writeFileSync('../talker.json', JSON.stringify(talkers));
+  res.status(201).json(talkers[talkers.length - 1]);
 };

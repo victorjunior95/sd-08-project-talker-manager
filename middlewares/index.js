@@ -1,4 +1,4 @@
-const showAllMiddleware = require('./talkers');
+const showAllMiddleware = require('./showAll');
 const showOneMiddleware = require('./showOne');
 const loginMiddleware = require('./login');
 const verifyToken = require('./verifyToken');
