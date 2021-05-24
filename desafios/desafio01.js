@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 // Vi o path nos testes da pasta tests//
 const path = require('path');
 
