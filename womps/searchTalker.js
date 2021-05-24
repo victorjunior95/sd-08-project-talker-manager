@@ -1,10 +1,6 @@
 const fs = require('fs');
-const express = require('express');
-const bodyParser = require('body-parser');
 const check = require('./middle/authorization');
 
-const app = express();
-app.use(bodyParser.json());
 const meuArquivo = 'talker.json';
 
 module.exports = (req, res) => {
@@ -16,8 +12,8 @@ module.exports = (req, res) => {
     const newData = data.map((element) => (
       element.name.includes(q) ? element : null)).filter((value) => value !== null);
     if (newData.length) {
-      res.status(200).json(newData);
-    } res.status(200).json(data);
+      return res.status(200).json(newData);
+    } return res.status(200).json(data);
   } catch (error) {
     return res.status(401).json({ message: error.message });
   }

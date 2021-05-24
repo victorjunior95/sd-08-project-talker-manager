@@ -1,10 +1,6 @@
 const fs = require('fs');
-const express = require('express');
-const bodyParser = require('body-parser');
 const check = require('./middle/authorization');
 
-const app = express();
-app.use(bodyParser.json());
 const meuArquivo = 'talker.json';
 
 module.exports = (req, res) => {
