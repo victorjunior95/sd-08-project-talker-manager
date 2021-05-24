@@ -11,4 +11,6 @@ router.post('/', middlewares.auth, middlewares.talker.addTalker);
 
 router.put('/:id', middlewares.auth, middlewares.talker.putById);
 
+router.delete('/:id', middlewares.auth, middlewares.talker.deleteById);
+
 module.exports = router;
