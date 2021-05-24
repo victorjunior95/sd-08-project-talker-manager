@@ -40,6 +40,20 @@ app.post('/talker', middlewares.tokenValidation, middlewares.nameValidation,
     res.status(201).json(newTalker);
   }));
 
+  app.put('/talker/:id', middlewares.tokenValidation, middlewares.nameValidation,
+  middlewares.ageValidation, middlewares.talkValidation, middlewares.rateValidation,   
+   middlewares.watchedAtValidation, rescue(async (req, res) => {
+    const id = Number(req.params.id);
+    const talkers = await registeredSpeakers.getRegisteredSpeakers();
+    const newTalker = { ...req.body, id };
+    const editedTalker = talkers.map((talker) => {
+      if (talker.id === id) return newTalker;
+      return talker;
+    });
+    await registeredSpeakers.setRegisteredSpeakers(editedTalker);
+    res.status(200).json(newTalker);
+  }));
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
