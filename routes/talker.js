@@ -16,6 +16,15 @@ const NOT_FOUND_STATUS = 404;
 const router = express.Router();
 const fileName = 'talker.json';
 
+router.get('/search', authToken, (req, res) => {
+  const { q } = req.query;
+  readFile(fileName).then((data) => {
+    if (!data) return res.status(SUCCESS_STATUS).json(data);
+    const searchedTaker = data.filter((talker) => talker.name.includes(q));
+    return res.status(SUCCESS_STATUS).json(searchedTaker);
+  });
+});
+
 router.get('/:id', (req, res) => {
   readFile(fileName).then((data) => {
     const filterTalker = data.find(
