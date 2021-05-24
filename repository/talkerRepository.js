@@ -43,10 +43,10 @@ exports.findById = async (id) => {
 exports.save = async (entry) => {
   const entity = await loadRepository().then((result) => result);
   const id = await idGenerator().then((result) => result);
-  const newData = await { ...entry, id };
-  const newEntity = await [...entity, newData];
-  saveRepository(newEntity);
-  return newData;
+  const newEntity = await { ...entry, id };
+  const newEntities = await [...entity, newEntity];
+  saveRepository(newEntities);
+  return newEntity;
 };
 
 exports.deleteById = async (id) => {
@@ -55,13 +55,16 @@ exports.deleteById = async (id) => {
   saveRepository(newEntity);
 };
 
-exports.edit = async (entry) => {
+exports.edit = async (entry, id) => {
   const entity = await loadRepository().then((result) => result);
-  const newEntity = { ...entity, entry };
-  saveRepository(newEntity);
+  const removeEntity = await entity.filter((entityId) => +id !== entityId.id);
+  const newEntity = { ...entry, id: +id };
+  const newEntities = [...removeEntity, { ...newEntity }];
+  saveRepository(newEntities);
+  return newEntity;
 };
 
 exports.existById = async (id) => {
   const entity = await loadRepository().then((result) => result);
-  return entity.some((entityId) => id === entityId.id);
+  return entity.some((entityId) => +id === entityId.id);
 };

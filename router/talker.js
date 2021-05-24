@@ -8,5 +8,6 @@ const route = express.Router();
 route.get('/', rescue(controller.get));
 route.get('/:id', rescue(controller.getTalkerById));
 route.post('/', verifyAuth, verifyInfo, verifyTalk, rescue(controller.post));
+route.put('/:id', verifyAuth, verifyInfo, verifyTalk, rescue(controller.put));
 
 module.exports = route;
