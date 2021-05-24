@@ -56,7 +56,7 @@ app.post(
   (req, res) => {
     const talkers = allTalkers();
     const talkerLength = talkers.length;
-    const { newTalker } = req.body;
+    const newTalker = req.body;
     talkers.push(newTalker);
     newTalker.id = talkerLength + 1;
     fs.writeFileSync('talker.json', JSON.stringify(newTalker));
