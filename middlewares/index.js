@@ -11,6 +11,7 @@ const checkDate = require('./checkDate');
 const checkRate = require('./checkRate');
 const deleteTalker = require('./deleteTalker');
 const searchTalker = require('./searchTalker');
+const checkTalk = require('./checkTalk');
 
 module.exports = {
   getAllTalkers,
@@ -22,6 +23,7 @@ module.exports = {
   checkToken,
   checkName,
   checkAge,
+  checkTalk,
   checkDate,
   checkRate,
   deleteTalker,
