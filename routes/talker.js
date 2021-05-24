@@ -10,6 +10,7 @@ const {
   checkTalkRateMiddleware,
   addNewTalkerMiddleware,
   updateTalkerByIdMiddleware,
+  deleteTalkerMiddleware,
 } = require('../middlewares');
 
 const router = express.Router();
@@ -38,7 +39,11 @@ router.put('/talker/:id',
   checkTalkMiddleware,
   checkTalkRateMiddleware,
   checkWatchedAtMiddleware,
-  updateTalkerByIdMiddleware,
-  addNewTalkerMiddleware);
+  updateTalkerByIdMiddleware);
+
+// Requisito 06
+router.delete('/talker/:id',
+checkTokenMiddleware,
+deleteTalkerMiddleware);
 
 module.exports = router;
