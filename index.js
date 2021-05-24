@@ -44,7 +44,8 @@ app.listen(PORT, () => {
 // Os seguintes pontos serão avaliados:
 // O endpoint deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o status 200, com o seguinte corpo: [...]
 // Caso não exista nenhuma pessoa palestrante cadastrada o endpoint deve retornar um array vazio e o status 200.
-app.get('/talker', (_req, res) => res.status(HTTP_OK_STATUS).send(syncData)); // o teste sempre pede pra retornar o arquivo JSON, pergunta do README está malfeita.
+app.get('/talker', (_req, res) => (syncData.length > 0 
+  ? res.status(HTTP_OK_STATUS).send(syncData) : res.status(HTTP_OK_STATUS).send([]))); // o teste sempre pede pra retornar o arquivo JSON, pergunta do README está malfeita.
 
 // 2 - Crie o endpoint GET /talker/:id
 // O endpoint deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200 ao fazer uma requisição /talker/1, com o seguinte corpo: [...]
