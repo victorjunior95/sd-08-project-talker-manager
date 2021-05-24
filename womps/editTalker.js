@@ -1,5 +1,5 @@
 const fs = require('fs');
-const checks = require('./middle/checks');
+const { checks } = require('./middle');
 
 const meuArquivo = 'talker.json';
 

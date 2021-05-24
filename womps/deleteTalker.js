@@ -1,5 +1,5 @@
 const fs = require('fs');
-const check = require('./middle/authorization');
+const { checkToken } = require('./middle');
 
 const meuArquivo = 'talker.json';
 
@@ -8,7 +8,7 @@ module.exports = (req, res) => {
   const { authorization } = req.headers;
   const { id } = req.params;
   try {
-    check(authorization);
+    checkToken(authorization);
     const newData = data.filter((element) => element.id !== Number(id));
     fs.writeFileSync('talker.json', JSON.stringify(newData));
     res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });

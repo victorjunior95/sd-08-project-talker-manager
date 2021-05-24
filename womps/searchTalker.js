@@ -1,5 +1,5 @@
 const fs = require('fs');
-const check = require('./middle/authorization');
+const { checkToken } = require('./middle');
 
 const meuArquivo = 'talker.json';
 
@@ -8,7 +8,7 @@ module.exports = (req, res) => {
   const { authorization } = req.headers;
   const { q } = req.query;
   try {
-    check(authorization);
+    checkToken(authorization);
     const newData = data.map((element) => (
       element.name.includes(q) ? element : null)).filter((value) => value !== null);
     if (newData.length) {
