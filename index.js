@@ -18,7 +18,7 @@ function validateEmail(email) {
 function geraToken() {
   let token = '';
   const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let i = 0; i < 16; i = +1) {
+  for (let index = 0; index < 16; index = +1) {
     token += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
   }
   return token;
