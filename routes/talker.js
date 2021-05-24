@@ -116,7 +116,7 @@ routeTalker.post(
   rateAndWatchedAtVerification,
   talkVerification,
   (req, res) => {
-    // try {
+    try {
       const newTalker = req.body;
       const talkerArray = middlewares.readTalker();
       newTalker.id = talkerArray.length + 1;
@@ -124,9 +124,9 @@ routeTalker.post(
       middlewares.writeTalker(talkerArray);
       const add = req.body;
       res.status(HTTP_CREATED_STATUS).json(add);
-    // } catch (err) {
-    //   return res.status(500).send({ err });
-    // }
+    } catch (err) {
+      return res.status(500).send({ err });
+    }
   },
 );
 
