@@ -5,17 +5,17 @@ const crypto = require('crypto');
 const validate = require('./validate');
 // const path = require('path');
 
-const app = express();
-app.use(bodyParser.json());
-
 const SUCCESS = 200;
 const CREATED = 201;
 const BAD_REQUEST = 400;
 // const UNAUTHORIZED = 401;
 const NOT_FOUND = 404;
-const PORT = '3000';
+const PORT = 3000;
 
 const TALKER_FILE = 'talker.json';
+
+const app = express();
+app.use(bodyParser.json());
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -31,6 +31,26 @@ app.get('/talker', async (req, res) => {
   }
 
   return res.status(SUCCESS).send(JSON.parse(data));
+});
+
+// Requisito 07
+app.get('/talker/search', validate.token, async (req, res) => {
+  const searchQuery = req.query.q;
+  const file = await fs.readFile(TALKER_FILE);
+  const talkers = JSON.parse(file);
+
+  if (!searchQuery || searchQuery === '') {
+    return res.status(SUCCESS).json(talkers);
+  }
+
+  const searchResult = talkers.filter((talker) =>
+    talker.name.includes(searchQuery));
+
+  if (!searchResult || searchResult === []) {
+    return res.status(SUCCESS).json([]);
+  }
+
+  return res.status(SUCCESS).json(searchResult);
 });
 
 // Requisito 02
@@ -139,6 +159,7 @@ app.put(
   },
 );
 
+// Requisito 06
 app.delete('/talker/:id', validate.token, async (req, res) => {
   const { id } = req.params;
   const file = await fs.readFile(TALKER_FILE);
