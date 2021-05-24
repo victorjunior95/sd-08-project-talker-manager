@@ -1,7 +1,5 @@
 const fs = require('fs');
 
-let MEMORY_ID = 5;
-
 const loadRepository = () =>
   new Promise((res) => {
     const talkerRepository = JSON.parse(
@@ -34,10 +32,9 @@ exports.findByName = async (name) => {
 
 exports.save = async (entry) => {
   const entity = await loadRepository().then((result) => result);
-  const id = MEMORY_ID;
+  const id = 5;
   const newEntity = await { id, ...entry };
   const newEntities = await [newEntity, ...entity];
-  MEMORY_ID += 1;
   saveRepository(newEntities);
   return newEntity;
 };
