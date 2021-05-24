@@ -8,13 +8,27 @@ const routeTalker = express.Router();
 const HTTP_OK_STATUS = 200;
 const HTTP_CREATED_STATUS = 201;
 const HTTP_NOT_FOUND_STATUS = 404;
+const HTTP_ISE_STATUS = 500;
+
+routeTalker.get('/search', middlewares.tokenVerification, (req, res, next) => {
+  try {
+    const talkerArray = middlewares.readTalker();
+    const searchTerm = req.query.q.toLowerCase();
+    if (!searchTerm) return next();
+    const talkersFoundArray = talkerArray.filter((talker) =>
+      talker.name.toLowerCase().includes(searchTerm));
+    return res.status(HTTP_OK_STATUS).json(talkersFoundArray);
+  } catch (err) {
+    return res.status(HTTP_ISE_STATUS).send({ err });
+  }
+});
 
 routeTalker.get('/', (_req, res) => {
   try {
     const talker = middlewares.readTalker();
     return res.status(HTTP_OK_STATUS).json(talker);
   } catch (err) {
-    return res.status(500).send({ err });
+    return res.status(HTTP_ISE_STATUS).send({ err });
   }
 });
 
@@ -30,7 +44,7 @@ routeTalker.get('/:id', (req, res) => {
       message: 'Pessoa palestrante não encontrada',
     });
   } catch (err) {
-    return res.status(500).send({ err });
+    return res.status(HTTP_ISE_STATUS).send({ err });
   }
 });
 
@@ -51,7 +65,7 @@ routeTalker.post(
       const add = req.body;
       res.status(HTTP_CREATED_STATUS).json(add);
     } catch (err) {
-      return res.status(500).send({ err });
+      return res.status(HTTP_ISE_STATUS).send({ err });
     }
   },
 );
@@ -78,21 +92,20 @@ routeTalker.put(
       middlewares.writeTalker(newTalkerArray);
       res.status(HTTP_OK_STATUS).json(newTalker);
     } catch (err) {
-      return res.status(500).send({ err });
+      return res.status(HTTP_ISE_STATUS).send({ err });
     }
   },
 );
 
 routeTalker.delete('/:id', verification.tokenVerification, (req, res) => {
     try {
-      // const newTalkers = talkers.filter((talker) => talker.id !== deleteId);
       const talkerArray = middlewares.readTalker();
       const talkerIdToDelete = Number(req.params.id);
       const newTalkerArray = talkerArray.filter((talker) => talker.id !== talkerIdToDelete);
       middlewares.writeTalker(newTalkerArray);
       res.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante deletada com sucesso' });
     } catch (err) {
-      return res.status(500).send({ err });
+      return res.status(HTTP_ISE_STATUS).send({ err });
     }
   });
 

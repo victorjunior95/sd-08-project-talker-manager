@@ -10,6 +10,7 @@ const {
   ageVerification,
   talkVerification,
   rateAndWatchedAtVerification,
+  emailValidation,
 } = require('./verification');
 
 module.exports = {
@@ -21,4 +22,5 @@ module.exports = {
   ageVerification,
   talkVerification,
   rateAndWatchedAtVerification,
+  emailValidation,
 };
