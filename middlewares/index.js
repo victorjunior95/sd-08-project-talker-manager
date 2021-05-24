@@ -3,6 +3,7 @@ const getTalkerById = require('./getTalkerById');
 const login = require('./login');
 const tokenGenerator = require('./tokenGenerator');
 const emailValidation = require('./emailValidation');
+const passwordValidation = require('./passwordValidation');
 
 module.exports = {
   getTalkers,
@@ -10,4 +11,5 @@ module.exports = {
   login,
   tokenGenerator,
   emailValidation,
+  passwordValidation,
 };

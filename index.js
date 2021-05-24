@@ -19,6 +19,7 @@ app.post(
   '/login',
   middlewares.tokenGenerator,
   middlewares.emailValidation,
+  middlewares.passwordValidation,
   middlewares.login,
 );
 
