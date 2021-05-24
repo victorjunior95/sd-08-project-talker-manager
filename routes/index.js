@@ -4,9 +4,11 @@ const auth = require('../auth');
 
 const router = express.Router();
 
-router.get('/', middlewares.getAllPeople);
+router.get('/search', auth, middlewares.searchTalker);
 
 router.get('/:id', middlewares.getPeopleById);
+
+router.get('/', middlewares.getAllPeople);
 
 router.post('/', auth, middlewares.createTalker);
 

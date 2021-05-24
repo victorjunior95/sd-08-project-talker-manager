@@ -21,7 +21,6 @@ function validityAgeTalker(talker) {
 }
 
 function validityTalk(talker) {
-  // const talker = req.body;
   if (!talker.talk || Object.keys(talker.talk).length !== 2 
     || talker.talk.watchedAt === '' || talker.talk.rate === '') {
     return {
@@ -55,7 +54,6 @@ function validityRateTalker(talker) {
 
 function validityAll(talker) {
   if (!talker.talk) {
-    console.log('aqui');
     return [validityTalk(talker)];
   }
   const isResolve = [
@@ -64,10 +62,8 @@ function validityAll(talker) {
     validityTalk,
     validityWatchedAtTalker,
     validityRateTalker,
-  ];
-  const temp = isResolve.map((el) => el(talker));
-  console.log(temp);
-  return temp;
+  ]; 
+  return isResolve.map((el) => el(talker));
 }
 
 module.exports = validityAll;
