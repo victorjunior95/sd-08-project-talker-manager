@@ -14,6 +14,7 @@ const {
   createTalkerMiddleware,
   editTalkerMiddleware,
   deleteTalkerMiddleware,
+  searchTalkerMiddleware,
 } = require('./middlewares');
 
 const app = express();
@@ -31,6 +32,11 @@ app.get('/talker', async (_request, response) => {
   const data = await getData(TALKER);
   return response.status(200).json(data);
 });
+
+app.get('/talker/search',
+tokenValidateMiddleware,
+searchTalkerMiddleware,
+(_request, _response) => {});
 
 app.get('/talker/:id', talkerByIdMiddleware, async (_request, _response) => {});
 

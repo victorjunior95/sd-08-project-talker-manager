@@ -9,6 +9,7 @@ const watchedAtValidateMiddleware = require('./watchedAtValidateMiddleware');
 const createTalkerMiddleware = require('./createTalkerMiddleware');
 const editTalkerMiddleware = require('./editTalkerMiddleware');
 const deleteTalkerMiddleware = require('./deleteTalkerMiddleware');
+const searchTalkerMiddleware = require('./searchTalkerMiddleware');
 
 module.exports = {
   talkerByIdMiddleware,
@@ -22,4 +23,5 @@ module.exports = {
   createTalkerMiddleware,
   editTalkerMiddleware,
   deleteTalkerMiddleware,
+  searchTalkerMiddleware,
 };
