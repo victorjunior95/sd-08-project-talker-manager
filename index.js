@@ -54,6 +54,14 @@ app.post('/talker', middlewares.tokenValidation, middlewares.nameValidation,
     res.status(200).json(newTalker);
   }));
 
+  app.delete('/talker/:id', middlewares.tokenValidation, rescue(async (req, res) => {
+    const id = Number(req.params.id);
+    const talkers = await registeredSpeakers.getRegisteredSpeakers();
+    const deleteById = talkers.find((talker) => talker.id !== id);
+    await registeredSpeakers.setRegisteredSpeakers(deleteById);
+    res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+  }));
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
