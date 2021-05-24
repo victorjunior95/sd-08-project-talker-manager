@@ -9,32 +9,39 @@ const HTTP_CREATED_STATUS = 201;
 const HTTP_NOT_FOUND_STATUS = 404;
 const HTTP_UNAUTHORIZED_STATUS = 401;
 const HTTP_BAD_REQUEST_STATUS = 400;
-const MIN_TOKEN = 16;
-const MIN_NAME = 3;
 
 routeTalker.get('/', (_req, res) => {
-  const talker = middlewares.readTalker();
-  return res.status(HTTP_OK_STATUS).json(talker);
+  try {
+    const talker = middlewares.readTalker();
+    return res.status(HTTP_OK_STATUS).json(talker);
+  } catch (err) {
+    return res.status(500).send({ err });
+  }
 });
 
 routeTalker.get('/:id', (req, res) => {
-  const { id } = req.params;
-  const talkerById = middlewares.readTalker()
-    .find((element) => Number(element.id) === Number(id));
-  if (talkerById) {
-    return res.status(HTTP_OK_STATUS).json(talkerById);
+  try {
+    const { id } = req.params;
+    const talkerById = middlewares.readTalker()
+      .find((element) => Number(element.id) === Number(id));
+    if (talkerById) {
+      return res.status(HTTP_OK_STATUS).json(talkerById);
+    }
+    return res.status(HTTP_NOT_FOUND_STATUS).json({
+      message: 'Pessoa palestrante não encontrada',
+    });
+  } catch (err) {
+    return res.status(500).send({ err });
   }
-  return res.status(HTTP_NOT_FOUND_STATUS).json({
-    message: 'Pessoa palestrante não encontrada',
-  });
 });
 
 const tokenVerification = (req, res, next) => {
-  const { token } = req.headers;
-  if (!token) {
+  const { authorization } = req.headers;
+  const tokenValidation = /^[0-9a-zA-Z]{16}$/;
+  if (!authorization) {
     res.status(HTTP_UNAUTHORIZED_STATUS).json({ message: 'Token não encontrado' });
   }
-  if (token.length < MIN_TOKEN) {
+  if (!tokenValidation.test(authorization)) {
     res.status(HTTP_UNAUTHORIZED_STATUS).json({ message: 'Token inválido' });
   }
   next();
@@ -45,7 +52,7 @@ const nameVerification = (req, res, next) => {
   if (!name) {
     res.status(HTTP_BAD_REQUEST_STATUS).json({ message: 'O campo "name" é obrigatório' });
   }
-  if (name.length < MIN_NAME) {
+  if (name.length < 3) {
     res.status(HTTP_BAD_REQUEST_STATUS)
       .json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
   }
@@ -61,7 +68,7 @@ const ageVerification = (req, res, next) => {
     res.status(HTTP_BAD_REQUEST_STATUS)
       .json({ message: 'A idade da pessoa palestrante deve ser um número inteiro' });
   }
-  if (age < MIN_NAME) {
+  if (age < 18) {
     res.status(HTTP_BAD_REQUEST_STATUS)
       .json({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
@@ -78,30 +85,49 @@ const talkVerification = (req, res, next) => {
   const intervalNumbers = /^([1-5])$/;
   if (Number.isInteger(rate) && !intervalNumbers.test(rate)) {
     res.status(HTTP_BAD_REQUEST_STATUS)
-      .json({ message: 'O campo "rate" deve ser um inteiro entre 1 e 5' });
+      .json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
   next();
+};
+
+const msgTalk = {
+  message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
 };
 
 const rateAndWatchedAtVerification = (req, res, next) => {
+  const { talk } = req.body;
+  if (!talk) {
+    res.status(HTTP_BAD_REQUEST_STATUS)
+    .json(msgTalk);
+  }
   const { talk: { watchedAt, rate } } = req.body;
   if (!watchedAt || !rate) {
     res.status(HTTP_BAD_REQUEST_STATUS)
-      .json({
-        message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
-      });
+      .json(msgTalk);
   }
   next();
 };
 
-routeTalker.post('/', tokenVerification, nameVerification,
-  ageVerification, talkVerification, rateAndWatchedAtVerification, (req, res) => {
-  const { name, age, talk: { watchedAt, rate } } = req.body;
-  const talkerArray = middlewares.readTalker();
-  talkerArray.push({ name, age, talk: { watchedAt, rate } });
-  middlewares.writeTalker(talkerArray);
-  const add = req.body;
-  res.status(HTTP_CREATED_STATUS).json(add);
-});
+routeTalker.post(
+  '/',
+  tokenVerification,
+  nameVerification,
+  ageVerification,
+  rateAndWatchedAtVerification,
+  talkVerification,
+  (req, res) => {
+    // try {
+      const newTalker = req.body;
+      const talkerArray = middlewares.readTalker();
+      newTalker.id = talkerArray.length + 1;
+      talkerArray.push(newTalker);
+      middlewares.writeTalker(talkerArray);
+      const add = req.body;
+      res.status(HTTP_CREATED_STATUS).json(add);
+    // } catch (err) {
+    //   return res.status(500).send({ err });
+    // }
+  },
+);
 
 module.exports = routeTalker;
