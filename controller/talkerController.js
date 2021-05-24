@@ -18,3 +18,9 @@ exports.getTalkerById = async (req, res) => {
     }
     return res.status(200).json(talker);
 };
+
+exports.post = async (req, res) => {
+  const newTalk = await req.body;
+  const talker = await talkerRepository.save(newTalk);
+  return res.status(201).json(talker);
+};
