@@ -8,9 +8,6 @@
 // JSON.stringify({ message: 'O campo "email" é obrigatório' }) == jsonFile({{ "message": "O campo \"email\" é obrigatório" }});
  const { req3Responses } = require('./JsonResponseMessages.json');
 
-console.log(req3Responses);
-// console.log(jsonfiletest);
-// console.log(JSON.stringify({ message: 'O campo "email" é obrigatório' }));
 const emailPassValid = (req, res, next) => {
   const { body } = req;
   const { email, password } = body;
