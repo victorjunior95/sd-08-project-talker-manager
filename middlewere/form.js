@@ -40,8 +40,9 @@ const verifyFieldAge = (field) => {
 
 const verifyFieldTalker = (talk) => {
   const isValid = !!talk || (typeof talk === 'object');
+  const { watchedAt, rate } = talk;
 
-    if (!isValid) {
+    if (!isValid && !watchedAt && !rate) {
       return {
         message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
         isValid,
