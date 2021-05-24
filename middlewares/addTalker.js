@@ -14,8 +14,10 @@ const addTalker = async (req, res) => {
         },
   };
   try {
+    const newTalker = req.body;
+    talkers.push(newTalker);
   await fs.promises.writeFile(`${__dirname}/../talker.json`, JSON.stringify(talkers));
-  res.status(200).json({ message: 'Talker incluido' });
+  res.status(201).json(newTalker);
 } catch (err) {
   return res.status(500).send({ err });
 }
