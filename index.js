@@ -11,6 +11,16 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
+app.get('/talker/search', middlewares.tokenValidation, rescue(async (req, res) => {
+  const talkers = await registeredSpeakers.getRegisteredSpeakers();
+  const { q } = req.query;
+  if (q) {
+    const nameFiltered = talkers.filter(({ name }) => name.includes(q));
+    return res.status(200).json(nameFiltered);
+  }
+  return res.status(200).json(talkers);
+}));
+
 app.get('/talker', rescue(async (req, res) => {
   const talkers = await registeredSpeakers.getRegisteredSpeakers();
   res.status(200).json(talkers);
