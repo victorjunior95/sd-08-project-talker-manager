@@ -3,6 +3,7 @@ const getById = require('./getById');
 const addTalker = require('./addTalker');
 const putById = require('./putById');
 const deleteById = require('./deleteById');
+const searchName = require('./searchName');
 
 module.exports = {
   getAll,
@@ -10,4 +11,5 @@ module.exports = {
   addTalker,
   putById,
   deleteById,
+  searchName,
 };

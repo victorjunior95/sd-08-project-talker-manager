@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const middlewares = require('../../middlewares');
 
+router.get('/search', middlewares.auth, middlewares.talker.searchName);
+
 router.get('/', middlewares.talker.getAll);
 
 router.get('/:id', middlewares.talker.getById);
