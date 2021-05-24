@@ -34,6 +34,29 @@ talker.get('/:id', rescue(async (request, response) => {
   response.status(OK).json(talkerFound);
 }));
 
+talker.put('/:id',
+  middleware.authentication,
+  middleware.nameValidation,
+  middleware.ageValidation,
+  middleware.talkValidation,
+  middleware.watchedAtValidation,
+  middleware.rateValidation,
+  rescue(async (request, response) => {
+  const fileTalkerContent = await fs.readFile(FILE_PATH);
+  const { id } = request.params;
+
+  const newFileTalkerContent = fileTalkerContent.map((currTalker) => {
+    if (currTalker.id === Number(id)) return { ...currTalker, ...request.body };
+    return currTalker;
+  });
+
+  await fs.writeFile(FILE_PATH, newFileTalkerContent);
+  
+  const talkerUpdated = newFileTalkerContent.find((currTalker) => currTalker.id === Number(id));
+
+  response.status(OK).json(talkerUpdated);
+}));
+
 talker.post('/',
   middleware.authentication,
   middleware.nameValidation,
