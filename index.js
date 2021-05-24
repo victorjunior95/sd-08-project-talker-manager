@@ -8,6 +8,7 @@ const {
   addTalker,
   editTalker,
   deleteTalker,
+  searchTalker,
 } = require('./Middlewares/index');
 
 const app = express();
@@ -21,11 +22,15 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker/:id', getTalkerById);
 app.get('/talker', readTalker);
+app.get('/talker/search', searchTalker);
+app.get('/talker/:id', getTalkerById);
+
 app.post('/login', login);
 app.post('/talker', addTalker);
+
 app.put('/talker/:id', editTalker);
+
 app.delete('/talker/:id', deleteTalker);
 
 app.listen(PORT, () => {

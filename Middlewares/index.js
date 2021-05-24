@@ -4,6 +4,7 @@ const login = require('./login');
 const addTalker = require('./addTalker');
 const editTalker = require('./editTalker');
 const deleteTalker = require('./deleTalker');
+const searchTalker = require('./searchTalker');
 
 module.exports = {
   readTalker,
@@ -12,4 +13,5 @@ module.exports = {
   addTalker,
   editTalker,
   deleteTalker,
+  searchTalker,
 };
