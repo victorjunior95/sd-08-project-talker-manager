@@ -4,6 +4,7 @@ const getPeopleById = require('./getPeopleById');
 const { loginThisCorrect, logged } = require('./login');
 const createTalker = require('./createTalker');
 const updateTalker = require('./updateTalker');
+const deleteTalker = require('./deleteTalker');
 
 module.exports = {
   error,
@@ -13,4 +14,5 @@ module.exports = {
   logged,
   createTalker,
   updateTalker,
+  deleteTalker,
 };
