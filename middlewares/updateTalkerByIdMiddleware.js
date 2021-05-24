@@ -1,5 +1,4 @@
 const fs = require('fs').promises;
-// const talkersData = require('../talker.json');
 
 module.exports = async (request, response) => {
   const { id } = request.params;
@@ -16,5 +15,4 @@ module.exports = async (request, response) => {
   console.log('updatedTalkers', updatedTalkers);
   await fs.writeFile(`${__dirname}/../talker.json`, JSON.stringify(updatedTalkers));
   return response.status(200).json(newTalker);
-  // .catch((err) => console.log(err));
 };

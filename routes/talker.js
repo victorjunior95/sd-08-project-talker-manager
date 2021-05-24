@@ -11,9 +11,14 @@ const {
   addNewTalkerMiddleware,
   updateTalkerByIdMiddleware,
   deleteTalkerMiddleware,
+  searchTalkerMiddleware,
 } = require('../middlewares');
 
 const router = express.Router();
+// Requisito 07
+router.get('/talker/search',
+checkTokenMiddleware,
+searchTalkerMiddleware);
 
 // Requisito 02
 router.get('/talker/:id', getTalkerByIdMiddleware);
