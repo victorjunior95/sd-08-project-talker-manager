@@ -36,6 +36,8 @@ app.post('/talker', middlewares.verifyToken, middlewares.verifyName, middlewares
 app.put('/talker/:id', middlewares.verifyToken, middlewares.verifyName, middlewares.verifyAge,
   middlewares.verifyTalk, middlewares.verifyTalkBody, middlewares.editedTalker);
 
+app.delete('/talker/:id', middlewares.verifyToken, middlewares.deleteTalk);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
