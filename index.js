@@ -25,6 +25,20 @@ app.use(express.json());
 app.get('/', (_req, res) => res.status(HTTP_OK_STATUS).send());
 // não remova esse endpoint, e para o avaliador funcionar
 
+app.get('/talker/search', validateToken, async (req, res) => {
+  const { searchTerm } = req.query;
+  
+  const talkerList = await readTalkers();
+
+  if (searchTerm === '' || searchTerm === undefined) {
+    return res.status(200).json(talkerList);
+  }
+
+  const filteredTalker = talkerList.filter((talk) => talk.name.includes(searchTerm));
+
+  return res.status(200).json(filteredTalker);
+});
+
 app.get('/talker', async (_req, res) => {
   const talkList = await readTalkers();
 
@@ -96,20 +110,6 @@ app.delete('/talker/:id', validateToken, async (req, res) => {
   await writeTalkers(talkList);
 
   return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
-});
-
-app.get('/talker/search', validateToken, async (req, res) => {
-  const { searchTerm } = req.query;
-  
-  const talkerList = await readTalkers();
-
-  if (!searchTerm || searchTerm === '' || searchTerm === undefined) {
-    return res.status(200).json(talkerList);
-  }
-
-  const filteredTalker = talkerList.filter((talk) => talk.name.includes(searchTerm));
-
-  return res.status(200).json(filteredTalker);
 });
 
 app.listen(PORT, () => console.log(`Online PORT ${PORT}`));
