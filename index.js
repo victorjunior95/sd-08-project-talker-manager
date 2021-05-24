@@ -27,12 +27,14 @@ app.get('/', (_request, response) => {
 });
 
 app.listen(PORT, () => {
-  console.log('Online...');
+  console.log('Online');
 });
 
 app.get('/talker', getAllTalkers);
 
-app.get('/talker/:id', [checkToken, searchTalker, getSingleTalker]);
+app.get('/talker/search', checkToken, searchTalker);
+
+app.get('/talker/:id', getSingleTalker);
 
 app.post('/login', login);
 
@@ -45,7 +47,7 @@ app.post('/talker', [
   addNewTalker,
 ]);
 
-app.post('/talker/:id', [ 
+app.put('/talker/:id', [ 
   checkToken,
   checkName,
   checkAge,
