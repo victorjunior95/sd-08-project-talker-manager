@@ -20,15 +20,16 @@ const saveRepository = (entry) =>
 
 const idGenerator = () =>
   new Promise((res) => {
-    const memory = JSON.parse(
-      fs.readFileSync(`${__dirname}/memoryId.txt`, 'utf8'),
-    );
+    const memory = 5;
+    // const memory = JSON.parse(
+    //   fs.readFileSync(`${__dirname}/memoryId.txt`, 'utf8'),
+    // );
     if (memory) {
-      fs.writeFileSync(
-        `${__dirname}/memoryId.txt`,
-        JSON.stringify(+memory + 1),
-        'utf8',
-      );
+      // fs.writeFileSync(
+      //   `${__dirname}/memoryId.txt`,
+      //   JSON.stringify(+memory + 1),
+      //   'utf8',
+      // );
       return res(memory);
     }
   });
