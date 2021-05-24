@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const emailVal = require('./authEmail');
-const tokenGenerate = require('./generateToken');
+/* const emailVal = require('./authEmail');
+const tokenGenerate = require('./generateToken'); */
+const middlewares = require('./middlewaresIndex');
 
 const app = express();
 
@@ -27,12 +28,18 @@ const { id } = req.params;
 const conteudo = JSON.parse(fs.readFileSync('./talker.json'));
 const filter = conteudo.find((idPeople) => idPeople.id === Number(id));
 if (!filter) {
-res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
+  res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
 }
 res.status(HTTP_OK_STATUS).send(filter);
 });
 
-app.post('/login', (req, res) => {
+app.post('/talker', middlewares.autorization,
+ middlewares.nameVali, 
+ middlewares.ageVali, 
+ middlewares.validationTalk.dataValidate, 
+ middlewares.validationTalk.fieldsValidate, middlewares.addNew); 
+
+/* app.post('/login', (req, res) => {
 const { email, password } = req.body;
 
 if (!email) return res.status(400).send({ message: 'O campo "email" é obrigatório' });
@@ -50,17 +57,7 @@ if (!password) return res.status(400).send({ message: 'O campo "password" é obr
 
   res.status(HTTP_OK_STATUS).send({ token });
 });
-
-/* app.post('/talker', (req, res) => {
-const conteudo = JSON.parse(fs.readFileSync('./talker.json'));
-const token = tokenGenerate();
-req.headers.authorization = token;
-const { name, age } = req.body;
-const estrutura = { name, age };
-const newArray = conteudo.push(estrutura.toString());
-
-fs.writeFile('./talker.json', newArray); 
-}); */
+ */
 
 /* app.put('/talker/:id', (req, res) => {
 const { id } = req.params;
