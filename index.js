@@ -37,6 +37,7 @@ app.get('/', (_request, response) => {
 });
 
 app.post('/login', validationUser);
+
 app.post(
   '/talker',
   authMiddleware,
