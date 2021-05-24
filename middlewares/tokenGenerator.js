@@ -10,7 +10,7 @@ const tokenGenerator = (req, _res, next) => {
     token += CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
   }
 
-  req.headers['token'] = token;
+  req.headers.token = token;
   return next();
 };
 

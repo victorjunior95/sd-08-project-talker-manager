@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const getTalkerById = (req, res, _) => {
+const getTalkerById = (req, res, _next) => {
   const { id } = req.params;
 
   const talkers = JSON.parse(fs.readFileSync('./talker.json', 'utf8'));
