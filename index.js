@@ -15,10 +15,10 @@ function validateEmail(email) {
 }
 
 // https://www.webtutorial.com.br/funcao-para-gerar-uma-string-aleatoria-random-com-caracteres-especificos-em-javascript/
-function geraToken(tamanho) {
+function geraToken() {
   let token = '';
   const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let i = 0; i < tamanho; i = +1) {
+  for (let i = 0; i < 16; i = +1) {
     token += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
   }
   return token;
