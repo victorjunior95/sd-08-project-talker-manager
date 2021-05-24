@@ -5,6 +5,11 @@ const bodyParser = require('body-parser');
 
 const {
   validationLogin,
+  validationToken,
+  validationName,
+  validationAge,
+  validationTalk,
+  validationTalkFormat,
 } = require('./authMiddleware');
 
 const app = express();
@@ -19,8 +24,10 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+const allTalkers = () => JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+
 app.get('/talker/:id', (req, res) => {
-  const data = JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+  const data = allTalkers();
   const { id } = req.params;
   const talkerIdFilter = data.find((talker) => talker.id === Number(id));
 
@@ -33,12 +40,29 @@ app.get('/talker/:id', (req, res) => {
 });
 
 app.get('/talker', (_req, res) => {
-  const content = fs.readFileSync('talker.json', 'utf-8');
-  const allTalkers = JSON.parse(content);
+  const talkers = allTalkers();
 
-  if (allTalkers.length === 0) return res.status(HTTP_OK_STATUS).json([]);
-  res.status(HTTP_OK_STATUS).json(allTalkers);
+  if (talkers.length === 0) return res.status(HTTP_OK_STATUS).json([]);
+  res.status(HTTP_OK_STATUS).json(talkers);
 });
+
+app.post(
+  '/talker',
+  validationToken,
+  validationName,
+  validationAge,
+  validationTalk,
+  validationTalkFormat,
+  (req, res) => {
+    const talkers = allTalkers();
+    const talkerLength = talkers.length;
+    const { newTalker } = req.body;
+    talkers.push(newTalker);
+    newTalker.id = talkerLength + 1;
+    fs.writeFileSync('talker.json', JSON.stringify(newTalker));
+    res.status(201).json(newTalker);
+  },
+);
 
 app.post('/login', validationLogin, (_req, res) => {
   /* Info about crypto.randomBytes method found at
