@@ -3,7 +3,7 @@ const fsProm = require('fs').promises;
 
 const filePath = './talker.json';
 
-const syncData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+const getSyncData = () => JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
 let fsPromiseData1;
 let fsPromiseData2;
@@ -55,7 +55,7 @@ const promiseRs1 = () => new Promise((resolve, reject) => {
 }); 
 
 module.exports = {
-  syncData,
+  getSyncData,
   fsPromiseData1,
   fsPromiseData2,
   assigingFs1,
