@@ -1,7 +1,7 @@
-const fs = require('fs');
+const readSync = require('./helpers/readSync');
 
 function challengeOne(_req, res) {
-  res.status(200).send(JSON.parse(fs.readFileSync('./talker.json')));
+  res.status(200).send(readSync('./talker.json'));
 }
 
 module.exports = challengeOne;
