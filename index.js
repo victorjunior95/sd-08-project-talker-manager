@@ -2,7 +2,17 @@ const express = require('express');
 // const bodyParser = require('body-parser');
 const { TALKER } = require('./services');
 const { getData } = require('./utils');
-const { talkerByIdMiddleware, loginMiddleware } = require('./middlewares');
+const {
+  talkerByIdMiddleware,
+  loginMiddleware,
+  ageValidateMiddleware,
+  nameValidateMiddleware,
+  rateValidateMiddleware,
+  talkValidateMiddleware,
+  tokenValidateMiddleware,
+  watchedAtValidateMiddleware,
+  createTalkerMiddleware,
+} = require('./middlewares');
 
 const app = express();
 app.use(express.json());
@@ -22,9 +32,23 @@ app.get('/talker', async (_request, response) => {
 
 app.get('/talker/:id', talkerByIdMiddleware, async (_request, _response) => {});
 
+app.post(
+  '/talker',
+  tokenValidateMiddleware,
+  nameValidateMiddleware,
+  ageValidateMiddleware,
+  talkValidateMiddleware,
+  watchedAtValidateMiddleware,
+  rateValidateMiddleware,
+  createTalkerMiddleware,
+  async (request, _response) => {
+  console.log(request.headers);
+  console.log(request.body.name);
+},
+);
+
 app.post('/login', loginMiddleware, (request, response) => {
   console.log(response.status);
-  // response.status(200).json('ok');
 });
 
 app.listen(PORT, () => {
