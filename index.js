@@ -2,14 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // const path = require('path'); 
 const { 
-  getSyncData,
+  getSyncData, tokenGenerate,
   // fsPromiseData1,
   // fsPromiseData2,
   // assigingFs1,
   // assigingFs2,
   // direct1,
   // promiseRs1 
-} = require('./fsUsage/readFile.js');
+} = require('./functions/fsAndOthers.js');
+const { emailPassValid } = require('./functions/validations/emailPassValid');
 
 const app = express();
 app.use(bodyParser.json());
@@ -22,7 +23,7 @@ const PORT = '3000';
 // }); // para brincar dps
 
 // não remova esse endpoint, e para o avaliador funcionar
-app.get('/', async (_request, response) => {
+app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send(
     // {
     // message: 'Olá Mundo',
@@ -33,6 +34,7 @@ app.get('/', async (_request, response) => {
     // //  direct2: await direct2(),
     // promise: await promiseRs1(), // ok com o await
     // }
+    { message: tokenGenerate(10) },
     );
 });
 
@@ -44,7 +46,8 @@ app.listen(PORT, () => {
 // Os seguintes pontos serão avaliados:
 // O endpoint deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o status 200, com o seguinte corpo: [...]
 // Caso não exista nenhuma pessoa palestrante cadastrada o endpoint deve retornar um array vazio e o status 200.
-app.get('/talker', (_req, res) => (res.status(HTTP_OK_STATUS).send(getSyncData()))); // o teste sempre pede pra retornar o arquivo JSON, pergunta do README está malfeita.
+app.route('/talker')
+.get((_req, res) => (res.status(HTTP_OK_STATUS).send(getSyncData()))); // o teste sempre pede pra retornar o arquivo JSON, pergunta do README está malfeita.
 
 // 2 - Crie o endpoint GET /talker/:id
 // O endpoint deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200 ao fazer uma requisição /talker/1, com o seguinte corpo: [...]
@@ -65,14 +68,13 @@ res.status(HTTP_OK_STATUS).send(palestrantId);
 // Os seguintes pontos serão avaliados:
 // O endpoint deve ser capaz de retornar um token aleatório de 16 caracteres que deverá ser utilizado nas demais requisições.
 
-// O endpoint deverá o retornar o token gerado, da seguinte forma: [...]
+// O endpoint deverá o retornar o token gerado, da seguinte forma: [{token: tokenGenerated}]
+// Há mais instruções no functions > validations > emailPassValid
 
-const chars = [...'abcdefghijklmniopqrstuvwyxzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'];
-// and then just do:
-const token = [...Array(16)].map((_usage) => chars[Math.random() * chars.length || 0]).join``;
-
-app.post('/login', (req, res) => {
-  const { name } = req.body;
-res.status(HTTP_OK_STATUS).send({ message: name });
-console.log(token);
-});
+app.post('/login', 
+[
+  emailPassValid, (_req, res) => {
+  const tokenGenerated = tokenGenerate(16);
+res.status(HTTP_OK_STATUS).send({ token: tokenGenerated });
+},
+]);

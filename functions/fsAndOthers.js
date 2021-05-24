@@ -52,7 +52,15 @@ const promiseRs1 = () => new Promise((resolve, reject) => {
     if (err) reject(err);
     resolve(JSON.parse(data));
   });
-}); 
+});
+
+const tokenGenerate = (size) => {
+  const chars = [...'abcdefghijklmniopqrstuvwyxzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'];
+  // and then just do:
+  const token = [...Array(size)].map((_usage) => 
+    chars[Math.round(Math.random() * chars.length)]).join``; // join`` == join('') || join(``); fonte https://stackoverflow.com/questions/64993915/what-does-join-mean-in-javascript
+  return token;
+  };
 
 module.exports = {
   getSyncData,
@@ -62,4 +70,5 @@ module.exports = {
   assigingFs2,
   direct1,
   promiseRs1,
+  tokenGenerate,
 };
