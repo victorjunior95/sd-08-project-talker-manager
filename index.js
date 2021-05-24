@@ -28,6 +28,12 @@ app.get('/talker/:id', middlewares.talkerById, (req, res) => {
   });
 });
 
+app.post('/login', middlewares.loginEmail, middlewares.loginPassword, (_req, res) => {
+  res.status(200).json({
+    token: '7mqaVRXJSp886CGr',
+  });
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
