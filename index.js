@@ -9,7 +9,8 @@ const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
 app.get('/talker/:id', middlewares.talkerid);
-app.put('talked/:id', middlewares.changeTalker);
+app.put('/talker/:id', middlewares.verifyAutho, middlewares.verifyName, middlewares.verifyAge,
+middlewares.verifyTalkOne, middlewares.verifyTalkTwo, middlewares.changeTalker);
 app.get('/talker', middlewares.registertalker);
 app.post('/talker', middlewares.verifyAutho, middlewares.verifyName, middlewares.verifyAge,
 middlewares.verifyTalkOne, middlewares.verifyTalkTwo, middlewares.createTalker);

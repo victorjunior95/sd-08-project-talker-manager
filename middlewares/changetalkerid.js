@@ -1,46 +1,30 @@
-// const fs = require('fs').promises;
+const fs = require('fs').promises;
 
-// const service = './talker.json';
+const service = './talker.json';
 
-// function callDataApi() {
-//   return fs.readFile(service, 'utf8')
-//   .then((data) => JSON.parse(data))
-//   .catch((error) => {
-//     console.log(`Não foi possível ler o arquivo ${service}\n Error: ${error}`);
-//   });
-// }
+function callDataApi() {
+  return fs.readFile(service, 'utf8')
+  .then((data) => JSON.parse(data))
+  .catch((error) => {
+    console.log(`Não foi possível ler o arquivo ${service}\n Error: ${error}`);
+  });
+}
 
+// https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/parseInt
 module.exports = async (req, res, _next) => {
-  // const responseDataApi = await callDataApi();
-  // const { name, age, talk } = req.body;
-  // const id = responseDataApi.length + 1;
-  // await responseDataApi.push({ id, name, age, talk });
-  // const newTalker = responseDataApi[responseDataApi.length - 1];
-  // console.log(newTalker);
-  // console.log('registertalker');
-  // console.log(responseDataApi);
-  // await fs.writeFile(service, JSON.stringify(newTalker));
-  return res.status(201).json({ test: 'change' });
+  const responseDataApi = await callDataApi();
+  const { id } = req.params;
+  const idToNumber = parseInt(id, 10);
+  const { name, age, talk } = req.body;
+  const talkerUpdate = { id: idToNumber, name, age, talk };
+  // console.log(talkerUpdate);
+  const updateListTalker = responseDataApi.map((list) => {
+    if (list.id === idToNumber) {
+      return talkerUpdate;
+    }
+    return responseDataApi;
+  });
+  // console.log(updateListTalker);
+  await fs.writeFile(service, JSON.stringify(updateListTalker));
+  return res.status(200).json(talkerUpdate);
 };
-
-// const randomToken = '7mqaVRXJSp886CGr';
-// const nimOfPassword = 6;
-
-// console.log(messages.passwordIncorrect);
-
-// const emailValidation = (email) => {
-//   const validEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-//   return validEmail.test(email);
-// };
-
-// module.exports = (req, res, _next) => {
-//   const { email, password } = req.body;
-//   // console.log(email, typeof(password), password.toString().length);
-//   if (email === undefined) return res.status(400).json({ message: messages.emailRequire });
-//   if (!emailValidation(email)) return res.status(400).json({ message: messages.emailIncorrect });
-//   if (password === undefined) return res.status(400).json({ message: messages.passwordRequire });
-//   if (password.toString().length < nimOfPassword) {
-//     return res.status(400).json({ message: messages.passwordIncorrect });
-//   }
-//   res.json({ token: randomToken });
-// };
