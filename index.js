@@ -66,12 +66,26 @@ app.post('/talker',
       const index = talkers.findIndex((person) => person.id === Number(id));
       newTalker.id = Number(id);
       talkers[index] = newTalker;
-      console.log(index);
       fs.writeFileSync('talker.json', JSON.stringify(talkers));
       return res.status(200).json(newTalker);
     } catch (e) {
       return e;
     }
+  });
+
+  app.delete('/talker/:id',
+    middlewares.token,
+    (req, res) => {
+      try {
+        const talkers = JSON.parse(fs.readFileSync('./talker.json', 'utf8'));        
+        const { id } = req.params;
+        const index = talkers.findIndex((person) => person.id === Number(id));
+        talkers.splice(index, 1);        
+        fs.writeFileSync('talker.json', JSON.stringify(talkers));
+        return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+      } catch (e) {
+        return e;
+      }
   });
 
 app.listen(PORT, () => {
