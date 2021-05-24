@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
+const file = './talker.json';
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -15,14 +16,14 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', (_req, res) => {
-  const dataJSON = fs.readFileSync('./talker.json', 'utf8');
+  const dataJSON = fs.readFileSync(file, 'utf8');
   const data = JSON.parse(dataJSON);
   return res.status(200).json(data);
 });
 
 app.get('/talker/:id', (req, res) => {
   const { id } = req.params;
-  const dataJSON = fs.readFileSync('./talker.json', 'utf8');
+  const dataJSON = fs.readFileSync(file, 'utf8');
   const data = JSON.parse(dataJSON);
   const personById = data.find((person) => person.id === Number(id));
   if (personById) {
@@ -41,7 +42,7 @@ app.post('/talker',
   middlewares.talkValues,
   (req, res) => {
     try {
-      const talkers = JSON.parse(fs.readFileSync('./talker.json', 'utf8'));
+      const talkers = JSON.parse(fs.readFileSync(file, 'utf8'));
       const newTalker = req.body;
       newTalker.id = talkers.length + 1;
       talkers.push(newTalker);
@@ -60,7 +61,7 @@ app.post('/talker',
   middlewares.talkValues,
   (req, res) => {
     try {
-      const talkers = JSON.parse(fs.readFileSync('./talker.json', 'utf8'));
+      const talkers = JSON.parse(fs.readFileSync(file, 'utf8'));
       const newTalker = req.body;
       const { id } = req.params;
       const index = talkers.findIndex((person) => person.id === Number(id));
@@ -77,7 +78,7 @@ app.post('/talker',
     middlewares.token,
     (req, res) => {
       try {
-        const talkers = JSON.parse(fs.readFileSync('./talker.json', 'utf8'));        
+        const talkers = JSON.parse(fs.readFileSync(file, 'utf8'));        
         const { id } = req.params;
         const index = talkers.findIndex((person) => person.id === Number(id));
         talkers.splice(index, 1);        
