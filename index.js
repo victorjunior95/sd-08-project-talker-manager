@@ -1,6 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const middlewares = require('./middlewares');
+const {
+  showOne,
+  showAll,
+  verifyToken,
+  createTalker,
+  login,
+  verifyReqBody,
+  updateTalker,
+  deleteTalker,
+  searchTalker,
+} = require('./middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,13 +23,19 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker/:id', middlewares.showOneMiddleware);
+app.post('/talker', verifyToken, verifyReqBody, createTalker);
 
-app.get('/talker', middlewares.showAllMiddleware);
+app.get('/talker/search', verifyToken, searchTalker, showAll);
 
-app.post('/talker', middlewares.verifyToken, middlewares.createTalker);
+app.get('/talker/:id', showOne);
 
-app.post('/login', middlewares.loginMiddleware);
+app.get('/talker', showAll);
+
+app.put('/talker/:id', verifyToken, verifyReqBody, updateTalker);
+
+app.delete('/talker/:id', verifyToken, deleteTalker);
+
+app.post('/login', login);
 
 app.listen(PORT, () => {
   console.log('Online');
