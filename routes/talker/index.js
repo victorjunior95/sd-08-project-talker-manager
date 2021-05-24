@@ -9,4 +9,6 @@ router.get('/:id', middlewares.talker.getById);
 
 router.post('/', middlewares.auth, middlewares.talker.addTalker);
 
+router.put('/:id', middlewares.auth, middlewares.talker.putById);
+
 module.exports = router;

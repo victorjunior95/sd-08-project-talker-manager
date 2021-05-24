@@ -12,7 +12,7 @@ module.exports = rescue(async (req, res, next) => {
     ...req.body,
   };
   const talkers = talker.concat(newTalker);
-  inserirPalestrantes(talkers);
+  await inserirPalestrantes(talkers);
 
   res.status(201).json(newTalker);
 });
