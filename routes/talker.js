@@ -34,6 +34,20 @@ talker.get('/:id', rescue(async (request, response) => {
   response.status(OK).json(talkerFound);
 }));
 
+talker.delete('/:id',
+  middleware.authentication,
+  rescue(async (request, response) => {
+  const fileTalkerContent = await fs.readFile(FILE_PATH);
+  const { id } = request.params;
+
+  const newFileTalkerContent = fileTalkerContent
+    .filter((currTalker) => currTalker.id !== Number(id));
+
+  await fs.writeFile(FILE_PATH, newFileTalkerContent);
+  
+  response.status(OK).json({ message: 'Pessoa palestrante deletada com sucesso' });
+}));
+
 talker.put('/:id',
   middleware.authentication,
   middleware.nameValidation,
