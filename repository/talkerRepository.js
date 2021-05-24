@@ -49,7 +49,7 @@ exports.save = async (entry) => {
   const entity = await loadRepository().then((result) => result);
   const id = await idGenerator().then((result) => result);
   const newEntity = await { id, ...entry };
-  const newEntities = await [...entity, newEntity];
+  const newEntities = await [newEntity, ...entity];
   saveRepository(newEntities);
   return newEntity;
 };
@@ -64,7 +64,7 @@ exports.edit = async (entry, id) => {
   const entity = await loadRepository().then((result) => result);
   const removeEntity = await entity.filter((entityId) => +id !== entityId.id);
   const newEntity = { id: +id, ...entry };
-  const newEntities = [...removeEntity, { ...newEntity }];
+  const newEntities = [{ ...newEntity }, ...removeEntity];
   saveRepository(newEntities);
   return newEntity;
 };
