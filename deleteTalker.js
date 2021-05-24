@@ -1,12 +1,10 @@
 const fs = require('fs');
 
 const getTalkers = () => JSON.parse(fs.readFileSync('talker.json', 'utf8'));
-module.exports = (req, res, next) => {
+module.exports = (req, res, _next) => {
   const { id } = req.params;
   const talkers = getTalkers();
-  const deleteTalker = talkers.filter((e, i) => {
-      e.id !== Number(id);
-  });
+  const deleteTalker = talkers.filter((e) => e.id !== Number(id));
   fs.writeFileSync('talker.json', JSON.stringify(deleteTalker));
   res
   .status(200)
