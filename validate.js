@@ -71,7 +71,7 @@ const talk = (req, res, next) => {
       || typeof req.body.talk.rate !== 'number'
       || typeof req.body.talk.watchedAt !== 'string'
   ) {
-    res.status(BAD_REQUEST).send({
+    return res.status(BAD_REQUEST).send({
       message:
         'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
@@ -87,7 +87,7 @@ const rate = (req, res, next) => {
     next();
   }
   if (req.body.talk.rate < 1 || req.body.talk.rate > 5) {
-    res
+    return res
       .status(BAD_REQUEST)
       .send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
@@ -96,7 +96,7 @@ const rate = (req, res, next) => {
 
 const watchedAt = (req, res, next) => {
   if (!VALID_DATE.test(req.body.talk.watchedAt)) {
-    res.status(BAD_REQUEST).send({
+    return res.status(BAD_REQUEST).send({
       message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
     });
   }
