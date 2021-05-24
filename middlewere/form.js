@@ -91,18 +91,18 @@ exports.verifyInfo = (req, res, next) => {
   const { name, age } = req.body;
   const isName = verifyFieldName(name);
   const isAge = verifyFieldAge(age);
-  if (!isName.isValid) return res.status(401).json({ message: isName.message }); 
-  if (!isAge.isValid) return res.status(401).json({ message: isAge.message }); 
+  if (!isName.isValid) return res.status(400).json({ message: isName.message }); 
+  if (!isAge.isValid) return res.status(400).json({ message: isAge.message }); 
   next();
 };
 
 exports.verifyTalk = (req, res, next) => {
   const { talk } = req.body;
   const isTalk = verifyFieldTalker(talk);
-  if (!isTalk.isValid) return res.status(401).json({ message: isTalk.message }); 
+  if (!isTalk.isValid) return res.status(400).json({ message: isTalk.message }); 
   const isWatchedAt = verifyFieldTalkerWatchedArt(talk.watchedAt);
   if (!isWatchedAt.isValid) return res.status(401).json({ message: isWatchedAt.message }); 
   const isRate = verifyFieldTalkerRate(talk.rate);
-  if (!isRate.isValid) return res.status(401).json({ message: isRate.message }); 
+  if (!isRate.isValid) return res.status(400).json({ message: isRate.message }); 
   next();
 };
