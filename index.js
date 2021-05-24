@@ -52,6 +52,28 @@ app.post('/talker',
     }
   });
 
+  app.put('/talker/:id', 
+  middlewares.token,
+  middlewares.name,
+  middlewares.age,
+  middlewares.talk,
+  middlewares.talkValues,
+  (req, res) => {
+    try {
+      const talkers = JSON.parse(fs.readFileSync('./talker.json', 'utf8'));
+      const newTalker = req.body;
+      const { id } = req.params;
+      const index = talkers.findIndex((person) => person.id === Number(id));
+      newTalker.id = Number(id);
+      talkers[index] = newTalker;
+      console.log(index);
+      fs.writeFileSync('talker.json', JSON.stringify(talkers));
+      return res.status(200).json(newTalker);
+    } catch (e) {
+      return e;
+    }
+  });
+
 app.listen(PORT, () => {
   console.log('Online');
 });
