@@ -5,6 +5,7 @@ const verifyLogin = require('./verifyLogin.js');
 const verifyTalk = require('./verifyTalk.js');
 const verifyTalkBody = require('./verifyTalkBody.js');
 const talkerVerified = require('./talkerVerified.js');
+const editedTalker = require('./editedTalker.js');
 
 module.exports = {
   verifyName,
@@ -14,4 +15,5 @@ module.exports = {
   verifyTalk,
   verifyTalkBody,
   talkerVerified,
+  editedTalker,
 };

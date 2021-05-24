@@ -30,15 +30,11 @@ app.get('/talker/:id', (req, res) => {
 
 app.post('/login', middlewares.verifyLogin);
 
-app.post(
-  '/talker',
-  middlewares.verifyToken,
-  middlewares.verifyName,
-  middlewares.verifyAge,
-  middlewares.verifyTalk,
-  middlewares.verifyTalkBody,
-  middlewares.talkerVerified,
-);
+app.post('/talker', middlewares.verifyToken, middlewares.verifyName, middlewares.verifyAge,
+  middlewares.verifyTalk, middlewares.verifyTalkBody, middlewares.talkerVerified);
+
+app.put('/talker/:id', middlewares.verifyToken, middlewares.verifyName, middlewares.verifyAge,
+  middlewares.verifyTalk, middlewares.verifyTalkBody, middlewares.editedTalker);
 
 app.listen(PORT, () => {
   console.log('Online');
