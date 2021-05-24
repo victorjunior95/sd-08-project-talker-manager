@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+let MEMORY_ID = 5;
+
 const loadRepository = () =>
   new Promise((res) => {
     const talkerRepository = JSON.parse(
@@ -18,22 +20,6 @@ const saveRepository = (entry) =>
     if (talkerRepository) return res(talkerRepository);
   });
 
-const idGenerator = () =>
-  new Promise((res) => {
-    const memory = 5;
-    // const memory = JSON.parse(
-    //   fs.readFileSync(`${__dirname}/memoryId.txt`, 'utf8'),
-    // );
-    if (memory) {
-      // fs.writeFileSync(
-      //   `${__dirname}/memoryId.txt`,
-      //   JSON.stringify(+memory + 1),
-      //   'utf8',
-      // );
-      return res(memory);
-    }
-  });
-
 exports.findAll = () => loadRepository().then((entity) => entity);
 
 exports.findById = async (id) => {
@@ -48,9 +34,10 @@ exports.findByName = async (name) => {
 
 exports.save = async (entry) => {
   const entity = await loadRepository().then((result) => result);
-  const id = await idGenerator().then((result) => result);
+  const id = MEMORY_ID;
   const newEntity = await { id, ...entry };
   const newEntities = await [newEntity, ...entity];
+  MEMORY_ID += 1;
   saveRepository(newEntities);
   return newEntity;
 };
