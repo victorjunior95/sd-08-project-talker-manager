@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const token = require('./utils/generateToken');
 
-const pattern = new RegExp(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i);
+const token = require('./utils/generateToken');
+const middlewares = require('./middlewares');
+const { getToken, checkName, checkAge, checkWatchedAt, checkTalk } = require('./middlewares');
+
 const app = express();
 app.use(bodyParser.json());
 
@@ -28,22 +30,19 @@ app.get('/talker/:id', (req, res) => {
   });
 });
 
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  if (!email) {
-    return res.status(400).json({ message: 'O campo "email" é obrigatório' });
-  }
-  if (!pattern.test(email)) {
-    return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
-  }
-  if (!password) {
-    return res.status(400).json({ message: 'O campo "password" é obrigatório' });
-  }
-  if (password.length < 6) {
-    return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
-  }
-  return res.status(200).json({ token: token() });
+app.post('/talker', getToken, checkName, checkAge, checkTalk, checkWatchedAt, (req, res) => {
+  fs.readFile('./talker.json', 'utf-8', (err, content) => {
+    const talkers = JSON.parse(content);
+    const newTalker = req.body;
+    talkers.push({ ...newTalker, id: talkers.length + 1 });
+    const teste = JSON.stringify(talkers);
+    fs.writeFile('./talker.json', teste, () => res.status(201).json(talkers[talkers.length - 1]));
+  });
 });
+
+app.use('/login', middlewares.login);
+
+app.post('/login', (req, res) => res.status(200).json({ token: token() }));
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
