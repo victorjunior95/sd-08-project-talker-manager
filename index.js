@@ -1,6 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { getAllTalkers, getTalkerById, login, createTalker, editTalker, deleteTalker } = require('./womps');
+const { 
+  getAllTalkers,
+  getTalkerById, 
+  login, 
+  createTalker, 
+  editTalker, 
+  deleteTalker, 
+} = require('./womps');
 
 const app = express();
 app.use(bodyParser.json());
