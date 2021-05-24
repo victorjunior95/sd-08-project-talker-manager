@@ -16,8 +16,6 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-// 1 - Crie o endpoint GET /talker
-
 const rescue = require('express-rescue');
 const fs = require('fs').promises;
 
@@ -26,6 +24,23 @@ function getTalker() {
   .then((file) => JSON.parse(file));
 }
 
+// Crie o endpoint GET /talker/:id
+
+app.get(
+  '/talker/:id',
+  rescue(async (req, res) => {
+    const talkers = await getTalker();
+
+    const talker = talkers.find((ObjTalker) => ObjTalker.id === Number(req.params.id));
+
+    if (!talker) {
+      return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    }
+    return res.status(200).json(talker);
+  }),
+);
+
+// 1 - Crie o endpoint GET /talker
 app.get('/talker', rescue(async (_req, res) => {
   const talkers = await getTalker();
   res.status(200).json(talkers);
