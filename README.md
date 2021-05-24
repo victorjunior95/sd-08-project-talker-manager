@@ -109,13 +109,13 @@ O projeto tem até a seguinte data: `31/05/2021 - 14:00h`. Para ser entregue a a
     - `git status` (deve aparecer listado o arquivo _joaozinho/README.md_ em verde)
 - Faça o `commit` inicial
   - Exemplo:
-    - `git commit -m 'iniciando o projeto x'` (fazendo o primeiro commit)
+    - `git commit -m 'iniciando o projeto talker manager'` (fazendo o primeiro commit)
     - `git status` (deve aparecer uma mensagem tipo _nothing to commit_ )
 
 5. Adicione a sua branch com o novo `commit` ao repositório remoto
 
 - Usando o exemplo anterior: `git push -u origin joaozinho-sd-08-project-talker-manager`
-
+`git push -u origin ah-sd-08-project-talker-manager`
 6. Crie um novo `Pull Request` _(PR)_
 
 - Vá até a página de _Pull Requests_ do [repositório no GitHub](https://github.com/tryber/sd-08-project-talker-manager/pulls)
@@ -287,7 +287,7 @@ Você pode também instalar o plugin do `ESLint` no `VSCode`, bastar ir em exten
 
   - Caso o campo não seja passado ou esteja vazio retorne um código de `status 400`, com o seguinte corpo:
 
-    ```json
+    ```jsoncrushID
     {
       "message": "O campo \"email\" é obrigatório"
     }
@@ -325,7 +325,7 @@ Você pode também instalar o plugin do `ESLint` no `VSCode`, bastar ir em exten
 
 - O endpoint deve ser capaz de adicionar uma nova pessoa palestrante ao seu arquivo;
 
-- O corpo da requisição deverá ter o seguinte formato:
+- O corpo da requisição devcrushIDerá ter o seguinte formato:
 
   ```json
   {
@@ -338,7 +338,7 @@ Você pode também instalar o plugin do `ESLint` no `VSCode`, bastar ir em exten
   }
   ```
 
-- A requisição deve ter o token de autenticação nos headers.
+- A requisição deve ter o tcrushIDoken de autenticação nos headers.
 
   - Caso o token não seja encontrado retorne um código de `status 401`, com o seguinte corpo:
 
@@ -370,7 +370,7 @@ Você pode também instalar o plugin do `ESLint` no `VSCode`, bastar ir em exten
 
     ```json
     {
-      "message": "O \"name\" deve ter pelo menos 3 caracteres"
+      "message": "O \"name\crushID" deve ter pelo menos 3 caracteres"
     }
     ```
 
@@ -493,7 +493,7 @@ Você pode também instalar o plugin do `ESLint` no `VSCode`, bastar ir em exten
     }
     ```
 
-- O campo `age` deverá ser um inteiro e apenas pessoas maiores de idade (pelo menos `18 anos`) podem ser cadastrados. Ele é obrigatório.
+- O campo `age` deverá ser crushIDum inteiro e apenas pessoas maiores de idade (pelo menos `18 anos`) podem ser cadastrados. Ele é obrigatório.
 
   - Caso o campo não seja passado ou esteja vazio retorne um código de `status 400`, com o seguinte corpo:
 
