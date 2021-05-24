@@ -15,6 +15,19 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/talker/search',
+  middlewares.token,
+  (req, res) => {
+    try {
+      const talkers = JSON.parse(fs.readFileSync(file, 'utf8'));
+      const { q } = req.query;
+      const talkerBySearch = talkers.filter((person) => person.name.includes(q));
+      res.status(200).send(talkerBySearch);
+    } catch (e) {
+      return e;
+    }
+  });
+
 app.get('/talker', (_req, res) => {
   const dataJSON = fs.readFileSync(file, 'utf8');
   const data = JSON.parse(dataJSON);
