@@ -1,9 +1,6 @@
 const express = require('express');
 
-const getAllTalkers = require('./local-modules/getAllTalkers.js');
-const getTalkerById = require('./local-modules/getTalkerById.js');
-const login = require('./local-modules/login.js');
-const createTalker = require('./local-modules/createTalker.js');
+const { createTalker, getAllTalkers, getTalkerById, login } = require('./local-modules');
 
 const app = express();
 app.use(express.json());
