@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { getTalker } = require('../fs-utils');
 
 // referencia turma 07 - aula 26.05
 const addTalker = async (req, res) => {
