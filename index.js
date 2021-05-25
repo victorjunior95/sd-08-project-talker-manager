@@ -67,15 +67,14 @@ app.post('/login',
 // Os seguintes pontos serão avaliados:
 // O endpoint deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o status 200, com o seguinte corpo: [...]
 // Caso não exista nenhuma pessoa palestrante cadastrada o endpoint deve retornar um array vazio e o status 200.
-app.route('/talker')
-.get((_req, res) => {
+app.get('/talker', (_req, res) => {
   try {
     const allTalkers = getSyncData();
     return res.status(HTTP_OK_STATUS).send(allTalkers); // o teste sempre pede pra retornar o arquivo JSON, desnecessário if/else, como o README induz a crer.
   } catch (error) {
     return res.status(500).send({ error });
   }
-}) 
+}); 
 // 4 - Crie o endpoint POST /talker
 // Os seguintes pontos serão avaliados:
 // O endpoint deve ser capaz de adicionar uma nova pessoa palestrante ao seu arquivo;
@@ -89,7 +88,7 @@ app.route('/talker')
 //   }
 // }
 // Aí vem as instruções de loginValidation; então nameAgeValidation; então talkValidation[talkObjValidation, talkComponentsValidation];
-.post([
+app.post('/talker', [
   tokenValidation,
   nameAgeValidation, 
   talkObjValidation,
@@ -113,8 +112,7 @@ app.route('/talker')
 // 2 - Crie o endpoint GET /talker/:id
 // O endpoint deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200 ao fazer uma requisição /talker/1, com o seguinte corpo: [...]
 // Caso não seja encontrada uma pessoa palestrante com base no id da rota, o endpoint deve retornar o status 404 com o seguinte corpo: { "message": "Pessoa palestrante não encontrada" }
-app.route('/talker/:id')
-.get((req, res) => {
+app.get('/talker/:id', (req, res) => {
   try {
     const idParams = Number(req.params.id);
     const palestrantId = getSyncData().find((element) => element.id === idParams);
@@ -127,7 +125,7 @@ app.route('/talker/:id')
   } catch (error) {
     return res.status(500).send({ error });
   }
-})
+});
 
 // 5 - Crie o endpoint PUT /talker/:id
 // Os seguintes pontos serão avaliados:
@@ -136,7 +134,7 @@ app.route('/talker/:id')
 // Caso esteja tudo certo, retorne o status 200 e a pessoa editada.
 // O endpoint deve retornar o status 200 e a pessoa palestrante que foi editada, dá seguinte forma:
 // { "id": 1, "name": "Danielle Santos", "age": 56, "talk": { "watchedAt": "22/10/2019", "rate": 4 } }
-.put([
+app.put('/talker/:id', [
   tokenValidation,
   nameAgeValidation, 
   talkObjValidation,
