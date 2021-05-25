@@ -43,6 +43,37 @@ app.get('/', (_request, response) => {
     );
 });
 
+// 1 - Crie o endpoint GET /talker
+// Os seguintes pontos serão avaliados:
+// O endpoint deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o status 200, com o seguinte corpo: [...]
+// Caso não exista nenhuma pessoa palestrante cadastrada o endpoint deve retornar um array vazio e o status 200.
+app.get('/talker', (_req, res) => {
+  try {
+    const allTalkers = getSyncData();
+    return res.status(HTTP_OK_STATUS).send(allTalkers); // o teste sempre pede pra retornar o arquivo JSON, desnecessário if/else, como o README induz a crer.
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
+}); 
+
+// 2 - Crie o endpoint GET /talker/:id
+// O endpoint deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200 ao fazer uma requisição /talker/1, com o seguinte corpo: [...]
+// Caso não seja encontrada uma pessoa palestrante com base no id da rota, o endpoint deve retornar o status 404 com o seguinte corpo: { "message": "Pessoa palestrante não encontrada" }
+app.get('/talker/:id', (req, res) => {
+  try {
+    const idParams = Number(req.params.id);
+    const palestrantId = getSyncData().find((element) => element.id === idParams);
+    if (!palestrantId) {
+      res.status(404).send({
+        message: 'Pessoa palestrante não encontrada',
+      });
+    }
+    res.status(HTTP_OK_STATUS).send(palestrantId);
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
+});
+
 // 3 - Crie o endpoint POST /login
 // Os seguintes pontos serão avaliados:
 // O endpoint deve ser capaz de retornar um token aleatório de 16 caracteres que deverá ser utilizado nas demais requisições.
@@ -63,18 +94,6 @@ app.post('/login',
 },
 ]);
 
-// 1 - Crie o endpoint GET /talker
-// Os seguintes pontos serão avaliados:
-// O endpoint deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o status 200, com o seguinte corpo: [...]
-// Caso não exista nenhuma pessoa palestrante cadastrada o endpoint deve retornar um array vazio e o status 200.
-app.get('/talker', (_req, res) => {
-  try {
-    const allTalkers = getSyncData();
-    return res.status(HTTP_OK_STATUS).send(allTalkers); // o teste sempre pede pra retornar o arquivo JSON, desnecessário if/else, como o README induz a crer.
-  } catch (error) {
-    return res.status(500).send({ error });
-  }
-}); 
 // 4 - Crie o endpoint POST /talker
 // Os seguintes pontos serão avaliados:
 // O endpoint deve ser capaz de adicionar uma nova pessoa palestrante ao seu arquivo;
@@ -108,24 +127,6 @@ app.post('/talker', [
     }
   }),
 ]);
-
-// 2 - Crie o endpoint GET /talker/:id
-// O endpoint deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200 ao fazer uma requisição /talker/1, com o seguinte corpo: [...]
-// Caso não seja encontrada uma pessoa palestrante com base no id da rota, o endpoint deve retornar o status 404 com o seguinte corpo: { "message": "Pessoa palestrante não encontrada" }
-app.get('/talker/:id', (req, res) => {
-  try {
-    const idParams = Number(req.params.id);
-    const palestrantId = getSyncData().find((element) => element.id === idParams);
-    if (!palestrantId) {
-      res.status(404).send({
-        message: 'Pessoa palestrante não encontrada',
-      });
-    }
-    res.status(HTTP_OK_STATUS).send(palestrantId);
-  } catch (error) {
-    return res.status(500).send({ error });
-  }
-});
 
 // 5 - Crie o endpoint PUT /talker/:id
 // Os seguintes pontos serão avaliados:
