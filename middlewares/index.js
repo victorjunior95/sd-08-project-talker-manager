@@ -8,6 +8,7 @@ const verifyTalkOne = require('./verifytalkone');
 const verifyTalkTwo = require('./verifytalktwo');
 const createTalker = require('./createtalker');
 const changeTalker = require('./changetalkerid');
+const deleteTalker = require('./deletetalkerid');
 
 module.exports = {
   registertalker,
@@ -20,4 +21,5 @@ module.exports = {
   verifyTalkOne,
   verifyTalkTwo,
   changeTalker,
+  deleteTalker,
 };
