@@ -1,7 +1,7 @@
-const fs = require("fs").promises;
-const express = require("express");
-const bodyParser = require("body-parser");
-const crypto = require("crypto");
+const fs = require('fs').promises;
+const express = require('express');
+const bodyParser = require('body-parser');
+const crypto = require('crypto');
 
 const {
   emailValidation,
@@ -13,7 +13,7 @@ const {
   talkValidation,
   rateValidation,
   watchedAtValidation,
-} = require("./src/core/validation");
+} = require('./src/core/validation');
 
 const {
   HTTP_OK_STATUS,
@@ -21,18 +21,18 @@ const {
   HTTP_BAD_REQUEST_STATUS,
   HTTP_CREATED_STATUS,
   PORT,
-} = require("./src/common/httpStatus");
+} = require('./src/common/httpStatus');
 
-const file = "./talker.json";
+const file = './talker.json';
 
 const app = express();
 app.use(bodyParser.json());
 
-app.get("/", (_request, response) => {
-  response.status(HTTP_OK_STATUS).send("Hello World!");
+app.get('/', (_request, response) => {
+  response.status(HTTP_OK_STATUS).send('Hello World!');
 });
 
-app.get("/talker", async (_request, response) => {
+app.get('/talker', async (_request, response) => {
   const mockData = await fs.readFile(file);
   if (!mockData) {
     return response.status(HTTP_OK_STATUS).send([]);
@@ -40,7 +40,7 @@ app.get("/talker", async (_request, response) => {
   return response.status(HTTP_OK_STATUS).send(JSON.parse(mockData));
 });
 
-app.get("/talker/:id", async (_request, response) => {
+app.get('/talker/:id', async (_request, response) => {
   const mockData = await fs.readFile(file);
   const { id } = _request.params;
   const talker = JSON.parse(mockData).find(
@@ -48,15 +48,15 @@ app.get("/talker/:id", async (_request, response) => {
   );
   if (!talker) {
     return response.status(HTTP_NOT_FOUND_STATUS).send({
-      message: "Pessoa palestrante não encontrada",
+      message: 'Pessoa palestrante não encontrada',
     });
   }
   return response.status(HTTP_OK_STATUS).send(talker);
 });
 
-app.post("/login", ({ body }, response) => {
+app.post('/login', ({ body }, response) => {
   const { email, password } = body;
-  const token = crypto.randomBytes(16).toString("hex");
+  const token = crypto.randomBytes(16).toString('hex');
   if (isObject(emailValidation(email))) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
@@ -71,7 +71,7 @@ app.post("/login", ({ body }, response) => {
 });
 
 app.post(
-  "/talker",
+  '/talker',
   tokenValidation,
   nameValidation,
   ageValidation,
@@ -92,11 +92,11 @@ app.post(
 
     talkersOnDataBase.push(newTalkerPeople);
     const databaseUpdateTalkers = JSON.parse(talkersOnDataBase);
-    await fs.writeFile("talker.json", databaseUpdateTalkers);
+    await fs.writeFile('talker.json', databaseUpdateTalkers);
     return response.status(HTTP_CREATED_STATUS).json(newTalkerPeople);
   }
 );
 
 app.listen(PORT, () => {
-  console.log("Online in | http://localhost:3000/");
+  console.log('Online in | http://localhost:3000/');
 });

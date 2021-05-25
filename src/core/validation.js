@@ -1,11 +1,11 @@
 const {
   REGEX_TO_VALIDATE_EMAIL,
   REGEX_TO_VALIDADE_DATE,
-} = require("../common/regexDefs");
+} = require('../common/regexDefs');
 const {
   HTTP_UNAUTHORIZED_STATUS,
   HTTP_BAD_REQUEST_STATUS,
-} = require("../common/httpStatus");
+} = require('../common/httpStatus');
 
 function emailValidation(email) {
   if (!email || email.length === 0) {
@@ -28,19 +28,19 @@ function passwordValidation(password) {
 }
 
 function isObject(param) {
-  return typeof param === "object";
+  return typeof param === 'object';
 }
 
 function tokenValidation({ headers: { authorization } }, response, cb) {
   if (!authorization) {
     return response
       .status(HTTP_UNAUTHORIZED_STATUS)
-      .send({ message: "Token não encontrado" });
+      .send({ message: 'Token não encontrado' });
   }
   if (authorization.length < 16) {
     return response
       .status(HTTP_UNAUTHORIZED_STATUS)
-      .send({ message: "Token inválido" });
+      .send({ message: 'Token inválido' });
   }
   cb();
 }
@@ -68,17 +68,17 @@ function ageValidation({ body: age }, response, cb) {
   if (age < 18) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
-      .send({ message: "A pessoa palestrante deve ser maior de idade" });
+      .send({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
   cb();
 }
 
 function notIsANumber(param) {
-  return typeof param !== "number";
+  return typeof param !== 'number';
 }
 
 function notIsAString(param) {
-  return typeof param !== "string";
+  return typeof param !== 'string';
 }
 
 function talkValidation({ body: talk }, response, cb) {

@@ -3,7 +3,7 @@ const HTTP_CREATED_STATUS = 201;
 const HTTP_BAD_REQUEST_STATUS = 400;
 const HTTP_UNAUTHORIZED_STATUS = 401;
 const HTTP_NOT_FOUND_STATUS = 404;
-const PORT = "3000";
+const PORT = '3000';
 
 module.exports = {
   HTTP_OK_STATUS,

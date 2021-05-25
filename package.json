@@ -9,6 +9,25 @@
     "start": "node index.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
   },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "parser": "eslint"
+  },
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "singleQuote": true,
+        "semi": false,
+        "trailingComma": "none"
+      }
+    ]
+  },
+  "prettier": {
+    "singleQuote": true
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
