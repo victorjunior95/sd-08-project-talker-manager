@@ -4,7 +4,8 @@ const crypto = require('crypto');
 const bodyParser = require('body-parser');
 
 const {
-  validationLogin,
+  validationEmail,
+  validationPassword,
   validationToken,
   validationName,
   validationAge,
@@ -54,17 +55,21 @@ app.post(
   validationTalk,
   validationTalkFormat,
   (req, res) => {
-    const talkers = allTalkers();
-    const talkerLength = talkers.length;
-    const newTalker = req.body;
-    talkers.push(newTalker);
-    newTalker.id = talkerLength + 1;
-    fs.writeFileSync('talker.json', JSON.stringify(newTalker));
-    res.status(201).json(newTalker);
+    try {
+      const newTalker = req.body;
+      const talkers = allTalkers();
+      const newTalkerWithId = { ...newTalker, id: talkers.length + 1 };
+      talkers.push(newTalkerWithId);
+
+      fs.writeFileSync('talker.json', JSON.stringify(talkers));
+      res.status(201).json(newTalker);
+    } catch (e) {
+      throw new Error(e);
+    }
   },
 );
 
-app.post('/login', validationLogin, (_req, res) => {
+app.post('/login', validationEmail, validationPassword, (_req, res) => {
   /* Info about crypto.randomBytes method found at
   https://www.geeksforgeeks.org/node-js-crypto-randombytes-method/ */
   const token = crypto
@@ -81,7 +86,9 @@ app.delete('/talker/:id', validationToken, (req, res) => {
   const talkerIdFilter = talkers.find((talker) => talker.id === Number(id));
   const newTalkersList = talkers.splice(talkerIdFilter, 1)[0];
   fs.writeFileSync('talker.json', JSON.stringify(newTalkersList));
-  res.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante deletada com sucesso' });
+  res
+    .status(HTTP_OK_STATUS)
+    .json({ message: 'Pessoa palestrante deletada com sucesso' });
 });
 
 app.listen(PORT, () => {

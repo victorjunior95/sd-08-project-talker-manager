@@ -1,18 +1,30 @@
-const validationLogin = (req, res, next) => {
-  const { email, password } = req.body;
+const validationEmail = (req, res, next) => {
+  const { email } = req.body;
   const EMAIL_REGEX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
-  if (!email) return res.status(400).json({ message: 'O campo "email" é obrigatório' });
+  if (!email) {
+    return res
+      .status(400)
+      .json({ message: 'O campo "email" é obrigatório' });
+  }
   if (!EMAIL_REGEX.test(email)) {
-    return res.status(400)
+    return res
+      .status(400)
       .json({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
+  next();
+};
+
+const validationPassword = (req, res, next) => {
+  const { password } = req.body;
   if (!password) {
- return res.status(400)
-      .json({ message: 'O campo "password" é obrigatório' }); 
-}
+    return res
+      .status(400)
+      .json({ message: 'O campo "password" é obrigatório' });
+  }
   if (password.length <= 6) {
-    return res.status(400)
+    return res
+      .status(400)
       .json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
   next();
@@ -51,20 +63,16 @@ const validationAge = (req, res, next) => {
 const validationTalk = (req, res, next) => {
   const { talk } = req.body;
   if (!talk) {
-    return res
-      .status(400)
-      .json({
-        message:
-          'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
-      });
+    return res.status(400).json({
+      message:
+        'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    });
   }
   if (talk.watchedAt === undefined || talk.rate === undefined) {
-    return res
-      .status(400)
-      .json({
-        message:
+    return res.status(400).json({
+      message:
         'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
-      });
+    });
   }
   next();
 };
@@ -86,7 +94,8 @@ const validationTalkFormat = (req, res, next) => {
 };
 
 module.exports = {
-  validationLogin,
+  validationEmail,
+  validationPassword,
   validationToken,
   validationName,
   validationAge,
