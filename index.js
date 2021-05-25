@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
+app.get('/talker/search', middlewares.verifyAutho, middlewares.searchTalker);
 app.get('/talker/:id', middlewares.talkerid);
 app.put('/talker/:id', middlewares.verifyAutho, middlewares.verifyName, middlewares.verifyAge,
 middlewares.verifyTalkOne, middlewares.verifyTalkTwo, middlewares.changeTalker);
