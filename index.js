@@ -53,8 +53,12 @@ app.listen(PORT, () => {
 // Caso não exista nenhuma pessoa palestrante cadastrada o endpoint deve retornar um array vazio e o status 200.
 app.route('/talker')
 .get((_req, res) => {
-  const allTalkers = getSyncData();
-  return res.status(HTTP_OK_STATUS).send(allTalkers); // o teste sempre pede pra retornar o arquivo JSON, pergunta do README está malfeita.
+  try {
+    const allTalkers = getSyncData();
+    return res.status(HTTP_OK_STATUS).send(allTalkers); // o teste sempre pede pra retornar o arquivo JSON, desnecessário if/else, como o README induz a crer.
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
 }) 
 // 4 - Crie o endpoint POST /talker
 // Os seguintes pontos serão avaliados:
