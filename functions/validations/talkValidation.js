@@ -21,7 +21,7 @@ const talkObjValidation = (req, res, next) => {
   const { watchedAt, rate } = talk;
   // O campo talk é obrigatório e nenhuma das chaves citadas anteriormente podem ser vazias.
   // Caso o campo não seja informado, esteja vazio ou então alguma de suas chaves não tenham sido informadas retorne status 400, com o seguinte corpo: { "message": "O campo \"talk\" é obrigatório e \"watchedAt\" e \"rate\" não podem ser vazios" }
-  if (!Object.prototype.hasOwnProperty.call(talk, 'time' && 'hello') 
+  if (!Object.prototype.hasOwnProperty.call(talk, 'watchedAt' && 'rate') 
   || !watchedAt || !rate) return res.status(400).send(propertyRes[0]);
   next();
 };

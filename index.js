@@ -91,7 +91,7 @@ app.route('/talker')
     newTalker.id = allTalkers.length;
     allTalkers.push(newTalker);
     writeSyncData('./talker.json', JSON.stringify(allTalkers));
-    return res.status(201).send(newTalker);
+    return res.status(201).send({ added: `${newTalker}`, to: allTalkers });
   }),
 ]);
 
