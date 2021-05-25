@@ -3,6 +3,10 @@ const bodyParser = require('body-parser');
 const challengeOne = require('./challenge1');
 const getById = require('./getById');
 const getToken = require('./getToken');
+const {
+  validateToken,
+  validateName,
+} = require('./middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,6 +22,7 @@ app.get('/', (_request, response) => {
 app.get('/talker', challengeOne);
 app.get('/talker/:id', getById);
 app.post('/login', getToken);
+app.post('/talker', validateToken, validateName);
 
 app.listen(PORT, () => {
   console.log('Online');
