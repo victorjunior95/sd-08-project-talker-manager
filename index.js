@@ -47,6 +47,26 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
+// 3 - Crie o endpoint POST /login
+// Os seguintes pontos serão avaliados:
+// O endpoint deve ser capaz de retornar um token aleatório de 16 caracteres que deverá ser utilizado nas demais requisições.
+
+// O endpoint deverá o retornar o token gerado, da seguinte forma: [{token: tokenGenerated}]
+// Há mais instruções no functions > validations > [loginValidation, nameAgeValidation, talkValidation]
+
+app.post('/login', 
+[
+  loginValidation,
+  (_req, res) => {
+    try {
+      const tokenGenerated = tokenGenerate(16);
+    res.status(HTTP_OK_STATUS).send({ token: tokenGenerated });
+    } catch (error) {
+      return res.status(500).send({ error });
+    }
+},
+]);
+
 // 1 - Crie o endpoint GET /talker
 // Os seguintes pontos serão avaliados:
 // O endpoint deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o status 200, com o seguinte corpo: [...]
@@ -79,23 +99,14 @@ app.route('/talker')
   talkObjValidation,
   talkComponentsValidation, 
   // Caso esteja tudo certo, retorne o status 201 e a pessoa cadastrada.
-  // O endpoint deve retornar o status 201 e a pessoa palestrante que foi cadastrada, da seguinte forma:
-  // {
-  //   "id": 1,
-  //   "name": "Danielle Santos",
-  //   "age": 56,
-  //   "talk": {
-  //     "watchedAt": "22/10/2019",
-  //     "rate": 5
-  //   }
-  // }
+  // O endpoint deve retornar o status 201 e a pessoa palestrante que foi cadastrada, da seguinte forma: { "id": 1, "name": "Danielle Santos", "age": 56, "talk": { "watchedAt": "22/10/2019", "rate": 4 } }
   ((req, res) => {
     try {
       const allTalkers = getSyncData();
       const newTalker = req.body;
       newTalker.id = allTalkers.length + 1;
       allTalkers.push(newTalker);
-      writeSyncData('./talker.json', allTalkers);
+      writeSyncData(`${__dirname}'./talker.json'`, allTalkers);
       return res.status(201).send(newTalker);
     } catch (error) {
       return res.status(500).send({ error });
@@ -106,11 +117,11 @@ app.route('/talker')
 // 2 - Crie o endpoint GET /talker/:id
 // O endpoint deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200 ao fazer uma requisição /talker/1, com o seguinte corpo: [...]
 // Caso não seja encontrada uma pessoa palestrante com base no id da rota, o endpoint deve retornar o status 404 com o seguinte corpo: { "message": "Pessoa palestrante não encontrada" }
-app.get('/talker/:id', (req, res) => {
+app.route('/talker/:id')
+.get((req, res) => {
   try {
     const idParams = Number(req.params.id);
     const palestrantId = getSyncData().find((element) => element.id === idParams);
-    
     if (!palestrantId) {
       res.status(404).send({
         message: 'Pessoa palestrante não encontrada',
@@ -120,24 +131,35 @@ app.get('/talker/:id', (req, res) => {
   } catch (error) {
     return res.status(500).send({ error });
   }
-});
+})
 
-// 3 - Crie o endpoint POST /login
+// 5 - Crie o endpoint PUT /talker/:id
 // Os seguintes pontos serão avaliados:
-// O endpoint deve ser capaz de retornar um token aleatório de 16 caracteres que deverá ser utilizado nas demais requisições.
-
-// O endpoint deverá o retornar o token gerado, da seguinte forma: [{token: tokenGenerated}]
-// Há mais instruções no functions > validations > [loginValidation, nameAgeValidation, talkValidation]
-
-app.post('/login', 
-[
-  loginValidation,
-  (_req, res) => {
+// O endpoint deve ser capaz de editar uma pessoa palestrante com base no id da rota, sem alterar o id registrado.
+// O corpo da requisição deverá ter o seguinte formato: (praticamente uma repetição do exercício 4)
+// Caso esteja tudo certo, retorne o status 200 e a pessoa editada.
+// O endpoint deve retornar o status 200 e a pessoa palestrante que foi editada, dá seguinte forma:
+// { "id": 1, "name": "Danielle Santos", "age": 56, "talk": { "watchedAt": "22/10/2019", "rate": 4 } }
+.put([
+  tokenValidation,
+  nameAgeValidation, 
+  talkObjValidation,
+  talkComponentsValidation, (req, res) => {
     try {
-      const tokenGenerated = tokenGenerate(16);
-    res.status(HTTP_OK_STATUS).send({ token: tokenGenerated });
+      const idParams = Number(req.params.id);
+      const everyData = getSyncData();
+      let toUpdate = getSyncData().find((element) => element.id === idParams);
+      const requestBody = req.body;  
+      requestBody.id = toUpdate.id;
+      if (toUpdate) {
+       const dataUpdate = everyData.filter((element) => element.id !== idParams);
+        toUpdate = requestBody;
+        dataUpdate.push(toUpdate);
+        dataUpdate.sort((a, b) => (a.id > b.id ? 1 : -1));
+       writeSyncData(`${__dirname}'./talker.json'`, dataUpdate);
+        res.status(200).send(requestBody);
+      }
     } catch (error) {
       return res.status(500).send({ error });
     }
-},
-]);
+}]);
