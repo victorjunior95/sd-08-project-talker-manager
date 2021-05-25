@@ -16,7 +16,7 @@ const validaData = (data) => {
 // http://strique.blogspot.com/2013/04/javascript-validacao-de-data-formato.html
 
 const checkData = (req, res, next) => {
-  const { talk: { watchedAt } } = req;
+  const { talk: { watchedAt } } = req.body;
   if (!validaData(watchedAt)) {
     return res.status(DATA_ERRADA)
       .send({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
