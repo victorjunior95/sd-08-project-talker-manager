@@ -34,6 +34,10 @@ app.post('/talker',
   validateEmpty,
   postTalker);
 
+app.post('/name', validateToken, (_req, res) => {
+  res.status(201).send('ok');
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
