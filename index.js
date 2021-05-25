@@ -8,7 +8,8 @@ const {
   validateName,
   validateAge,
   validateDate,
-  validateEmpty,
+  validateEmptyRate,
+  validateEmptyWatched,
   postTalker,
 } = require('./middlewares');
 
@@ -30,13 +31,14 @@ app.post('/talker',
   validateToken,
   validateName,
   validateAge,
-  validateEmpty,
+  validateEmptyRate,
+  validateEmptyWatched,
   validateDate,
   postTalker);
 
-app.post('/name', validateEmpty, (_req, res) => {
-  res.status(201).send('ok');
-});
+// app.post('/name', validateEmpty, (_req, res) => {
+//   res.status(201).send('ok');
+// });
 
 app.listen(PORT, () => {
   console.log('Online');

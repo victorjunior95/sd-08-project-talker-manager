@@ -3,7 +3,8 @@ const validateName = require('./validateName');
 const validateAge = require('./validateAge');
 const validateDate = require('./validateDate');
 const validateRate = require('./validateRate');
-const validateEmpty = require('./validadeEmpty');
+const validateEmptyRate = require('./validadeEmptyRate');
+const validateEmptyWatched = require('./validateEmptyWatched');
 const postTalker = require('./postTalker');
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
   validateAge,
   validateDate,
   validateRate,
-  validateEmpty,
+  validateEmptyRate,
+  validateEmptyWatched,
   postTalker,
 };

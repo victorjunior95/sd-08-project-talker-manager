@@ -1,7 +1,6 @@
-const validateEmpty = (req, res, next) => {
+const validateEmptyWatched = (req, res, next) => {
   const { talk } = req.body;
-  if (!talk.rate
-    || talk.rate === ''
+  if (!talk
     || !talk.watchedAt
     || talk.watchedAt === '') {
     return res.status(400).send({
@@ -11,4 +10,4 @@ const validateEmpty = (req, res, next) => {
   next();
 };
 
-module.exports = validateEmpty;
+module.exports = validateEmptyWatched;

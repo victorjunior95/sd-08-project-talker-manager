@@ -4,7 +4,8 @@ const nomeDoArquivo = 'talker.json';
 
 const addTalker = (obj) => {
   const data = JSON.parse(fs.readFileSync(nomeDoArquivo));
-  return JSON.stringify(data.push(obj));
+  data.push(obj);
+  return JSON.stringify(data);
 };
 
 module.exports = addTalker;
