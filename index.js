@@ -1,182 +1,102 @@
+const fs = require('fs').promises;
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs').promises;
 const crypto = require('crypto');
-const validate = require('./validate');
-// const path = require('path');
 
-const SUCCESS = 200;
-const CREATED = 201;
-const BAD_REQUEST = 400;
-// const UNAUTHORIZED = 401;
-const NOT_FOUND = 404;
-const PORT = 3000;
+const {
+  emailValidation,
+  passwordValidation,
+  isObject,
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  rateValidation,
+  watchedAtValidation,
+} = require('./src/core/validation');
 
-const TALKER_FILE = 'talker.json';
+const {
+  HTTP_OK_STATUS,
+  HTTP_NOT_FOUND_STATUS,
+  HTTP_BAD_REQUEST_STATUS,
+  HTTP_CREATED_STATUS,
+  PORT,
+} = require('./src/common/httpStatus');
+
+const file = './talker.json';
 
 const app = express();
 app.use(bodyParser.json());
 
-// não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
-  response.status(SUCCESS).send();
+  response.status(HTTP_OK_STATUS).send('Hello World!');
 });
 
-// Requisito 01
-app.get('/talker', async (req, res) => {
-  const data = await fs.readFile(TALKER_FILE);
-
-  if (!data) {
-    return res.status(SUCCESS).send([]);
+app.get('/talker', async (_request, response) => {
+  const mockData = await fs.readFile(file);
+  if (!mockData) {
+    return response.status(HTTP_OK_STATUS).send([]);
   }
-
-  return res.status(SUCCESS).send(JSON.parse(data));
+  return response.status(HTTP_OK_STATUS).send(JSON.parse(mockData));
 });
 
-// Requisito 07
-app.get('/talker/search', validate.token, async (req, res) => {
-  const searchQuery = req.query.q;
-  const file = await fs.readFile(TALKER_FILE);
-  const talkers = JSON.parse(file);
-
-  if (!searchQuery || searchQuery === '') {
-    return res.status(SUCCESS).json(talkers);
+app.get('/talker/:id', async (_request, response) => {
+  const mockData = await fs.readFile(file);
+  const { id } = _request.params;
+  const talker = JSON.parse(mockData).find(
+    (eachTalker) => eachTalker.id === parseInt(id)
+  );
+  if (!talker) {
+    return response.status(HTTP_NOT_FOUND_STATUS).send({
+      message: 'Pessoa palestrante não encontrada',
+    });
   }
-
-  const searchResult = talkers.filter((talker) =>
-    talker.name.includes(searchQuery));
-
-  if (!searchResult || searchResult === []) {
-    return res.status(SUCCESS).json([]);
-  }
-
-  return res.status(SUCCESS).json(searchResult);
+  return response.status(HTTP_OK_STATUS).send(talker);
 });
 
-// Requisito 02
-app.get('/talker/:id', async (req, res) => {
-  const { id } = req.params;
-
-  const data = await fs.readFile(TALKER_FILE);
-
-  const findTalker = JSON.parse(data).find((e) => e.id === parseInt(id, 10));
-
-  if (!findTalker) {
-    return res
-      .status(NOT_FOUND)
-      .send({ message: 'Pessoa palestrante não encontrada' });
+app.post('/login', ({ body }, response) => {
+  const { email, password } = body;
+  const token = crypto.randomBytes(16).toString('hex');
+  if (isObject(emailValidation(email))) {
+    return response
+      .status(HTTP_BAD_REQUEST_STATUS)
+      .send(emailValidation(email));
   }
-
-  return res.status(SUCCESS).send(findTalker);
+  if (isObject(passwordValidation(password))) {
+    return response
+      .status(HTTP_BAD_REQUEST_STATUS)
+      .send(passwordValidation(password));
+  }
+  return response.status(HTTP_OK_STATUS).send({ token: `${token}` });
 });
 
-// Requisito 03
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  const isEmailValid = validate.email(email);
-  const isPasswordValid = validate.password(password);
-
-  if (typeof isEmailValid === 'object') {
-    return res.status(BAD_REQUEST).send(isEmailValid);
-  }
-
-  if (typeof isPasswordValid === 'object') {
-    return res.status(BAD_REQUEST).send(isPasswordValid);
-  }
-
-  const token = crypto.randomBytes(8).toString('hex');
-
-  return res.status(SUCCESS).send({ token: `${token}` });
-});
-
-// Reqisito 04
 app.post(
   '/talker',
-  validate.token,
-  validate.name,
-  validate.age,
-  validate.talk,
-  validate.rate,
-  validate.watchedAt,
-  async (req, res) => {
-    const file = await fs.readFile(TALKER_FILE);
-    const talkers = JSON.parse(file);
-    const { name, age, talk } = req.body;
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  rateValidation,
+  watchedAtValidation,
+  async ({ body }, response) => {
+    const mockData = await fs.readFile(file);
+    const talkersOnDataBase = JSON.parse(mockData);
+    const { name, age, talk } = body;
 
-    const newTalker = {
+    const newTalkerPeople = {
       name,
       age,
-      id: talkers.length + 1,
-      talk: {
-        watchedAt: talk.watchedAt,
-        rate: talk.rate,
-      },
+      id: talkersOnDataBase.length + 1,
+      talk: { watchedAt: talk.watchedAt, rate: talk.rate },
     };
 
-    talkers.push(newTalker);
-    const jsonTalkers = JSON.stringify(talkers);
-    await fs.writeFile('talker.json', jsonTalkers);
-    return res.status(CREATED).json(newTalker);
+    talkersOnDataBase.push(newTalkerPeople);
+    const databaseUpdateTalkers = JSON.parse(talkersOnDataBase);
+    await fs.writeFile('talker.json', databaseUpdateTalkers);
+    return response.status(HTTP_CREATED_STATUS).json(newTalkerPeople);
   },
 );
-
-// Requisito 05
-const editTalker = (name, age, talk, id) => ({
-  name,
-  age,
-  id: parseInt(id, 10),
-  talk: {
-    watchedAt: talk.watchedAt,
-    rate: talk.rate,
-  },
-});
-
-app.put(
-  '/talker/:id',
-  validate.token,
-  validate.name,
-  validate.age,
-  validate.talk,
-  validate.rate,
-  validate.watchedAt,
-  async (req, res) => {
-    const { id } = req.params;
-    const file = await fs.readFile(TALKER_FILE);
-    const talkers = JSON.parse(file);
-    const { name, age, talk } = req.body;
-
-    const editedTalker = editTalker(name, age, talk, id);
-
-    const editedTalkers = [
-      ...talkers.slice(0, id - 1),
-      editedTalker,
-      ...talkers.slice(id - 1, talkers.length - 1),
-    ];
-
-    const jsonTalkers = JSON.stringify(editedTalkers);
-    await fs.writeFile(TALKER_FILE, jsonTalkers);
-    return res.status(SUCCESS).json(editedTalker);
-  },
-);
-
-// Requisito 06
-app.delete('/talker/:id', validate.token, async (req, res) => {
-  const { id } = req.params;
-  const file = await fs.readFile(TALKER_FILE);
-  const talkers = JSON.parse(file);
-
-  const editedTalkers = [
-    ...talkers.slice(0, id - 2),
-    ...talkers.slice(id - 2, talkers.length - 1),
-  ];
-
-  const jsonTalkers = JSON.stringify(editedTalkers);
-  await fs.writeFile(TALKER_FILE, jsonTalkers);
-  return res
-    .status(SUCCESS)
-    .json({ message: 'Pessoa palestrante deletada com sucesso' });
-});
 
 app.listen(PORT, () => {
-  console.log('Online');
+  console.log('Online in | http://localhost:3000/');
 });
