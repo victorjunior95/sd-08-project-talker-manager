@@ -90,8 +90,8 @@ app.route('/talker')
     const newTalker = req.body;
     newTalker.id = allTalkers.length + 1;
     allTalkers.push(newTalker);
-    writeSyncData('./talker.json', JSON.stringify(allTalkers));
-    return res.status(201).send(newTalker);
+    writeSyncData('./talker.json', allTalkers);
+    return res.status(201).send({ message1: newTalker, message2: (allTalkers) });
   }),
 ]);
 
