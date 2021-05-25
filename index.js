@@ -30,11 +30,11 @@ app.post('/talker',
   validateToken,
   validateName,
   validateAge,
-  validateDate,
   validateEmpty,
+  validateDate,
   postTalker);
 
-app.post('/name', validateToken, (_req, res) => {
+app.post('/name', validateEmpty, (_req, res) => {
   res.status(201).send('ok');
 });
 
