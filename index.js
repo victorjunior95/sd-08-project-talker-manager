@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const fs = require('fs');
 const rescue = require('express-rescue');
 const talkerUtils = require('./fs-utils');
 const validationUser = require('./middlewares/authorization');
