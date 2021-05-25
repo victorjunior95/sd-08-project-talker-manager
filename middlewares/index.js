@@ -6,6 +6,7 @@ const checkData = require('./checkData');
 const checkRate = require('./checkRate');
 const checkTalk = require('./checkTalk');
 const cadastra = require('./cadastra');
+const atualizar = require('./atualizar');
 
 module.exports = {
   lerJson,
@@ -17,4 +18,5 @@ module.exports = {
   checkRate,
   checkTalk,
   cadastra,
+  atualizar,
 };

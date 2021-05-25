@@ -9,6 +9,7 @@ const {
   checkRate,
   checkTalk,
   cadastra,
+  atualizar,
 } = require('../middlewares');
 
 const rotaTalker = express.Router();
@@ -41,5 +42,14 @@ rotaTalker.post('/',
   checkData,
   checkRate,
   cadastra);
+
+rotaTalker.put('/:id',
+  checToken,
+  checkName,
+  checkAge,
+  checkTalk,
+  checkData,
+  checkRate,
+  atualizar);
 
 module.exports = rotaTalker;
