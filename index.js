@@ -14,9 +14,9 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-// app.get('/talker', middlewares.allTalkers, (req, res) => {
-//   res.status(200).json(req.talkersAll);
-// });
+app.get('/talker', middlewares.allTalkers, (req, res) => {
+  res.status(200).json(req.talkersAll);
+});
 
 app.get('/talker/:id', middlewares.talkerById, (req, res) => {
   if (req.talkerID) {
@@ -48,6 +48,39 @@ middlewares.checkAge, middlewares.checkTalk, middlewares.checkDateRate, async (r
     talkers.push(newTalker);
     await fs.promises.writeFile('./talker.json', JSON.stringify(talkers));
     res.status(201).json(newTalker);
+  } catch (error) {
+    console.log(error.menssage);
+  }
+});
+
+app.put('/talker/:id', middlewares.tokenVerify, middlewares.checkName,
+middlewares.checkAge, middlewares.checkTalk, middlewares.checkDateRate, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const talkers = JSON.parse(await fs.promises.readFile('./talker.json', 'utf-8'));
+    const newTalker = {
+      name: req.body.name,
+      age: req.body.age,
+      id: parseInt(id, 10),
+      talk: req.body.talk,
+    };
+    talkers.splice(parseInt(id, 10) - 1, 1, newTalker);
+    await fs.promises.writeFile('./talker.json', JSON.stringify(talkers));
+    res.status(200).json(newTalker);
+  } catch (error) {
+    console.log(error.menssage);
+  }
+});
+
+app.delete('/talker/:id', middlewares.tokenVerify, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const talkers = JSON.parse(await fs.promises.readFile('./talker.json', 'utf-8'));
+    talkers.splice(parseInt(id, 10) - 1, 1);
+    await fs.promises.writeFile('./talker.json', JSON.stringify(talkers));
+    res.status(200).json({
+      message: 'Pessoa palestrante deletada com sucesso'.
+    });
   } catch (error) {
     console.log(error.menssage);
   }
