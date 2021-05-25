@@ -18,7 +18,7 @@ function validateEmail(email) {
 function geraToken() {
   let token = '';
   const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let index = 0; index < 16; index = +1) {
+  for (let index = 0; index < 16; index += 1) {
     token += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
   }
   return token;
@@ -45,10 +45,13 @@ app.get('/talker/:id', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  if (!email) return res.status(400).send({ message: 'O campo "email" é obrigatório' });
+  if (!email) {
+    return res.status(400).send({ message: 'O campo "email" é obrigatório' });
+  } 
   if (!validateEmail(email)) {
     return res.status(400).send({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
+  console.log('Passei');
   if (!password) return res.status(400).send({ message: 'O campo "password" é obrigatório' });
   if (password.toString().length < 6) {
     return res.status(400).send({ message: 'O "password" deve ter pelo menos 6 caracteres' });
