@@ -1,13 +1,10 @@
-const validationToken = (req, res, next) => {
+  const validationToken = (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
-  const validHeaderRegex = new RegExp('0-9a-z', 'i');
+  const validHeaderRegex = /^(\d|\w){16}$/gm;
   if (!authorizationHeader) {
     return res.status(401).json({ message: 'Token não encontrado' });
   }
-  if (
-    authorizationHeader.length < 16
-    || validHeaderRegex.test(authorizationHeader)
-  ) {
+  if (validHeaderRegex.test(authorizationHeader)) {
     return res.status(401).json({ message: 'Token inválido' });
   }
 
@@ -17,7 +14,7 @@ const validationToken = (req, res, next) => {
 const validationName = (req, res, next) => {
   const { name } = req.body;
   if (!name) {
-    res.status(400).json({ message: 'O campo "name" é obrigatório ' });
+    res.status(400).json({ message: 'O campo "name" é obrigatório' });
   }
   if (name.length < 3) {
     res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
@@ -40,11 +37,11 @@ function validationTalk(req, res, next) {
   const { talk } = req.body;
   if (!talk) {
     res.status(400)
-    .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios ' });
+    .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
   if (!talk.watchedAt || !talk.rate) {
     res.status(400)
-    .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios ' });
+    .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
   next();
 }
