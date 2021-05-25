@@ -79,7 +79,7 @@ app.delete('/talker/:id', middlewares.tokenVerify, async (req, res) => {
     talkers.splice(parseInt(id, 10) - 1, 1);
     await fs.promises.writeFile('./talker.json', JSON.stringify(talkers));
     res.status(200).json({
-      message: 'Pessoa palestrante deletada com sucesso'.
+      message: 'Pessoa palestrante deletada com sucesso',
     });
   } catch (error) {
     console.log(error.menssage);
