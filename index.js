@@ -7,12 +7,19 @@ const {
   emailValidation,
   passwordValidation,
   isObject,
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  rateValidation,
+  watchedAtValidation,
 } = require("./src/core/validation");
 
 const {
   HTTP_OK_STATUS,
   HTTP_NOT_FOUND_STATUS,
   HTTP_BAD_REQUEST_STATUS,
+  HTTP_CREATED_STATUS,
   PORT,
 } = require("./src/common/httpStatus");
 
@@ -62,6 +69,33 @@ app.post("/login", ({ body }, response) => {
   }
   return response.status(HTTP_OK_STATUS).send({ token: `${token}` });
 });
+
+app.post(
+  "/talker",
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  rateValidation,
+  watchedAtValidation,
+  async ({ body }, response) => {
+    const mockData = await fs.readFile(file);
+    const talkersOnDataBase = JSON.parse(mockData);
+    const { name, age, talk } = body;
+
+    const newTalkerPeople = {
+      name,
+      age,
+      id: talkersOnDataBase.length + 1,
+      talk: { watchedAt: talk.watchedAt, rate: talk.rate },
+    };
+
+    talkersOnDataBase.push(newTalkerPeople);
+    const databaseUpdateTalkers = JSON.parse(talkersOnDataBase);
+    await fs.writeFile("talker.json", databaseUpdateTalkers);
+    return response.status(HTTP_CREATED_STATUS).json(newTalkerPeople);
+  }
+);
 
 app.listen(PORT, () => {
   console.log("Online in | http://localhost:3000/");
