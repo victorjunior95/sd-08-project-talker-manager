@@ -1,15 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+// const fs = require('fs');
 const rescue = require('express-rescue');
 const talkerUtils = require('./fs-utils');
 const validationUser = require('./middlewares/authorization');
-// const addTalker = require('./middlewares/addTalker');
-// const
-// { validationName,
-//   validationTalk,
-//   validationRateAndDate,
-//   validationAge } = require('./middlewares/validationTalkerInfo');
-// const authMiddleware = require('./middlewares/tokenUser');
+const addTalker = require('./middlewares/addTalker');
+const
+{ validationName,
+  validationTalk,
+  validationRateAndDate,
+  validationAge,
+  validationToken } = require('./middlewares/validationTalkerInfo');
 
 const app = express();
 app.use(bodyParser.json());
@@ -38,15 +39,15 @@ app.get('/', (_request, response) => {
 
 app.post('/login', validationUser);
 
-// app.post(
-//   '/talker',
-//   authMiddleware,
-//   validationName,
-//   validationAge,
-//   validationTalk,
-//   validationRateAndDate,
-//   addTalker,
-// );
+app.post(
+  '/talker',
+  validationToken,
+  validationName,
+  validationAge,
+  validationTalk,
+  validationRateAndDate,
+  addTalker,
+);
 
 app.listen(PORT, () => {
   console.log('Online');

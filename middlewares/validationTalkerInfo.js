@@ -1,6 +1,22 @@
+const validationToken = (req, res, next) => {
+  if (!req.headers.authorization) {
+    return res.status(401).json({ message: 'Token não encontrado' });
+  }
+  const authorizationHeader = req.headers.authorization;
+  const validHeaderRegex = new RegExp('0-9a-z', 'i');
+  if (
+    authorizationHeader.length < 16
+    || validHeaderRegex.test(authorizationHeader)
+  ) {
+    return res.status(401).json({ message: 'Token invalido' });
+  }
+
+  next();
+};
+
 const validationName = (req, res, next) => {
   const { name } = req.body;
-  if (name === '') {
+  if (!name) {
     res.status(400).json({ message: 'O campo "name" é obrigatório ' });
   }
   if (name.length < 3) {
@@ -35,7 +51,7 @@ function validationTalk(req, res, next) {
 
 // referencia de regex - StackOverFlow https://stackoverflow.com/questions/29625322/validate-dateformat-in-dd-mm-yyyy-using-regex?noredirect=1&lq=1
 const validationRateAndDate = (req, res, next) => {
-  const { watchedAt, rate } = req.body.talk;
+  const { talk: { watchedAt, rate } } = req.body;
   if (!Number.isInteger(rate) || rate > 5 || rate < 1) {
     res.status(400).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
@@ -46,6 +62,7 @@ const validationRateAndDate = (req, res, next) => {
 };
 
 module.exports = {
+  validationToken,
   validationName,
   validationAge,
   validationTalk,
