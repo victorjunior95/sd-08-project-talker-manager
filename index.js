@@ -1,6 +1,6 @@
 const express = require('express');
 // const bodyParser = require('body-parser');
-const { getAllTalker } = require('./routes');
+const { TalkerRoute } = require('./routes');
 
 const app = express();
 // app.use(bodyParser.json());
@@ -14,9 +14,9 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-// meu código aqui
+// meu código aqui assim como foi visto da aula da turma 07
 
-app.use('/talker', getAllTalker);
+app.use('/talker', TalkerRoute);
 
 app.listen(PORT, () => {
   console.log('Online');

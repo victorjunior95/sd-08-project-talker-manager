@@ -1,3 +1,3 @@
-const getAllTalker = require('./getAllTalkers');
+const TalkerRoute = require('./Talker');
 
-module.exports = { getAllTalker };
+module.exports = { TalkerRoute };
