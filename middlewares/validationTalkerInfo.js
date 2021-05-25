@@ -1,13 +1,12 @@
   const validationToken = (req, res, next) => {
-  const authorizationHeader = req.headers.authorization;
-  const validHeaderRegex = /^(\d|\w){16}$/gm;
-  if (!authorizationHeader) {
-    return res.status(401).json({ message: 'Token não encontrado' });
+  const tokenHeader = req.headers.authorization;
+  const tokenRegexValidation = /^(\d|\w){16}$/gm.test(tokenHeader);
+  if (!tokenHeader) {
+    res.status(401).json({ message: 'Token não encontrado' });
   }
-  if (validHeaderRegex.test(authorizationHeader)) {
-    return res.status(401).json({ message: 'Token inválido' });
+  if (!tokenRegexValidation) {
+    res.status(401).json({ message: 'Token inválido' });
   }
-
   next();
 };
 
@@ -28,7 +27,7 @@ const validationAge = (req, res, next) => {
     res.status(400).json({ message: 'O campo "age" é obrigatório' });
   }
   if (age < 18) {
-    res.status(400).json({ message: 'A pessoa palestrando deve ser maior de idade' });
+    res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
   next();
 };
@@ -53,7 +52,7 @@ const validationRateAndDate = (req, res, next) => {
     res.status(400).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
   if (!/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/.test(watchedAt)) {
-    res.status(400).json({ message: 'O campo "watchedAt" deve ser no formato "dd/mm/aaaa"' });
+    res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
   }
   next();
 };

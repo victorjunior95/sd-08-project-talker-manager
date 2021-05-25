@@ -5,17 +5,25 @@ const talkerUtils = require('./fs-utils');
 const validationUser = require('./middlewares/authorization');
 const addTalker = require('./middlewares/addTalker');
 const
-{ validationName,
+{ 
+  validationToken,
+  validationName,
+  validationAge,
   validationTalk,
   validationRateAndDate,
-  validationAge,
-  validationToken } = require('./middlewares/validationTalkerInfo');
+   } = require('./middlewares/validationTalkerInfo');
+const updateTalker = require('./middlewares/updateTalker');
 
 const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
+
+// não remova esse endpoint, e para o avaliador funcionar
+app.get('/', (_request, response) => {
+  response.status(HTTP_OK_STATUS).send();
+});
 
 app.get('/talker', rescue(async (_req, res) => {
   const talkers = await talkerUtils.getTalker();
@@ -31,11 +39,6 @@ app.get('/talker/:id', rescue(async (req, res) => {
   res.status(HTTP_OK_STATUS).json(talker);
 }));
 
-// não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (_request, response) => {
-  response.status(HTTP_OK_STATUS).send();
-});
-
 app.post('/login', validationUser);
 
 app.post(
@@ -46,6 +49,16 @@ app.post(
   validationTalk,
   validationRateAndDate,
   addTalker,
+);
+
+app.put(
+  '/talker/:id',
+  validationToken,
+  validationName,
+  validationAge,
+  validationTalk,
+  validationRateAndDate,
+  updateTalker,
 );
 
 app.listen(PORT, () => {
