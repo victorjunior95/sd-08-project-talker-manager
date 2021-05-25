@@ -11,6 +11,7 @@ const {
   validateEmptyRate,
   validateEmptyWatched,
   postTalker,
+  validateRate,
 } = require('./middlewares');
 
 const app = express();
@@ -34,11 +35,8 @@ app.post('/talker',
   validateEmptyRate,
   validateEmptyWatched,
   validateDate,
+  validateRate,
   postTalker);
-
-// app.post('/name', validateEmpty, (_req, res) => {
-//   res.status(201).send('ok');
-// });
 
 app.listen(PORT, () => {
   console.log('Online');
