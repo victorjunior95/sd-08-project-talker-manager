@@ -6,6 +6,10 @@ const getToken = require('./getToken');
 const {
   validateToken,
   validateName,
+  validateAge,
+  validateDate,
+  validateEmpty,
+  postTalker,
 } = require('./middlewares');
 
 const app = express();
@@ -22,7 +26,13 @@ app.get('/', (_request, response) => {
 app.get('/talker', challengeOne);
 app.get('/talker/:id', getById);
 app.post('/login', getToken);
-app.post('/talker', validateToken, validateName);
+app.post('/talker',
+  validateToken,
+  validateName,
+  validateAge,
+  validateDate,
+  validateEmpty,
+  postTalker);
 
 app.listen(PORT, () => {
   console.log('Online');
