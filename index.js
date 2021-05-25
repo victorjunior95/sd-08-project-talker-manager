@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const challengeOne = require('./challenge1');
 const getById = require('./getById');
+const getToken = require('./getToken');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,6 +17,7 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', challengeOne);
 app.get('/talker/:id', getById);
+app.post('/login', getToken);
 
 app.listen(PORT, () => {
   console.log('Online');
