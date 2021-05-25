@@ -3,6 +3,7 @@ const validateName = require('./validateName');
 const validateTalk = require('./validateTalk');
 const validateTalkIsEmpty = require('./validateTalkIsEmpty');
 const validateToken = require('./validateToken');
+const validateDate = require('./validateDate');
 
 module.exports = {
   validateAge,
@@ -10,4 +11,5 @@ module.exports = {
   validateTalkIsEmpty,
   validateTalk,
   validateToken,
+  validateDate,
 };

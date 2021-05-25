@@ -9,11 +9,10 @@ const updateDB = (content) => {
 };
 
 const pushTalker = (newTalker) => {
-  const currDB = getDB();
+  const currDB = [...getDB()];
   const newTalkerWithid = { ...newTalker, id: currDB.length + 1 };
-  const updatedDB = [...currDB, newTalkerWithid];
-  console.log(updatedDB);
-  updateDB(updatedDB);
+  const newDB = [...currDB, newTalkerWithid];
+  updateDB(newDB);
 };
 
 const getLastTalker = () => {
@@ -22,9 +21,19 @@ const getLastTalker = () => {
   return lastInDB;
 };
 
+const editTalker = (newTalker, talkerId) => {
+  const db = [...getDB()];
+  const removedOld = db.filter(({ id }) => id !== talkerId);
+  const newTalkerWithId = { ...newTalker, id: talkerId };
+  const updated = [...removedOld, newTalkerWithId];
+  updateDB(updated);
+  return updated[updated.length - 1];
+};
+
 module.exports = {
   getDB,
   updateDB,
   pushTalker,
   getLastTalker,
+  editTalker,
 };

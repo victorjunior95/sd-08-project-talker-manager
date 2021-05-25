@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { getDB, pushTalker, getLastTalker } = require('./services/handleDB');
+const { pushTalker, getLastTalker, editTalker } = require('./services/handleDB');
 
 const { allTalkers, talkerById, loginValidation } = require('./middlewares');
 const { 
@@ -36,14 +36,25 @@ app.post(
   validateTalkIsEmpty,
   validateTalk,
   (req, res) => {
-  console.log(getDB);
-  console.log(req.body);
   const newTalker = req.body;
   pushTalker(newTalker);
-  console.log(getLastTalker());
   res.status(201).json(getLastTalker());
   },
-  
+);
+
+app.put(
+  '/talker/:id',
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalkIsEmpty,
+  validateTalk,
+  (req, res) => {
+    const updatedTalker = req.body;
+    const id = Number(req.params.id);
+    const pastTalker = editTalker(updatedTalker, id);
+    res.status(200).json(pastTalker);
+  },
 );
 
 app.listen(PORT, () => {
