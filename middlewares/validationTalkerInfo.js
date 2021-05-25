@@ -8,7 +8,7 @@ const validationToken = (req, res, next) => {
     authorizationHeader.length < 16
     || validHeaderRegex.test(authorizationHeader)
   ) {
-    return res.status(401).json({ message: 'Token invalido' });
+    return res.status(401).json({ message: 'Token inválido' });
   }
 
   next();
@@ -20,7 +20,7 @@ const validationName = (req, res, next) => {
     res.status(400).json({ message: 'O campo "name" é obrigatório ' });
   }
   if (name.length < 3) {
-    res.status(400).json({ message: 'O campo name deve ter pelo menos 3 caracteres' });
+    res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
   }
   next();
 };
