@@ -4,6 +4,7 @@ const fsProm = require('fs').promises;
 const filePath = './talker.json';
 
 const getSyncData = () => JSON.parse(fs.readFileSync(filePath, 'utf8'));
+const writeSyncData = (json, writeFile) => fs.writeFileSync(json, JSON.stringify(writeFile));
 
 let fsPromiseData1;
 let fsPromiseData2;
@@ -71,4 +72,5 @@ module.exports = {
   direct1,
   promiseRs1,
   tokenGenerate,
+  writeSyncData,
 };

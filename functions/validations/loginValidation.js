@@ -6,9 +6,10 @@
 // }
 // O campo email deverá ser um email válido. Ele é obrigatório.
 // JSON.stringify({ message: 'O campo "email" é obrigatório' }) == jsonFile({{ "message": "O campo \"email\" é obrigatório" }});
- const { req3Responses } = require('./JsonResponseMessages.json');
 
-const emailPassValid = (req, res, next) => {
+const { req3Responses } = require('./JsonResponseMessages.json');
+
+const loginValidation = (req, res, next) => {
   const { body } = req;
   const { email, password } = body;
   const EMAIL_VALIDATION = /^[\w]+@([\w]+\.)+[\w]{2,4}$/gi; // fonte: https://regexr.com/3e48o
@@ -29,4 +30,4 @@ const emailPassValid = (req, res, next) => {
   next();
 };
 
-module.exports = { emailPassValid };
+module.exports = { loginValidation };

@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // const path = require('path'); 
 const { 
-  getSyncData, tokenGenerate,
+  getSyncData, tokenGenerate, writeSyncData,
   // fsPromiseData1,
   // fsPromiseData2,
   // assigingFs1,
@@ -10,7 +10,12 @@ const {
   // direct1,
   // promiseRs1 
 } = require('./functions/fsAndOthers.js');
-const { emailPassValid } = require('./functions/validations/loginValidation');
+const { loginValidation } = require('./functions/validations/loginValidation');
+const { tokenValidation } = require('./functions/validations/tokenValidation.js');
+const { nameAgeValidation } = require('./functions/validations/nameAgeValidation.js');
+const {
+   talkObjValidation, 
+   talkComponentsValidation } = require('./functions/validations/talkValidation.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -47,8 +52,48 @@ app.listen(PORT, () => {
 // O endpoint deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o status 200, com o seguinte corpo: [...]
 // Caso não exista nenhuma pessoa palestrante cadastrada o endpoint deve retornar um array vazio e o status 200.
 app.route('/talker')
-.get((_req, res) => (res.status(HTTP_OK_STATUS).send(getSyncData()))) // o teste sempre pede pra retornar o arquivo JSON, pergunta do README está malfeita.
-.post((req, res) => (res.status(HTTP_OK_STATUS).send()));
+.get((_req, res) => {
+  const allTalkers = getSyncData();
+  return res.status(HTTP_OK_STATUS).send(allTalkers); // o teste sempre pede pra retornar o arquivo JSON, pergunta do README está malfeita.
+}) 
+// 4 - Crie o endpoint POST /talker
+// Os seguintes pontos serão avaliados:
+// O endpoint deve ser capaz de adicionar uma nova pessoa palestrante ao seu arquivo;
+// O corpo da requisição deverá ter o seguinte formato:
+// {
+//   "name": "Danielle Santos",
+//   "age": 56,
+//   "talk": {
+//     "watchedAt": "22/10/2019",
+//     "rate": 5
+//   }
+// }
+// Aí vem as instruções de loginValidation; então nameAgeValidation; então talkValidation[talkObjValidation, talkComponentsValidation];
+.post([
+  tokenValidation,
+  nameAgeValidation, 
+  talkObjValidation,
+  talkComponentsValidation, 
+  // Caso esteja tudo certo, retorne o status 201 e a pessoa cadastrada.
+  // O endpoint deve retornar o status 201 e a pessoa palestrante que foi cadastrada, da seguinte forma:
+  // {
+  //   "id": 1,
+  //   "name": "Danielle Santos",
+  //   "age": 56,
+  //   "talk": {
+  //     "watchedAt": "22/10/2019",
+  //     "rate": 5
+  //   }
+  // }
+  ((req, res) => {
+    const allTalkers = getSyncData();
+    const newTalker = req.body;
+    newTalker.id = allTalkers.length;
+    allTalkers.push(newTalker);
+    writeSyncData('./talker.json', JSON.stringify(allTalkers));
+    return res.status(201).send(newTalker);
+  }),
+]);
 
 // 2 - Crie o endpoint GET /talker/:id
 // O endpoint deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200 ao fazer uma requisição /talker/1, com o seguinte corpo: [...]
@@ -70,11 +115,12 @@ res.status(HTTP_OK_STATUS).send(palestrantId);
 // O endpoint deve ser capaz de retornar um token aleatório de 16 caracteres que deverá ser utilizado nas demais requisições.
 
 // O endpoint deverá o retornar o token gerado, da seguinte forma: [{token: tokenGenerated}]
-// Há mais instruções no functions > validations > emailPassValid
+// Há mais instruções no functions > validations > [loginValidation, nameAgeValidation, talkValidation]
 
 app.post('/login', 
 [
-  emailPassValid, (_req, res) => {
+  loginValidation,
+  (_req, res) => {
   const tokenGenerated = tokenGenerate(16);
 res.status(HTTP_OK_STATUS).send({ token: tokenGenerated });
 },
