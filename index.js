@@ -1,12 +1,20 @@
 const fs = require("fs").promises;
 const express = require("express");
 const bodyParser = require("body-parser");
+const crypto = require("crypto");
+
+const {
+  emailValidation,
+  passwordValidation,
+  isObject,
+} = require("./src/core/validation");
 
 const {
   HTTP_OK_STATUS,
   HTTP_NOT_FOUND_STATUS,
+  HTTP_BAD_REQUEST_STATUS,
   PORT,
-} = require("./src/common/defs");
+} = require("./src/common/httpStatus");
 
 const file = "./talker.json";
 
@@ -37,6 +45,22 @@ app.get("/talker/:id", async (_request, response) => {
     });
   }
   return response.status(HTTP_OK_STATUS).send(talker);
+});
+
+app.post("/login", ({ body }, response) => {
+  const { email, password } = body;
+  const token = crypto.randomBytes(16).toString("hex");
+  if (isObject(emailValidation(email))) {
+    return response
+      .status(HTTP_BAD_REQUEST_STATUS)
+      .send(emailValidation(email));
+  }
+  if (isObject(passwordValidation(password))) {
+    return response
+      .status(HTTP_BAD_REQUEST_STATUS)
+      .send(passwordValidation(password));
+  }
+  return response.status(HTTP_OK_STATUS).send({ token: `${token}` });
 });
 
 app.listen(PORT, () => {
