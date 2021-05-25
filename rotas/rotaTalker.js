@@ -10,6 +10,7 @@ const {
   checkTalk,
   cadastra,
   atualizar,
+  deletar,
 } = require('../middlewares');
 
 const rotaTalker = express.Router();
@@ -51,5 +52,9 @@ rotaTalker.put('/:id',
   checkData,
   checkRate,
   atualizar);
+
+rotaTalker.delete('/:id',
+  checToken,
+  deletar);
 
 module.exports = rotaTalker;

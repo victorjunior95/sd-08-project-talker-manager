@@ -7,6 +7,7 @@ const checkRate = require('./checkRate');
 const checkTalk = require('./checkTalk');
 const cadastra = require('./cadastra');
 const atualizar = require('./atualizar');
+const deletar = require('./deletar');
 
 module.exports = {
   lerJson,
@@ -19,4 +20,5 @@ module.exports = {
   checkTalk,
   cadastra,
   atualizar,
+  deletar,
 };
