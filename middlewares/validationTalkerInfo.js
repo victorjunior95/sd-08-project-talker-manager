@@ -42,7 +42,7 @@ function validationTalk(req, res, next) {
     res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios ' });
   }
-  if (talk.watchedAt === undefined || talk.rate === undefined) {
+  if (!talk.watchedAt || !talk.rate) {
     res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios ' });
   }
