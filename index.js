@@ -43,10 +43,6 @@ app.get('/', (_request, response) => {
     );
 });
 
-app.listen(PORT, () => {
-  console.log('Online');
-});
-
 // 3 - Crie o endpoint POST /login
 // Os seguintes pontos serão avaliados:
 // O endpoint deve ser capaz de retornar um token aleatório de 16 caracteres que deverá ser utilizado nas demais requisições.
@@ -163,3 +159,7 @@ app.route('/talker/:id')
       return res.status(500).send({ error });
     }
 }]);
+
+app.listen(PORT, () => {
+  console.log('Online');
+});
