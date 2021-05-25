@@ -86,12 +86,16 @@ app.route('/talker')
   //   }
   // }
   ((req, res) => {
-    const allTalkers = getSyncData();
-    const newTalker = req.body;
-    newTalker.id = allTalkers.length + 1;
-    allTalkers.push(newTalker);
-    writeSyncData('./talker.json', allTalkers);
-    return res.status(201).send(newTalker);
+    try {
+      const allTalkers = getSyncData();
+      const newTalker = req.body;
+      newTalker.id = allTalkers.length + 1;
+      allTalkers.push(newTalker);
+      writeSyncData('./talker.json', allTalkers);
+      return res.status(201).send(newTalker);
+    } catch (error) {
+      return res.status(500).send({ error });
+    }
   }),
 ]);
 
@@ -99,15 +103,19 @@ app.route('/talker')
 // O endpoint deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200 ao fazer uma requisição /talker/1, com o seguinte corpo: [...]
 // Caso não seja encontrada uma pessoa palestrante com base no id da rota, o endpoint deve retornar o status 404 com o seguinte corpo: { "message": "Pessoa palestrante não encontrada" }
 app.get('/talker/:id', (req, res) => {
-const idParams = Number(req.params.id);
-const palestrantId = getSyncData().find((element) => element.id === idParams);
-
-if (!palestrantId) {
-  res.status(404).send({
-    message: 'Pessoa palestrante não encontrada',
-  });
-}
-res.status(HTTP_OK_STATUS).send(palestrantId);
+  try {
+    const idParams = Number(req.params.id);
+    const palestrantId = getSyncData().find((element) => element.id === idParams);
+    
+    if (!palestrantId) {
+      res.status(404).send({
+        message: 'Pessoa palestrante não encontrada',
+      });
+    }
+    res.status(HTTP_OK_STATUS).send(palestrantId);
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
 });
 
 // 3 - Crie o endpoint POST /login
@@ -121,7 +129,11 @@ app.post('/login',
 [
   loginValidation,
   (_req, res) => {
-  const tokenGenerated = tokenGenerate(16);
-res.status(HTTP_OK_STATUS).send({ token: tokenGenerated });
+    try {
+      const tokenGenerated = tokenGenerate(16);
+    res.status(HTTP_OK_STATUS).send({ token: tokenGenerated });
+    } catch (error) {
+      return res.status(500).send({ error });
+    }
 },
 ]);
