@@ -11,13 +11,10 @@ function callDataApi() {
 }
 
 // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/parseInt
+// https://stackoverflow.com/questions/14417592/node-js-difference-between-req-query-and-req-params
 module.exports = async (req, res, _next) => {
   const responseDataApi = await callDataApi();
   const { q } = req.query;
-  // const idToNumber = parseInt(id, 10);
-  // const newDataWithoutDelete = responseDataApi.filter((data) => data.id !== idToNumber);
-  // // console.log(newDataWithoutDelete);
-  // await fs.writeFile(service, JSON.stringify(newDataWithoutDelete));
   if (!q) return res.status(200).json(responseDataApi);
   const search = responseDataApi.filter((data) => data.name.includes(q));
   const resultSearch = [];
