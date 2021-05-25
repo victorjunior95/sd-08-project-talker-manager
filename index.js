@@ -75,6 +75,15 @@ app.post('/login', validationLogin, (_req, res) => {
   res.status(HTTP_OK_STATUS).send({ token });
 });
 
+app.delete('/talker/:id', validationToken, (req, res) => {
+  const talkers = allTalkers();
+  const { id } = req.params;
+  const talkerIdFilter = talkers.find((talker) => talker.id === Number(id));
+  const newTalkersList = talkers.splice(talkerIdFilter, 1)[0];
+  fs.writeFileSync('talker.json', JSON.stringify(newTalkersList));
+  res.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante deletada com sucesso' });
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
