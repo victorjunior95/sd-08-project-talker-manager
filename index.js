@@ -62,6 +62,19 @@ app.put('/talker/:id', getToken, checkName, checkAge, checkTalk, checkWatchedAt,
   });
 });
 
+app.delete('/talker/:id', getToken, (req, res) => {
+  const { id } = req.params;
+  fs.readFile(PATH, 'utf-8', (err, content) => {
+    const talkers = JSON.parse(content);
+    const newTalkers = talkers.filter((tempTalker) => tempTalker.id !== parseInt(id, 10));
+    fs.writeFile(
+      PATH,
+      JSON.stringify(newTalkers),
+      () => res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' }),
+      );
+  });
+});
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
