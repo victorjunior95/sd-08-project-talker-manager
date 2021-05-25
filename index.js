@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const middlewares = require('./middlewares');
 
 const app = express();
@@ -13,9 +14,9 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker', middlewares.allTalkers, (req, res) => {
-  res.status(200).json(req.talkersAll);
-});
+// app.get('/talker', middlewares.allTalkers, (req, res) => {
+//   res.status(200).json(req.talkersAll);
+// });
 
 app.get('/talker/:id', middlewares.talkerById, (req, res) => {
   if (req.talkerID) {
@@ -32,6 +33,24 @@ app.post('/login', middlewares.loginEmail, middlewares.loginPassword, (_req, res
   res.status(200).json({
     token: '7mqaVRXJSp886CGr',
   });
+});
+
+app.post('/talker', middlewares.tokenVerify, middlewares.checkName,
+middlewares.checkAge, middlewares.checkTalk, middlewares.checkDateRate, async (req, res) => {
+  try {
+    const talkers = JSON.parse(await fs.promises.readFile('./talker.json', 'utf-8'));
+    const newTalker = {
+      name: req.body.name,
+      age: req.body.age,
+      id: talkers.length + 1,
+      talk: req.body.talk,
+    };
+    talkers.push(newTalker);
+    await fs.promises.writeFile('./talker.json', JSON.stringify(talkers));
+    res.status(201).json(newTalker);
+  } catch (error) {
+    console.log(error.menssage);
+  }
 });
 
 app.listen(PORT, () => {
