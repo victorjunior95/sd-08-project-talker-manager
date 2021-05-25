@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const rescue = require('express-rescue');
+
 const desafio01 = require('./desafios/desafio01');
+const desafio02 = require('./desafios/router02');
 
 const app = express();
 app.use(bodyParser.json());
@@ -26,6 +28,8 @@ app.get('/talker',
     .send([]);
   });
 
+  app.use('/talker', desafio02);
+  
 app.listen(PORT, () => {
   console.log('Online');
 });
