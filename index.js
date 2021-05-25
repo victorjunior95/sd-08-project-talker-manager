@@ -88,7 +88,7 @@ app.route('/talker')
   ((req, res) => {
     const allTalkers = getSyncData();
     const newTalker = req.body;
-    newTalker.id = allTalkers.length;
+    newTalker.id = allTalkers.length + 1;
     allTalkers.push(newTalker);
     writeSyncData('./talker.json', JSON.stringify(allTalkers));
     return res.status(201).send(newTalker);
