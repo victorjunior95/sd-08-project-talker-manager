@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { pushTalker, getLastTalker, editTalker } = require('./services/handleDB');
+const { pushTalker, getLastTalker, editTalker, removeTalker } = require('./services/handleDB');
 
 const { allTalkers, talkerById, loginValidation } = require('./middlewares');
 const { 
@@ -54,6 +54,16 @@ app.put(
     const id = Number(req.params.id);
     const pastTalker = editTalker(updatedTalker, id);
     res.status(200).json(pastTalker);
+  },
+);
+
+app.delete(
+  '/talker/:id', 
+  validateToken, 
+  (req, res) => {
+    const { id } = req.params;
+    removeTalker(id);
+    res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
   },
 );
 

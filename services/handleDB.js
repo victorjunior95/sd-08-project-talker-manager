@@ -30,10 +30,16 @@ const editTalker = (newTalker, talkerId) => {
   return updated[updated.length - 1];
 };
 
+const removeTalker = (talkerId) => {
+const talkerRemoved = getDB().filter(({ id }) => id !== Number(talkerId));
+updateDB(talkerRemoved);
+};
+
 module.exports = {
   getDB,
   updateDB,
   pushTalker,
   getLastTalker,
   editTalker,
+  removeTalker,
 };
