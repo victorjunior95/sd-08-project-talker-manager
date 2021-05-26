@@ -1,4 +1,4 @@
-const validationEmailMiddleware = async (req, res, next) => {
+const validationEmailMiddleware = (req, res, next) => {
     const { email } = req.body;    
     console.log(email);
 

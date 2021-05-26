@@ -1,6 +1,9 @@
 const express = require('express');
 
+const validationAuthMiddleware = require('../middlewares/validationAuthMiddleware');
+const validationNewTalkerMiddleware = require('../middlewares/validationNewTalkerMiddleware');
 const readFile = require('../helpers/readFile');
+const writeFile = require('../helpers/writeFile');
 
 const app = express();
 
@@ -27,6 +30,22 @@ app.get('/', async (_req, res) => {
       }
     } catch (error) {
         res.status(500).json({ message: 'fatal error' });
+    }
+  });
+
+  app.post('/',
+  validationAuthMiddleware,
+  validationNewTalkerMiddleware.validName,
+  validationNewTalkerMiddleware.validAge,
+  validationNewTalkerMiddleware.validTalk,
+  validationNewTalkerMiddleware.validWatchedAt,
+  validationNewTalkerMiddleware.validRate,
+  async (req, res) => {
+    try {
+      const talker = await writeFile(data, req.body);
+      res.status(201).json(talker);
+    } catch (error) {
+      req.status().json({ message: 'fatal error' });
     }
   });
 
