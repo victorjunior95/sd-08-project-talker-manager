@@ -1,7 +1,7 @@
 const validaToken = (req, res, next) => {
-  const { autorization } = req.headers;
-  if (!autorization) return res.status(401).send({ message: 'Token não encontrado' });
-  if (autorization.length > 16) res.status(401).send({ message: 'Token inválido' });
+  const { authorization } = req.headers;
+  if (!authorization) return res.status(401).send({ message: 'Token não encontrado' });
+  if (authorization.length > 16) res.status(401).send({ message: 'Token inválido' });
   next();
 };
 
