@@ -13,11 +13,26 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', async (_req, res) => {
-  const talkers = await fs.readFile('./talker.json', 'utf-8');
+  const talkers = await fs.readFile('./talker.json', 'utf-8')
+  .then((data) => JSON.parse(data));
   if (talkers.length > 0) {
-    res.status(200).json(JSON.parse(talkers));
+    res.status(200).json(talkers);
   } else {
     res.status(200).json([]);
+  }
+});
+
+app.get('/talker/:id', async (req, res) => {
+  const talkers = await fs.readFile('./talker.json', 'utf-8')
+  .then((data) => JSON.parse(data));
+  const { id } = req.params;
+  console.log(id);
+  const findId = talkers.find((talker) => talker.id === +id);
+  console.log(findId);
+  if (!findId) {
+    res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+  } else {
+    res.status(200).json(findId);
   }
 });
 
