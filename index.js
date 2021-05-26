@@ -12,6 +12,7 @@ const {
   validateEmptyWatched,
   postTalker,
   validateRate,
+  putTalker,
 } = require('./middlewares');
 
 const app = express();
@@ -37,6 +38,15 @@ app.post('/talker',
   validateDate,
   validateRate,
   postTalker);
+app.put('/talker/:id',
+  validateToken,
+  validateName,
+  validateAge,
+  validateEmptyRate,
+  validateEmptyWatched,
+  validateDate,
+  validateRate,
+  putTalker);
 
 app.listen(PORT, () => {
   console.log('Online');
