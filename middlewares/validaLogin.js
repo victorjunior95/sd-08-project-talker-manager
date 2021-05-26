@@ -22,7 +22,6 @@ const validaLogin = (req, res) => {
   if (!validateEmail(email)) {
     return res.status(400).send({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
-  console.log('Passei');
   if (!password) return res.status(400).send({ message: 'O campo "password" é obrigatório' });
   if (password.toString().length < 6) {
     return res.status(400).send({ message: 'O "password" deve ter pelo menos 6 caracteres' });
