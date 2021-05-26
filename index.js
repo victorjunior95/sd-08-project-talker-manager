@@ -58,10 +58,12 @@ app.post(
     try {
       const newTalker = req.body;
       const talkers = allTalkers();
-      const newTalkerWithId = { ...newTalker, id: talkers.length + 1 };
-      talkers.push(newTalkerWithId);
+      newTalker.id = talkers.length + 1;
 
-      fs.writeFileSync('talker.json', JSON.stringify(talkers));
+      fs.writeFileSync(
+        'talker.json',
+        JSON.stringify([...talkers, newTalker]),
+      );
       res.status(201).json(newTalker);
     } catch (e) {
       throw new Error(e);
@@ -79,6 +81,25 @@ app.post('/login', validationEmail, validationPassword, (_req, res) => {
     .substring(0, 16);
   res.status(HTTP_OK_STATUS).send({ token });
 });
+
+app.put(
+  '/talker/:id',
+  validationToken,
+  validationName,
+  validationAge,
+  validationTalk,
+  validationTalkFormat,
+  (req, res) => {
+    const talkerId = Number(req.params.id);
+    const data = allTalkers();
+    const talkerReq = { id: talkerId, ...req.body };
+    const talkerIndex = data.indexOf(data.find((talker) => talker.id === talkerId));
+    data.splice(talkerIndex, 1, talkerReq);
+
+    fs.writeFileSync('talker.json', JSON.stringify(data));
+    res.status(HTTP_OK_STATUS).json(talkerReq);
+  },
+);
 
 app.delete('/talker/:id', validationToken, (req, res) => {
   const talkers = allTalkers();
