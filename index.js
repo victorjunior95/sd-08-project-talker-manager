@@ -31,7 +31,12 @@ app.get('/talker/:id', (req, res) => {
 app.post('/login', middlewares.validaLogin);
 
 app.post('/talker', middlewares.validaToken, middlewares.validaNome, middlewares.validaAno,
-  middlewares.validaTalk, middlewares.validaBody, middlewares.validaCadastro);
+middlewares.validaTalk, middlewares.validaBody, middlewares.validaCadastro);
+
+app.put('/talker/:id', middlewares.validaToken, middlewares.validaNome, middlewares.validaAno,
+middlewares.validaTalk, middlewares.validaBody, middlewares.editaTalker);
+
+app.delete('/talker/:id', middlewares.validaToken, middlewares.deletaTalker);
 
 app.listen(PORT, () => {
   console.log('Online');

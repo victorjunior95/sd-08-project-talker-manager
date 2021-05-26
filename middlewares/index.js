@@ -5,6 +5,8 @@ const validaLogin = require('./validaLogin.js');
 const validaTalk = require('./validaTalk.js');
 const validaBody = require('./validaBody.js');
 const validaCadastro = require('./validaCadastro.js');
+const editaTalker = require('./editaTalker.js');
+const deletaTalker = require('./deletaTalker.js');
 
 module.exports = {
   validaNome,
@@ -14,4 +16,6 @@ module.exports = {
   validaTalk,
   validaBody,
   validaCadastro,
+  editaTalker,
+  deletaTalker,
 };
