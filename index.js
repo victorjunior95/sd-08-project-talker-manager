@@ -40,6 +40,20 @@ app.get('/', (_request, response) => response.status(HTTP_OK_STATUS).send(
     // }
     ));
 
+// 7 - Crie o endpoint GET /talker/search?q=searchTerm (a partir do ? na verdade não é a rota, mas o exemplo. README enganativo)
+// Os seguintes pontos serão avaliados:
+// O endpoint deve retornar um array de palestrantes que contenham em seu nome o termo pesquisado no queryParam da URL. Devendo retornar o status 200, com o seguinte corpo: /search?q=Ke
+app.get('/talker/search', [tokenValidation, (req, res) => {
+  try {
+    const queryString = req.query.q;
+    const allTalkers = getSyncData();
+    const founded = allTalkers.filter((palestrant) => palestrant.name.includes(queryString));
+    return res.status(200).send(founded);
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
+}]);
+
 // 1 - Crie o endpoint GET /talker
 // Os seguintes pontos serão avaliados:
 // O endpoint deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o status 200, com o seguinte corpo: [...]
