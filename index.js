@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const middlewares = require('./middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,17 +18,7 @@ app.get('/', (_request, response) => {
 });
 
 // Requisito 1
-app.get('/talker', (_req, res) => {
-  fs.readFile('./talker.json', (_err, data) => {
-    res.status(HTTP_OK_STATUS).send(JSON.parse(data));
-  });
-});
+app.get('/talker', middlewares.buscarPalestrantes);
 
 // Requisito 2
-app.get('/talker/:id', (req, res) => {
-  const { id } = req.params;
-  const palestrantes = JSON.parse(fs.readFileSync('./talker.json'));
-  const pessoa = palestrantes.find((p) => p.id === parseInt(id, 10));
-  if (!pessoa) return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
-  res.status(HTTP_OK_STATUS).send(pessoa);
-});
+app.get('/talker/:id', middlewares.buscarPorId);
