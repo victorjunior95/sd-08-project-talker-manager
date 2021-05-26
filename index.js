@@ -27,6 +27,17 @@ app.get('/', (_request, response) => {
 
 const allTalkers = () => JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
 
+app.get('/talker/search', validationToken, (req, res) => {
+  const data = allTalkers();
+  const { q } = req.query;
+
+  if (q) {
+    const talkersFilter = data.filter((talker) => talker.name.includes(q));
+    return res.status(HTTP_OK_STATUS).json(talkersFilter);
+  }
+  return res.status(HTTP_OK_STATUS).json(data);
+});
+
 app.get('/talker/:id', (req, res) => {
   const data = allTalkers();
   const { id } = req.params;
@@ -60,10 +71,7 @@ app.post(
       const talkers = allTalkers();
       newTalker.id = talkers.length + 1;
 
-      fs.writeFileSync(
-        'talker.json',
-        JSON.stringify([...talkers, newTalker]),
-      );
+      fs.writeFileSync('talker.json', JSON.stringify([...talkers, newTalker]));
       res.status(201).json(newTalker);
     } catch (e) {
       throw new Error(e);
@@ -93,7 +101,9 @@ app.put(
     const talkerId = Number(req.params.id);
     const data = allTalkers();
     const talkerReq = { id: talkerId, ...req.body };
-    const talkerIndex = data.indexOf(data.find((talker) => talker.id === talkerId));
+    const talkerIndex = data.indexOf(
+      data.find((talker) => talker.id === talkerId),
+    );
     data.splice(talkerIndex, 1, talkerReq);
 
     fs.writeFileSync('talker.json', JSON.stringify(data));
