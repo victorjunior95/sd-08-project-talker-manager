@@ -38,7 +38,7 @@ function validationTalk(req, res, next) {
     res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
-  if (!talk.watchedAt || !talk.rate) {
+  if (talk.rate === undefined || talk.watchedAt === undefined) {
     res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
@@ -47,8 +47,12 @@ function validationTalk(req, res, next) {
 
 // referencia de regex - StackOverFlow https://stackoverflow.com/questions/29625322/validate-dateformat-in-dd-mm-yyyy-using-regex?noredirect=1&lq=1
 const validationRateAndDate = (req, res, next) => {
-  const { talk: { watchedAt, rate } } = req.body;
-  if (!Number.isInteger(rate) || rate > 5 || rate < 1) {
+  const {
+    body: {
+      talk: { rate, watchedAt },
+    },
+  } = req;
+  if (rate > 5 || rate < 1) {
     res.status(400).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
   if (!/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/.test(watchedAt)) {
