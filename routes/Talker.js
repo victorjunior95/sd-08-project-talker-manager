@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+const { allValidation } = require('../middlewares/validationForms');
 
 const route = express.Router();
 
@@ -24,6 +25,21 @@ route.get('/:id', (req, res) => {
     return res.status(200).json(talkerId);
   }
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+});
+
+route.post('/', async (req, res) => {
+  const dataTalker = await JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+  const { name, age, talk } = req.body;
+  try {
+    allValidation(req);
+    await dataTalker.push({ name, age, id: dataTalker.length + 1, talk });
+    await fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(dataTalker), 'utf-8');
+    return res.status(201).json(dataTalker[dataTalker.length - 1]);
+  } catch (error) {
+    // console.log(`Error: ${error.message}`);
+    if (error.message.includes('Token')) return res.status(401).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
+  }
 });
 
 module.exports = route;
