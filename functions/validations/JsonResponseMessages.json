@@ -53,5 +53,10 @@
         }
       ]
     }
-  }
+  },
+  "req6Responses": [
+    {
+      "message": "Pessoa palestrante deletada com sucesso"
+    }
+  ]
 }

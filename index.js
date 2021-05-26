@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 // const path = require('path'); 
+const { req6Responses } = require('./functions/validations/JsonResponseMessages.json');
 const { 
   getSyncData, tokenGenerate, writeSyncData,
   // fsPromiseData1,
@@ -42,7 +43,9 @@ app.get('/', (_request, response) => response.status(HTTP_OK_STATUS).send(
 
 // 7 - Crie o endpoint GET /talker/search?q=searchTerm (a partir do ? na verdade não é a rota, mas o exemplo. README enganativo)
 // Os seguintes pontos serão avaliados:
-// O endpoint deve retornar um array de palestrantes que contenham em seu nome o termo pesquisado no queryParam da URL. Devendo retornar o status 200, com o seguinte corpo: /search?q=Ke
+// O endpoint deve retornar um array de palestrantes que contenham em seu nome o termo pesquisado no queryParam da URL. Devendo retornar o status 200, com o seguinte corpo:
+// queryExemplo => /search?q=Ke
+// corpo: [{id: 1, name: "Keanu Reeves", age: 56, talk: { watchedAt: "22/10/2019", rate: 5, } }];
 app.get('/talker/search', [tokenValidation, (req, res) => {
   try {
     const queryString = req.query.q;
@@ -167,6 +170,22 @@ app.put('/talker/:id', [
     } catch (error) {
       return res.status(500).send({ error });
     }
+}]);
+
+// 6 - Crie o endpoint DELETE /talker/:id
+// Os seguintes pontos serão avaliados:
+// A requisição deve ter o token de autenticação nos headers. (repetir tudo que envolve o token)
+// O endpoint deve deletar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200, com o seguinte corpo: { "message": "Pessoa palestrante deletada com sucesso" }
+app.delete('/talker/:id', [tokenValidation, (req, res) => {
+  try {
+    const allTalkers = getSyncData();
+    const idParams = req.params.id;
+    const deleteUpdate = allTalkers.filter((talker) => talker.id !== idParams);
+    writeSyncData('./talker.json', deleteUpdate); // o requisito pede para deletar do arquivo json, mas não pede a pessoa deletada;
+    return res.status(201).send(req6Responses[0]);
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
 }]);
 
 app.listen(PORT, () => console.log('Online'));
