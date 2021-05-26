@@ -39,7 +39,6 @@ app.get('/', (_request, response) => {
     // //  direct2: await direct2(),
     // promise: await promiseRs1(), // ok com o await
     // }
-    { message: tokenGenerate(10) },
     );
 });
 
@@ -120,7 +119,7 @@ app.post('/talker', [
       const newTalker = req.body;
       newTalker.id = allTalkers.length + 1;
       allTalkers.push(newTalker);
-      writeSyncData(`${__dirname}'./talker.json'`, allTalkers);
+      writeSyncData(`${__dirname}/talker.json`, allTalkers);
       return res.status(201).send(newTalker);
     } catch (error) {
       return res.status(500).send({ error });
@@ -151,7 +150,7 @@ app.put('/talker/:id', [
         toUpdate = requestBody;
         dataUpdate.push(toUpdate);
         dataUpdate.sort((a, b) => (a.id > b.id ? 1 : -1));
-       writeSyncData(`${__dirname}'./talker.json'`, dataUpdate);
+       writeSyncData(`${__dirname}/talker.json`, dataUpdate);
         res.status(200).send(requestBody);
       }
     } catch (error) {
