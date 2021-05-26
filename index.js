@@ -28,8 +28,7 @@ const PORT = '3000';
 // }); // para brincar dps
 
 // não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (_request, response) => {
-  response.status(HTTP_OK_STATUS).send(
+app.get('/', (_request, response) => response.status(HTTP_OK_STATUS).send(
     // {
     // message: 'Olá Mundo',
     //  sync1: getSyncData, // ok
@@ -39,8 +38,7 @@ app.get('/', (_request, response) => {
     // //  direct2: await direct2(),
     // promise: await promiseRs1(), // ok com o await
     // }
-    );
-});
+    ));
 
 // 1 - Crie o endpoint GET /talker
 // Os seguintes pontos serão avaliados:
@@ -63,7 +61,7 @@ app.get('/talker/:id', (req, res) => {
     const idParams = Number(req.params.id);
     const palestrantId = getSyncData().find((element) => element.id === idParams);
     if (!palestrantId) {
-      res.status(404).send({
+    return res.status(404).send({
         message: 'Pessoa palestrante não encontrada',
       });
     }
@@ -76,7 +74,6 @@ app.get('/talker/:id', (req, res) => {
 // 3 - Crie o endpoint POST /login
 // Os seguintes pontos serão avaliados:
 // O endpoint deve ser capaz de retornar um token aleatório de 16 caracteres que deverá ser utilizado nas demais requisições.
-
 // O endpoint deverá o retornar o token gerado, da seguinte forma: [{token: tokenGenerated}]
 // Há mais instruções no functions > validations > [loginValidation, nameAgeValidation, talkValidation]
 
@@ -86,7 +83,7 @@ app.post('/login',
   (_req, res) => {
     try {
       const tokenGenerated = tokenGenerate(16);
-    res.status(HTTP_OK_STATUS).send({ token: tokenGenerated });
+    return res.status(HTTP_OK_STATUS).send({ token: tokenGenerated });
     } catch (error) {
       return res.status(500).send({ error });
     }
@@ -151,13 +148,11 @@ app.put('/talker/:id', [
         dataUpdate.push(toUpdate);
         dataUpdate.sort((a, b) => (a.id > b.id ? 1 : -1));
        writeSyncData('./talker.json', dataUpdate);
-        res.status(200).send(requestBody);
+       return res.status(200).send(requestBody);
       }
     } catch (error) {
       return res.status(500).send({ error });
     }
 }]);
 
-app.listen(PORT, () => {
-  console.log('Online');
-});
+app.listen(PORT, () => console.log('Online'));
