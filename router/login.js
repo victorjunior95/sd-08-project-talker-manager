@@ -1,8 +1,8 @@
 const express = require('express');
-const middlewere = require('../middlewere');
+const { signIn } = require('../Middlewares');
 
 const route = express.Router();
 
-route.post('/', middlewere.signIn);
+route.post('/', signIn);
 
 module.exports = route;

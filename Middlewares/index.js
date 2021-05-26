@@ -1,11 +1,11 @@
 const signIn = require('./signIn');
 const verifyAuth = require('./authToken');
 const form = require('./form');
-const error = require('./error');
+const { logError } = require('./HandleCustomerError');
 
 module.exports = {
   signIn,
   verifyAuth,
   form,
-  error,
+  logError,
 };
