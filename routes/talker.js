@@ -78,4 +78,20 @@ app.get('/', async (_req, res) => {
     }
   });
 
+  app.get('/search',
+  validationAuthMiddleware,
+  async (req, res) => {
+    try {
+      const { q } = req.query;
+      const array = await readFile(data);
+
+      if (!q) return res.status(200).json(array);
+
+      const filterTerm = array.filter((item) => item.name.includes(q));
+      res.status(200).json(filterTerm);
+    } catch (error) {
+        req.status(500).json({ message: fatalError });
+    }
+  });
+
 module.exports = app;
