@@ -16,17 +16,12 @@ const loginValidation = (req, res, next) => {
   // Caso o campo não seja passado ou esteja vazio retorne um código de status 400, com o seguinte corpo: { "message": "O campo \"email\" é obrigatório" }
   if (!email) return res.status(400).send(req3Responses[0]);
   // Caso o email passado não seja um email válido retorne um código de status 400, com o seguinte corpo: { "message": "O \"email\" deve ter o formato \"email@email.com\"" }
-  if (!EMAIL_VALIDATION.test(email)) {
-    return res.status(400).send(req3Responses[1]); 
-  }
+  if (!EMAIL_VALIDATION.test(email)) return res.status(400).send(req3Responses[1]); 
   // O campo password deverá ter pelo menos 6 caracteres.
-// Caso o campo não seja passado ou esteja vazio retorne um código de status 400, com o seguinte corpo: { "message": "O campo \"password\" é obrigatório" }
+  // Caso o campo não seja passado ou esteja vazio retorne um código de status 400, com o seguinte corpo: { "message": "O campo \"password\" é obrigatório" }
   if (!password) return res.status(400).send(req3Responses[2]);
   // Caso a senha não tenha pelo menos 6 caracteres retorne um código de status 400, com o seguinte corpo: { "message": "O \"password\" deve ter pelo menos 6 caracteres" }
-  if (password.length < 6) {
-    return res.status(400)
-    .send(req3Responses[3]);
-  }
+  if (password.length < 6) return res.status(400).send(req3Responses[3]);
   next();
 };
 

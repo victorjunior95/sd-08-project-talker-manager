@@ -1,37 +1,37 @@
 const fs = require('fs');
-const fsProm = require('fs').promises;
+// const fsProm = require('fs').promises;
 
 const filePath = './talker.json';
 
 const getSyncData = () => JSON.parse(fs.readFileSync(filePath, 'utf8'));
 const writeSyncData = (json, writeFile) => fs.writeFileSync(json, JSON.stringify(writeFile));
 
-let fsPromiseData1;
-let fsPromiseData2;
+// let fsPromiseData1;
+// let fsPromiseData2;
 
 // metódo 1: com promise .then e .catch;
 // posso tanto fazer o assigment 
-const assigingFs1 = () => fsProm.readFile(filePath, 'utf8')
-.then((result) => { fsPromiseData1 = JSON.parse(result); }).catch((err) => console.log(err)); 
+// const assigingFs1 = () => fsProm.readFile(filePath, 'utf8')
+// .then((result) => { fsPromiseData1 = JSON.parse(result); }).catch((err) => console.log(err)); 
 
-console.log(fsPromiseData1);
+// console.log(fsPromiseData1);
 // quanto fazer diretamente
-const direct1 = () => fsProm.readFile(filePath, 'utf8')
-.then((result) => JSON.parse(result)).catch((err) => console.log(err)); 
+// const direct1 = () => fsProm.readFile(filePath, 'utf8')
+// .then((result) => JSON.parse(result)).catch((err) => console.log(err)); 
 
-// método 2: com async try/catch;
-// fazendo o assigment
-const assigingFs2 = async () => { 
-try {
- await fs.readFile(filePath, 'utf8', (err, data) => {
-   if (err) console.log(err);
-   fsPromiseData2 = JSON.parse(data);
- });
-} catch (error) {
-  console.error(error);
-}
-};
-assigingFs2();
+// // método 2: com async try/catch;
+// // fazendo o assigment
+// const assigingFs2 = async () => { 
+// try {
+//  await fs.readFile(filePath, 'utf8', (err, data) => {
+//    if (err) console.log(err);
+//    fsPromiseData2 = JSON.parse(data);
+//  });
+// } catch (error) {
+//   console.error(error);
+// }
+// };
+// assigingFs2();
 
 // diretamente ??
 // const direct2 = async () => { 
@@ -65,11 +65,11 @@ const tokenGenerate = (size) => {
 
 module.exports = {
   getSyncData,
-  fsPromiseData1,
-  fsPromiseData2,
-  assigingFs1,
-  assigingFs2,
-  direct1,
+  // fsPromiseData1,
+  // fsPromiseData2,
+  // assigingFs1,
+  // assigingFs2,
+  // direct1,
   promiseRs1,
   tokenGenerate,
   writeSyncData,

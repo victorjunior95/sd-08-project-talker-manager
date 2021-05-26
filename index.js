@@ -182,7 +182,7 @@ app.delete('/talker/:id', [tokenValidation, (req, res) => {
     const idParams = req.params.id;
     const deleteUpdate = allTalkers.filter((talker) => talker.id !== idParams);
     writeSyncData('./talker.json', deleteUpdate); // o requisito pede para deletar do arquivo json, mas não pede a pessoa deletada;
-    return res.status(201).send(req6Responses[0]);
+    return res.status(200).send(req6Responses[0]);
   } catch (error) {
     return res.status(500).send({ error });
   }
