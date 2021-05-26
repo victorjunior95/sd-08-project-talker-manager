@@ -8,6 +8,20 @@ const route = express.Router();
 
 const talkers = 'talker.json';
 
+route.get('/search', async (req, res) => {
+  const dataTalker = await JSON.parse(fs.readFileSync(talkers, 'utf-8'));
+  const { authorization } = req.headers;
+  const { q } = req.query;
+  console.log(q);
+  try {
+    validationToken(authorization);
+    const getTalkers = await dataTalker.filter((talker) => talker.name.includes(q));
+    return res.status(200).json(getTalkers);
+  } catch (error) {
+    return res.status(401).json({ message: error.message });
+    } 
+});
+
 route.get('/', (req, res) => {
   const dataTalker = JSON.parse(fs.readFileSync(talkers, 'utf-8'));
   if (!dataTalker.length) {
