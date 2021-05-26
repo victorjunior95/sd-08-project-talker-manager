@@ -5,7 +5,7 @@ const validaTalk = (req, res, next) => {
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
   const { watchedAt, rate } = req.body.talk;
-  if (watchedAt === undefined || rate === undefined) {
+  if (!watchedAt || !rate) {
     return res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }

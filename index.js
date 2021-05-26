@@ -31,7 +31,7 @@ app.get('/talker/:id', (req, res) => {
 app.post('/login', middlewares.validaLogin);
 
 app.post('/talker', middlewares.validaToken, middlewares.validaNome, middlewares.validaAno,
-  middlewares.validaTalk, middlewares.validaBody);
+  middlewares.validaTalk, middlewares.validaBody, middlewares.validaCadastro);
 
 app.listen(PORT, () => {
   console.log('Online');
