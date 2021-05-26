@@ -1,6 +1,6 @@
 const express = require('express');
 
-const fs = require('fs');
+// const fs = require('fs');
 
 const bodyParser = require('body-parser');
 
@@ -10,28 +10,28 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
-const content = JSON.parse(fs.readFileSync('./talker.json'));
-const ids = [];
-function preencheids() {
- content.forEach((element) => {
- ids.push(element.id);
-}); 
-}
-preencheids();
-
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+// importando funcionalidades
+const authemail = require('./authemail');
+const authpaswd = require('./authpaswd');
+const req1 = require('./req1');
+const req2 = require('./req2');
 
-app.get('/talker', (req, res) => res.status(200).send(content));
+// req-1
+app.get('/talker', req1);
 
-app.get('/talker/:id', (req, res) => {
-  if (!ids.includes(+req.params.id)) {
-      return (res.status(404).send({ message: 'Pessoa palestrante não encontrada' })); 
-    } 
-    return (res.status(200).send(content.find((obj) => obj.id === +req.params.id)));
- });
+// req-2
+app.get('/talker/:id', req2);
+
+// req-3
+app.post('/login', authpaswd, authemail, (req, res) => (
+  res.status(200).send({ token: (Math.random()).toString(2).substring(2, 18) })));
+
+// req-4
+app.post('talker',);
 
 app.listen(PORT, () => {
   console.log('Online');
