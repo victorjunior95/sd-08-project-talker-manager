@@ -63,16 +63,6 @@ app.post('/login', rescue((req, res) => {
 
 // Crie o endpoint POST /talker
 
-const addTalker = async (req, res) => {
-  const { body } = req;
-  const talkers = await getTalker();
-  const id = talkers.length + 1;
-  const newTalker = { ...body, id };
-  talkers.push(newTalker);
-  await setTalker(talkers);
-  return res.status(201).json(newTalker);
-};
-
 const verifyRate = (rate) => (Number.isInteger(rate) && rate >= 1 && rate <= 5);
 
 const verifyWatchedAt = (WatchedAt) => {
@@ -82,7 +72,7 @@ const verifyWatchedAt = (WatchedAt) => {
 
 const checkTalkChields = (req, res) => {
   const { talk } = req.body;
-  if (!talk.watchedAt || !talk.rate) {
+  if (!talk.watchedAt || talk.rate === undefined) {
     return res.status(400).json({
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   } if (!verifyRate(talk.rate)) {
@@ -114,7 +104,6 @@ const checkAge = (req, res) => {
 };
 
 const verifyName = (name) => (name.length >= 3);
-// const verifyName = () => true;
 
 const checkName = (req, res) => {
   const { name } = req.body;
@@ -132,18 +121,46 @@ const verifyToken = (token) => {
 };
 
 const checkToken = (req, res) => {
-  const { authorization: token } = req.headers;
-  if (!token) {
+  const { authorization } = req.headers;
+  if (!authorization) {
     return res.status(401).json({ message: 'Token não encontrado' });
-  } if (!verifyToken(token)) {
+  } if (!verifyToken(authorization)) {
     return res.status(401).json({ message: 'Token inválido' });
   }
   checkName(req, res);
 };
 
+const addTalker = async (req, res) => {
+  const { body } = req;
+  const talkers = await getTalker();
+  const id = talkers.length + 1;
+  const newTalker = { ...body, id };
+  talkers.push(newTalker);
+  await setTalker(talkers);
+  return res.status(201).json(newTalker);
+};
+
 app.post('/talker', rescue(async (req, res) => {
   checkToken(req, res);
   const end = await addTalker(req, res);
+  return end;
+}));
+
+// Crie o endpoint PUT /talker/:id
+
+const updateTalker = async (req, res) => {
+  const idParam = Number(req.params.id);
+  const { name, age, talk } = req.body;
+  const talkers = await getTalker();
+  const talkersFiltered = talkers.filter((talker) => talker.id !== idParam);
+  const newTalkers = [...talkersFiltered, { id: idParam, name, age, talk }];
+  await setTalker(newTalkers);
+  return res.status(200).json({ id: idParam, name, age, talk });
+};
+
+app.put('/talker/:id', rescue(async (req, res) => {
+  checkToken(req, res);
+  const end = await updateTalker(req, res);
   return end;
 }));
 
