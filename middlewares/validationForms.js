@@ -51,9 +51,9 @@ function allValidation(req) {
   validationName(name);
   validationAge(age);
   validationTalk(req);
-  validationRate(talk);
   validationWatchedAt(talk);
   validationWatchedRate(talk);
+  validationRate(talk);
 }
 
 module.exports = { validationToken, allValidation }; 
