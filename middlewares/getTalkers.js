@@ -3,7 +3,6 @@ const fs = require('fs').promises;
 const pathArquivo = './talker.json';
 
 module.exports = (_req, res, _next) => {
-  console.log('entrei')
   fs.readFile(pathArquivo, 'utf8')
     .then((data) => {
       if (data === []) {
