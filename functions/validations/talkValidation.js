@@ -24,7 +24,7 @@ const talkObjValidation = (req, res, next) => {
   if (!talk) return res.status(400).send(propertyRes[0]); 
  if (!talk.watchedAt 
   || (!talk.rate && talk.rate !== 0)) return res.status(400).send(propertyRes[0]); 
-  next();
+  next(); //
 };
 
 module.exports = { talkComponentsValidation, talkObjValidation };
