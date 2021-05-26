@@ -1,6 +1,6 @@
 const fs = require('fs');
 const express = require('express');
-const { allValidation } = require('../middlewares/validationForms');
+const { allValidation, validationToken } = require('../middlewares/validationForms');
 
 const route = express.Router();
 
@@ -36,9 +36,22 @@ route.post('/', async (req, res) => {
     await fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(dataTalker), 'utf-8');
     return res.status(201).json(dataTalker[dataTalker.length - 1]);
   } catch (error) {
-    // console.log(`Error: ${error.message}`);
     if (error.message.includes('Token')) return res.status(401).json({ message: error.message });
     return res.status(400).json({ message: error.message });
+  }
+});
+
+route.delete('/:id', async (req, res) => {
+  const dataTalker = await JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+  const { authorization } = req.headers;
+  const { id } = req.params;
+  try {
+    validationToken(authorization);
+    const newDataTalkers = await dataTalker.filter((talker) => talker.id !== +id);
+    await fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(newDataTalkers));
+    return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+  } catch (error) {
+    return res.status(401).json({ message: error.message });
   }
 });
 
