@@ -26,3 +26,12 @@ app.get('/talker/:id', middlewares.buscarPorId);
 // Requisito 3
 app.post('/login',
 middlewares.verificarLogin);
+
+// Requisito 4
+app.post('/talker',
+middlewares.verificarToken,
+middlewares.verificarNome,
+middlewares.verificarIdade,
+middlewares.verificarCampoTalk,
+middlewares.verificarDadosTalk,
+middlewares.adicionarPalestrante);
