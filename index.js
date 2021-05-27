@@ -23,7 +23,7 @@ const {
   PORT,
 } = require('./src/common/httpStatus');
 
-const file = './talker.json';
+const file = 'talker.json';
 
 const app = express();
 app.use(bodyParser.json());
