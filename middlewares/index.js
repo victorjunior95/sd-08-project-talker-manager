@@ -5,7 +5,9 @@ const validateDate = require('./validateDate');
 const validateRate = require('./validateRate');
 const validateEmptyRate = require('./validadeEmptyRate');
 const validateEmptyWatched = require('./validateEmptyWatched');
+const validateEmptyTalk = require('./validateEmptyTalk');
 const postTalker = require('./postTalker');
+const putTalker = require('./putTalker');
 
 module.exports = {
   validateToken,
@@ -13,7 +15,9 @@ module.exports = {
   validateAge,
   validateDate,
   validateRate,
+  validateEmptyTalk,
   validateEmptyRate,
   validateEmptyWatched,
   postTalker,
+  putTalker,
 };

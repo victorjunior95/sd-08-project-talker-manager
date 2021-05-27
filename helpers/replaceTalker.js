@@ -2,10 +2,11 @@ const fs = require('fs');
 
 const nomeDoArquivo = 'talker.json';
 
-const addTalker = (obj) => {
-  const data = JSON.parse(fs.readFileSync(nomeDoArquivo));
-  data.remove((item) => item.id === obj.id).push(obj);
-  return JSON.stringify(data);
+const replaceTalker = (obj, id) => {
+  const file = JSON.parse(fs.readFileSync(nomeDoArquivo));
+  const newArray = file.filter((item) => item.id !== id);
+  newArray.push(obj);
+  return JSON.stringify(newArray);
 };
 
-module.exports = addTalker;
+module.exports = replaceTalker;

@@ -13,6 +13,7 @@ const {
   postTalker,
   validateRate,
   putTalker,
+  validateEmptyTalk,
 } = require('./middlewares');
 
 const app = express();
@@ -33,19 +34,21 @@ app.post('/talker',
   validateToken,
   validateName,
   validateAge,
+  validateEmptyTalk,
   validateEmptyRate,
+  validateRate,
   validateEmptyWatched,
   validateDate,
-  validateRate,
   postTalker);
 app.put('/talker/:id',
   validateToken,
   validateName,
   validateAge,
+  validateEmptyTalk,
   validateEmptyRate,
+  validateRate,
   validateEmptyWatched,
   validateDate,
-  validateRate,
   putTalker);
 
 app.listen(PORT, () => {

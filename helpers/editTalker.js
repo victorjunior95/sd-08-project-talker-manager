@@ -1,8 +1,7 @@
-const editTalker = (req) => {
-  const { body } = req;
-  const { id } = req.params;
+const editTalker = (body, id) => {
+  const newId = Number(id);
   return {
-    id,
+    id: newId,
     name: body.name,
     age: body.age,
     talk: {
