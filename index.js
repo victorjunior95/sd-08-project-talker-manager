@@ -24,8 +24,7 @@ app.get('/talker', middlewares.buscarPalestrantes);
 app.get('/talker/:id', middlewares.buscarPorId);
 
 // Requisito 3
-app.post('/login',
-middlewares.verificarLogin);
+app.post('/login', middlewares.verificarLogin);
 
 // Requisito 4
 app.post('/talker',
