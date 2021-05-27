@@ -118,6 +118,46 @@ app.post(
   },
 );
 
+function I_TalkerEdited(name, age, talk, id){
+  return { 
+    name,
+    age,
+    id: parseInt(id, 10),
+    talk: {
+      watchedAt: talk.watchedAt,
+      rate: talk.rate,
+    },
+  };
+}
+
+app.put(
+  '/talker/:id',
+  tokenValidation,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  rateValidation,
+  watchedAtValidation,
+  async (_request, response) => {
+    const { id } = _request.params;
+    const mockData = await fs.readFile(file);
+    const talkers = JSON.parse(mockData);
+    const { name, age, talk } = _request.body;
+
+    const editedTalker = I_TalkerEdited(name, age, talk, id);
+
+    const editedTalkers = [
+      ...talkers.slice(0, id - 1),
+      editedTalker,
+      ...talkers.slice(id - 1, talkers.length - 1),
+    ];
+
+    const jsonTalkers = JSON.stringify(editedTalkers);
+    await fs.writeFile(file, jsonTalkers);
+    return response.status(HTTP_OK_STATUS).json(editedTalker);
+  },
+);
+
 app.listen(PORT, () => {
-  console.log('Online in | http://localhost:3000/');
+  console.log('Online');
 });
