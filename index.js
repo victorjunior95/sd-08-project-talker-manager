@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const rescue = require('express-rescue');
+const fs = require('fs').promises;
 
 // const login = require('./utils');
 
@@ -16,26 +17,25 @@ app.get('/', (_request, response) => {
 });
 
 // Requisito 02 -----------------------------------------------------
-app.get('/talker/:id', (req, res) => {
-  const data = fs.readFileSync('./talker.json', 'utf8');
-  try {
-      const { id } = req.params;
-      const findTalker = data.find((talker) => talker.id === id);
-      console.log(findTalker); 
-      if (findTalker) {
-      res.status(200).send(findTalker);
-    } else {
-      res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
-    }
-  } catch (err) {
-    return res.status(500).send({ err });
-  }
-});
+app.get('/talker/:id', rescue(async (req, res) => {
+  const { id } = req.params; 
+  const data = await fs.readFile('./talker.json', 'utf8');
+  const talkers = JSON.parse(data);
+  const findTalker = talkers.find((talker) => talker.id === parseInt(id, 10));
+      if (!findTalker) {
+       return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    } 
+     return res.status(200).json(findTalker);
+    
+  // } catch (err) {
+  //   return res.status(500).send({ err });
+  // }
+}));
 
 // Requisito 01 -----------------------------------------------------
-app.get('/talker', (_req, res) => {
+app.get('/talker', async (_req, res) => {
   // if (data) return 
-  const data = fs.readFileSync('./talker.json', 'utf8');
+  const data = await fs.readFile('./talker.json', 'utf8');
   res.status(200).json(JSON.parse(data));
   // res.status(200).send(JSON.parse([]));
 //    try {
