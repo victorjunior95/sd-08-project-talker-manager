@@ -8,6 +8,7 @@ const validateEmptyWatched = require('./validateEmptyWatched');
 const validateEmptyTalk = require('./validateEmptyTalk');
 const postTalker = require('./postTalker');
 const putTalker = require('./putTalker');
+const deleteTalker = require('./deleteTalker');
 
 module.exports = {
   validateToken,
@@ -20,4 +21,5 @@ module.exports = {
   validateEmptyWatched,
   postTalker,
   putTalker,
+  deleteTalker,
 };
