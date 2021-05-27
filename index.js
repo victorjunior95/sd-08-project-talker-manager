@@ -51,7 +51,7 @@ app.get('/talker/search', tokenValidation, async (_request, response) => {
 
   const querySearch = talkers.filter((talker) => talker.name.includes(query));
 
-  if (query.length > 0) {
+  if (!querySearch || querySearch === []) {
     return response.status(HTTP_OK_STATUS).json([]);
   }
 
