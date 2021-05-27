@@ -112,15 +112,15 @@ app.post(
   },
 );
 
-const interface = { // pattern factory
-  name,
-  age,
-  id: parseInt(id, 10),
-  talk: {
-    watchedAt: talk.watchedAt,
-    rate: talk.rate,
-  },
-};
+// const _interface = { // pattern factory
+//   name,
+//   age,
+//   id: parseInt(id, 10),
+//   talk: {
+//     watchedAt: talk.watchedAt,
+//     rate: talk.rate,
+//   },
+// };
 
 function talkerEdited(name, age, talk, id) {
   return {
