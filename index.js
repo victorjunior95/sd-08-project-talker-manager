@@ -188,4 +188,4 @@ app.delete('/talker/:id', [tokenValidation, (req, res) => {
   }
 }]);
 
-app.listen(PORT, () => console.log('Online'));
+app.listen(PORT, () => console.log('Online')); // eu sou a única mudança 
