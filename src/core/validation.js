@@ -32,13 +32,12 @@ function isObject(param) {
 }
 
 function tokenValidation(_request, response, cb) {
-  const { authorization } = _request.headers;
-  if (!authorization) {
+  if (!_request.headers.authorization) {
     return response
       .status(HTTP_UNAUTHORIZED_STATUS)
       .send({ message: 'Token não encontrado' });
   }
-  if (authorization.length < 16) {
+  if (_request.headers.authorization.length < 16) {
     return response
       .status(HTTP_UNAUTHORIZED_STATUS)
       .send({ message: 'Token inválido' });
