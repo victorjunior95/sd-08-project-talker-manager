@@ -66,7 +66,7 @@ function ageValidation(_request, response, cb) {
       .status(HTTP_BAD_REQUEST_STATUS)
       .send({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
-  next();
+  cb();
 }
 
 function notIsANumber(param) {
@@ -107,7 +107,7 @@ function rateValidation(_request, response, cb) {
 }
 
 function watchedAtValidation(_request, response, cb) {
-  if (!VALID_DATE.test(_request.body.talk.watchedAt)) {
+  if (!REGEX_TO_VALIDADE_DATE.test(_request.body.talk.watchedAt)) {
     return response.status(REGEX_TO_VALIDADE_DATE).send({
       message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
     });
