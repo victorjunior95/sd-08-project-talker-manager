@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
+const FILE_NAME = 'talker.json';
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -16,7 +17,7 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', (req, res) => {
   try {
-    const talkers = JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+    const talkers = JSON.parse(fs.readFileSync(FILE_NAME, 'utf-8'));
     res.status(200).send(talkers);
   } catch (err) {
     return res.status(500).json(err);
@@ -25,7 +26,7 @@ app.get('/talker', (req, res) => {
 
 app.get('/talker/:id', (req, res) => {
   try {
-    const talkers = JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+    const talkers = JSON.parse(fs.readFileSync(FILE_NAME, 'utf-8'));
     const idTalker = Number(req.params.id);
     const talker = talkers[idTalker - 1];
   if (talker) {
@@ -131,11 +132,11 @@ app.post('/talker',
   getValidTalkData,
   (req, res) => {
     try {
-      const talkers = JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+      const talkers = JSON.parse(fs.readFileSync(FILE_NAME, 'utf-8'));
       const newTalkerUpdate = req.body;
       newTalkerUpdate.id = talkers.length + 1;
       talkers.push(newTalkerUpdate);
-      fs.writeFileSync('talker.json', JSON.stringify(talkers));
+      fs.writeFileSync(FILE_NAME, JSON.stringify(talkers));
       return res.status(201).json(newTalkerUpdate);
     } catch (err) {
       return res.status(500).send({ err });
@@ -150,7 +151,7 @@ app.put('/talker/:id',
   getValidTalkData,
   (req, res) => {
     try {
-      const talkers = JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+      const talkers = JSON.parse(fs.readFileSync(FILE_NAME, 'utf-8'));
       const newTalker = req.body;
       const talkerIdToUpdate = Number(req.params.id);
       newTalker.id = talkerIdToUpdate;
@@ -160,7 +161,7 @@ app.put('/talker/:id',
         }
         return talker;
       });
-      fs.writeFileSync('talker.json', JSON.stringify(updatedTalkers));
+      fs.writeFileSync(FILE_NAME, JSON.stringify(updatedTalkers));
       res.status(200).json(newTalker);
     } catch (err) {
       return res.status(500).send({ err });
