@@ -1,10 +1,7 @@
-const express = require('express');
 const randomstring = require('randomstring');
 
-const app = express();
-
-app.post('/', (_request, response) => {
+const token = ((_request, response) => {
   response.send({ token: randomstring.generate(16) });
 });
 
-module.exports = app;
+module.exports = token;

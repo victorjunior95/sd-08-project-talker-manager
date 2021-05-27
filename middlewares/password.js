@@ -1,8 +1,4 @@
-const express = require('express');
-
-const app = express();
-
-app.post('/', (request, response, next) => {
+const passwordLogin = ((request, response, next) => {
   const { password } = request.body;
   
   if (!password) {
@@ -19,4 +15,4 @@ app.post('/', (request, response, next) => {
   next();
 });
 
-module.exports = app;
+module.exports = passwordLogin;

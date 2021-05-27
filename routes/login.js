@@ -5,6 +5,6 @@ const token = require('../middlewares/token');
 
 const app = express();
 
-app.use('/', [email, password, token]);
+app.post('/', [email, password, token]);
 
 module.exports = app;

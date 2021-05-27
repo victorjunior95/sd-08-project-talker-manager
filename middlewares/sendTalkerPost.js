@@ -10,7 +10,7 @@ const sendTalkerPost = (rescue(async (request, response) => {
   data.push(nTalker);
 
   try {
-    await fs.promises.writeFile('talker.json', JSON.stringify(data));    
+    await fs.promises.writeFile(`${__dirname}/../talker.json`, JSON.stringify(data));    
     return response.status(201).send(nTalker);
   } catch (error) {
     throw new Error(error);

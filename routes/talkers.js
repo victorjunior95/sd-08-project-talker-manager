@@ -7,6 +7,7 @@ const talkTalker = require('../middlewares/talkTalker');
 const watchedAtRateTalker = require('../middlewares/watchedAtRateTalker');
 const sendTalkerPost = require('../middlewares/sendTalkerPost');
 const sendTalkerPut = require('../middlewares/sendTalkerPut');
+const sendTalkerDelete = require('../middlewares/sendTalkerDelete');
 
 const app = express();
 
@@ -33,5 +34,7 @@ app.put('/:id', [
   tokenTalker, nameTalker, ageTalker,
   talkTalker, watchedAtRateTalker, sendTalkerPut,
 ]);
-  
+
+app.delete('/:id', [tokenTalker, sendTalkerDelete]);
+
 module.exports = app;
