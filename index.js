@@ -41,11 +41,11 @@ app.get('/talker', async (_request, response) => {
 });
 
 app.get('/talker/:id', async (_request, response) => {
-  const mockData = await fs.readFile(file);
-  const { id } = _request.params;
+  const mockData = await fs.readFile(file)
+  const { id } = _request.params
   const talker = JSON.parse(mockData).find(
-    (eachTalker) => eachTalker.id === parseInt(id)
-  );
+    (eachTalker) => eachTalker.id === parseInt(10, id)
+  )
   if (!talker) {
     return response.status(HTTP_NOT_FOUND_STATUS).send({
       message: 'Pessoa palestrante não encontrada',
