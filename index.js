@@ -97,21 +97,24 @@ app.post(
   rateValidation,
   watchedAtValidation,
   async (_request, response) => {
-    const mockData = await fs.readFile(file);
-    const talkersOnDataBase = JSON.parse(mockData);
+    const file = await fs.readFile(TALKER_FILE);
+    const talkers = JSON.parse(file);
     const { name, age, talk } = _request.body;
 
-    const newTalkerPeople = {
+    const newTalker = {
       name,
       age,
-      id: talkersOnDataBase.length + 1,
-      talk: { watchedAt: talk.watchedAt, rate: talk.rate },
+      id: talkers.length + 1,
+      talk: {
+        watchedAt: talk.watchedAt,
+        rate: talk.rate,
+      },
     };
 
-    talkersOnDataBase.push(newTalkerPeople);
-    const databaseUpdateTalkers = JSON.parse(talkersOnDataBase);
-    await fs.writeFile('talker.json', databaseUpdateTalkers);
-    return response.status(HTTP_CREATED_STATUS).json(newTalkerPeople);
+    talkers.push(newTalker);
+    const jsonTalkers = JSON.stringify(talkers);
+    await fs.writeFile('talker.json', jsonTalkers);
+    return response.status(CREATED).json(newTalker);
   },
 );
 
