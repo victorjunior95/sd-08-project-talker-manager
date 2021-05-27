@@ -101,7 +101,7 @@ const getValidTalk = (req, res, next) => {
     .status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
-  if (!talk.rate || !talk.watchedAt) { 
+  if (typeof talk.rate === 'undefined' || !talk.watchedAt) { 
     return res
     .status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
@@ -137,6 +137,31 @@ app.post('/talker',
       talkers.push(newTalkerUpdate);
       fs.writeFileSync('talker.json', JSON.stringify(talkers));
       return res.status(201).json(newTalkerUpdate);
+    } catch (err) {
+      return res.status(500).send({ err });
+    }
+});
+
+app.put('/talker/:id',
+  getValidToken,
+  getValidAge,
+  getValidName,
+  getValidTalk,
+  getValidTalkData,
+  (req, res) => {
+    try {
+      const talkers = JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+      const newTalker = req.body;
+      const talkerIdToUpdate = Number(req.params.id);
+      newTalker.id = talkerIdToUpdate;
+      const updatedTalkers = talkers.map((talker) => {
+        if (talker.id === talkerIdToUpdate) {
+          return { ...newTalker };
+        }
+        return talker;
+      });
+      fs.writeFileSync('talker.json', JSON.stringify(updatedTalkers));
+      res.status(200).json(newTalker);
     } catch (err) {
       return res.status(500).send({ err });
     }
