@@ -8,11 +8,11 @@ const putTalker = (req, res) => {
   const { body } = req;
   const { id } = req.params;
   const newObj = editTalker(body, id);
-  // console.log(newObj);
+  console.log(newObj);
   const content = replaceTalker(newObj, Number(id));
-  // console.log(content);
+  console.log(content);
   promises.writeFile(nomeDoArquivo, content)
-    .then(() => res.status(200).send(JSON.stringify(newObj)));
+    .then(() => res.status(200).send(newObj));
 };
 
 module.exports = putTalker;
