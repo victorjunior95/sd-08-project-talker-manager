@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 const readFile = require('./readFile');
 
 function writePerson(caminho, objeto) {
