@@ -1,8 +1,4 @@
-const express = require('express');
-
-const app = express();
-
-app.post('/', (request, response, next) => {
+const token = ((request, response, next) => {
   const { authorization } = request.headers;
   if (!authorization) {
     return response.status(401).send({
@@ -18,4 +14,4 @@ app.post('/', (request, response, next) => {
   next();
 });
 
-module.exports = app;
+module.exports = token;

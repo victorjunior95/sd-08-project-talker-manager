@@ -1,8 +1,4 @@
-const express = require('express');
-
-const app = express();
-
-app.post('/', (request, response, next) => {
+const nameTalker = ((request, response, next) => {
   const { name } = request.body;
 
   if (!name) {
@@ -19,4 +15,4 @@ app.post('/', (request, response, next) => {
   next();
 });
 
-module.exports = app;
+module.exports = nameTalker;

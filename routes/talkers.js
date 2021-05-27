@@ -5,7 +5,8 @@ const nameTalker = require('../middlewares/nameTalker');
 const ageTalker = require('../middlewares/ageTalker');
 const talkTalker = require('../middlewares/talkTalker');
 const watchedAtRateTalker = require('../middlewares/watchedAtRateTalker');
-const sendTalker = require('../middlewares/sendTalker');
+const sendTalkerPost = require('../middlewares/sendTalkerPost');
+const sendTalkerPut = require('../middlewares/sendTalkerPut');
 
 const app = express();
 
@@ -23,9 +24,14 @@ app.get('/:id', async (request, response) => {
   }
 });
 
-app.use('/', [
+app.post('/', [
   tokenTalker, nameTalker, ageTalker,
-  talkTalker, watchedAtRateTalker, sendTalker,
+  talkTalker, watchedAtRateTalker, sendTalkerPost,
 ]);
 
+app.put('/:id', [
+  tokenTalker, nameTalker, ageTalker,
+  talkTalker, watchedAtRateTalker, sendTalkerPut,
+]);
+  
 module.exports = app;

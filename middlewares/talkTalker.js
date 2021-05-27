@@ -1,8 +1,4 @@
-const express = require('express');
-
-const app = express();
-
-app.post('/', (request, response, next) => {
+const talkTalker = ((request, response, next) => {
   const { talk } = request.body;
 
   if (!talk || (!talk.watchedAt || !talk.rate)) {
@@ -14,4 +10,4 @@ app.post('/', (request, response, next) => {
   next();
 });
 
-module.exports = app;
+module.exports = talkTalker;

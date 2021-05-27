@@ -1,8 +1,4 @@
-const express = require('express');
-
-const app = express();
-
-app.post('/', (request, response, next) => {
+const ageTalker = ((request, response, next) => {
   const { age } = request.body;
 
   if (!age) {
@@ -19,4 +15,4 @@ app.post('/', (request, response, next) => {
   next();
 });
 
-module.exports = app;
+module.exports = ageTalker;

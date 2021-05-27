@@ -1,8 +1,4 @@
-const express = require('express');
-
-const app = express();
-
-app.post('/', (request, response, next) => {
+const watchedAtRateTalker = ((request, response, next) => {
   const { watchedAt, rate } = request.body.talk;
   const regex = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
 
@@ -20,4 +16,4 @@ app.post('/', (request, response, next) => {
   next();
 });
 
-module.exports = app;
+module.exports = watchedAtRateTalker;
