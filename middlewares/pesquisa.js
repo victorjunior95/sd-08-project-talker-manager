@@ -1,0 +1,18 @@
+const rescue = require('express-rescue');
+const { lerJson } = require('./fs-utils');
+
+const ENCONTRADA = 200;
+
+const pesquisa = rescue(async (req, res) => {
+  const { q } = req.query;
+  const allTalkers = await lerJson();
+  console.log(allTalkers.inclu);
+  if (!q) {
+    return res.status(ENCONTRADA).json(allTalkers);
+  }
+  const result = allTalkers.filter((talker) => talker.name.toLowerCase().includes(q.toLowerCase()));
+  console.log(result);
+  return res.status(ENCONTRADA).json(result);
+});
+
+module.exports = pesquisa;

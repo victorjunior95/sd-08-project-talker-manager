@@ -8,6 +8,7 @@ const checkTalk = require('./checkTalk');
 const cadastra = require('./cadastra');
 const atualizar = require('./atualizar');
 const deletar = require('./deletar');
+const pesquisa = require('./pesquisa');
 
 module.exports = {
   lerJson,
@@ -21,4 +22,5 @@ module.exports = {
   cadastra,
   atualizar,
   deletar,
+  pesquisa,
 };

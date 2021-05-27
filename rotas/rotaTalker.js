@@ -11,12 +11,17 @@ const {
   cadastra,
   atualizar,
   deletar,
+  pesquisa,
 } = require('../middlewares');
 
 const rotaTalker = express.Router();
 
 const HTTP_OK_STATUS = 200;
 const NAO_ENCONTRADO = 404;
+
+rotaTalker.get('/search',
+  checToken,
+  pesquisa);
 
 rotaTalker.get('/', rescue(async (_req, res) => {
   const talker = await lerJson();
