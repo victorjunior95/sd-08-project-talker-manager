@@ -97,8 +97,8 @@ app.post(
   rateValidation,
   watchedAtValidation,
   async (_request, response) => {
-    const file = await fs.readFile(TALKER_FILE);
-    const talkers = JSON.parse(file);
+    const mockData = await fs.readFile(file);
+    const talkers = JSON.parse(mockData);
     const { name, age, talk } = _request.body;
 
     const newTalker = {
@@ -114,7 +114,7 @@ app.post(
     talkers.push(newTalker);
     const jsonTalkers = JSON.stringify(talkers);
     await fs.writeFile('talker.json', jsonTalkers);
-    return response.status(CREATED).json(newTalker);
+    return response.status(HTTP_CREATED_STATUS).json(newTalker);
   },
 );
 
