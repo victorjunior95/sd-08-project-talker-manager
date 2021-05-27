@@ -42,13 +42,12 @@ function tokenValidation(_request, response, cb) {
 }
 
 function nameValidation(_request, response, cb) {
-  const { name } = _request.body;
-  if (!name) {
+  if (!_request.body.name) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
       .send({ message: 'O campo "name" é obrigatório' });
   }
-  if (name.length <= 3) {
+  if (_request.body.name.length <= 3) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
       .send({ message: 'O "name" deve ter pelo menos 3 caracteres' });
@@ -57,18 +56,17 @@ function nameValidation(_request, response, cb) {
 }
 
 function ageValidation(_request, response, cb) {
-  const { age } = _request.body;
-  if (!age) {
+  if (!_request.body.age) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
       .send({ message: 'O campo "age" é obrigatório' });
   }
-  if (age < 18) {
+  if (_request.body.age < 18) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
       .send({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
-  cb();
+  next();
 }
 
 function notIsANumber(param) {
@@ -80,9 +78,12 @@ function notIsAString(param) {
 }
 
 function talkValidation(_request, response, cb) {
-  const { rate, watchdAt } = _request.body.talk;
-  if (!_request.body.talk || notIsANumber(rate) || notIsAString(watchdAt)) {
-    return response.status(HTTP_BAD_REQUEST_STATUS).find({
+  if (
+    !_request.body.talk
+      || notIsANumber(_request.body.talk.rate)
+      || notIsAString(_request.body.talk.watchedAt)
+  ) {
+    return response.status(HTTP_BAD_REQUEST_STATUS).send({
       message:
         'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
@@ -91,11 +92,13 @@ function talkValidation(_request, response, cb) {
 }
 
 function rateValidation(_request, response, cb) {
-  const { rate } = _request.body.talk;
-  if (!_request.body.talk || notIsANumber(rate)) {
+  if (
+    !_request.body.talk
+      || notIsANumber(_request.body.talk.rate)
+  ) {
     cb();
   }
-  if (rate < 1) {
+  if (_request.body.talk.rate < 1 || _request.body.talk.rate > 5) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
       .send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
@@ -104,9 +107,8 @@ function rateValidation(_request, response, cb) {
 }
 
 function watchedAtValidation(_request, response, cb) {
-  const { watchedAt } = _request.body.talk;
-  if (REGEX_TO_VALIDADE_DATE.test(watchedAt)) {
-    return response.status(HTTP_BAD_REQUEST_STATUS).send({
+  if (!VALID_DATE.test(_request.body.talk.watchedAt)) {
+    return response.status(REGEX_TO_VALIDADE_DATE).send({
       message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
     });
   }
