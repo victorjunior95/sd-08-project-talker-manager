@@ -68,9 +68,9 @@ app.get('/talker/:id', async (_request, response) => {
   return response.status(HTTP_OK_STATUS).send(talker);
 });
 
-app.post('/login', ({ body }, response) => {
-  const { email, password } = body;
-  const token = crypto.randomBytes(16).toString('hex');
+app.post('/login', (_request, response) => {
+  const { email, password } = _request.body;
+  const token = crypto.randomBytes(8).toString('hex');
   if (isObject(emailValidation(email))) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
