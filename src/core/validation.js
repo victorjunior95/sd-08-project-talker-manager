@@ -86,7 +86,7 @@ function notIsAString(param) {
 
 function talkValidation(_request, response, cb) {
   const { rate, watchdAt } = _request.body.talk;
-  if (!talk || notIsANumber(rate) || notIsAString(watchdAt)) {
+  if (!_request.body.talk || notIsANumber(rate) || notIsAString(watchdAt)) {
     return response.status(HTTP_BAD_REQUEST_STATUS).find({
       message:
         'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
@@ -97,7 +97,7 @@ function talkValidation(_request, response, cb) {
 
 function rateValidation(_request, response, cb) {
   const { rate } = _request.body.talk;
-  if (!talk || notIsANumber(rate)) {
+  if (!_request.body.talk || notIsANumber(rate)) {
     cb();
   }
   if (rate < 1) {
