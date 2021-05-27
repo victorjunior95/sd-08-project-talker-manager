@@ -188,4 +188,4 @@ app.delete('/talker/:id', [tokenValidation, (req, res) => {
   }
 }]);
 
-app.listen(PORT, () => console.log('Online')); // eu sou a única mudança (último 85,71%, não passou o req5, lançar os dados de novo)
+app.listen(PORT, () => console.log('Online')); // eu sou a única mudança (último 42,86%, não passou os reqs 3-6, lançar os dados de novo)
