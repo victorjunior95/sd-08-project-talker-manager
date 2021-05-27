@@ -1,4 +1,4 @@
-function generatePass() {
+function token() {
     const charSet = 'abcdefghijklmnopqrstuvwxyzABCDEEFGIJKLMNOPQRSTUVWXYZ123456789_*@-';
     let pass = '';
 
@@ -10,4 +10,4 @@ function generatePass() {
     };
   }
 
-module.exports = generatePass;
+module.exports = token;
