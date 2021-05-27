@@ -2,8 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 
-const data = fs.readFileSync('./talker.json', 'utf8');
-const login = require('./utils');
+// const login = require('./utils');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,6 +17,7 @@ app.get('/', (_request, response) => {
 
 // Requisito 02 -----------------------------------------------------
 app.get('/talker/:id', (req, res) => {
+  const data = fs.readFileSync('./talker.json', 'utf8');
   try {
       const { id } = req.params;
       const findTalker = data.find((talker) => talker.id === id);
@@ -34,8 +34,10 @@ app.get('/talker/:id', (req, res) => {
 
 // Requisito 01 -----------------------------------------------------
 app.get('/talker', (_req, res) => {
-  if (data) return res.status(200).json(JSON.parse(data));
-  res.status(200).send([]);
+  // if (data) return 
+  const data = fs.readFileSync('./talker.json', 'utf8');
+  res.status(200).json(JSON.parse(data));
+  // res.status(200).send(JSON.parse([]));
 //    try {
 //      res.status(200).send(data);  
 //    } catch (err) {
