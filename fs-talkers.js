@@ -5,7 +5,7 @@ const talkerJson = './talker.json';
 const getTalkerJson = () => new Promise((resolve, reject) => {
   fs.readFile(talkerJson, 'utf8', (err, data) => {
     if (err) {
-     reject(new Error('deu erro'));
+     reject(new Error('Não foi possível ler o arquivo'));
     }
     resolve(JSON.parse(data));
   });

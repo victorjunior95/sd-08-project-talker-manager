@@ -1,6 +1,6 @@
 const express = require('express');
 // const bodyParser = require('body-parser');
-const getTalkerJson = require('./fs-promisses');
+const getTalkerJson = require('./fs-talkers');
 
 // const app = express();
 
