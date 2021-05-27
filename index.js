@@ -92,10 +92,10 @@ app.post(
   talkValidation,
   rateValidation,
   watchedAtValidation,
-  async ({ body }, response) => {
+  async (_request, response) => {
     const mockData = await fs.readFile(file);
     const talkersOnDataBase = JSON.parse(mockData);
-    const { name, age, talk } = body;
+    const { name, age, talk } = _request.body;
 
     const newTalkerPeople = {
       name,

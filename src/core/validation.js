@@ -31,7 +31,8 @@ function isObject(param) {
   return typeof param === 'object';
 }
 
-function tokenValidation({ headers: { authorization } }, response, cb) {
+function tokenValidation(_request, response, cb) {
+  const { authorization } = _request.headers;
   if (!authorization) {
     return response
       .status(HTTP_UNAUTHORIZED_STATUS)
@@ -45,7 +46,8 @@ function tokenValidation({ headers: { authorization } }, response, cb) {
   cb();
 }
 
-function nameValidation({ body: name }, response, cb) {
+function nameValidation(_request, response, cb) {
+  const { name } = _request.body;
   if (!name) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
@@ -59,7 +61,8 @@ function nameValidation({ body: name }, response, cb) {
   cb();
 }
 
-function ageValidation({ body: age }, response, cb) {
+function ageValidation(_request, response, cb) {
+  const { age } = _request.body;
   if (!age) {
     return response
       .status(HTTP_BAD_REQUEST_STATUS)
@@ -81,8 +84,8 @@ function notIsAString(param) {
   return typeof param !== 'string';
 }
 
-function talkValidation({ body: talk }, response, cb) {
-  const { rate, watchdAt } = talk;
+function talkValidation(_request, response, cb) {
+  const { rate, watchdAt } = _request.body.talk;
   if (!talk || notIsANumber(rate) || notIsAString(watchdAt)) {
     return response.status(HTTP_BAD_REQUEST_STATUS).find({
       message:
@@ -92,8 +95,8 @@ function talkValidation({ body: talk }, response, cb) {
   cb();
 }
 
-function rateValidation({ body: talk }, response, cb) {
-  const { rate } = talk;
+function rateValidation(_request, response, cb) {
+  const { rate } = _request.body.talk;
   if (!talk || notIsANumber(rate)) {
     cb();
   }
@@ -105,8 +108,8 @@ function rateValidation({ body: talk }, response, cb) {
   cb();
 }
 
-function watchedAtValidation({ body: talk }, response, cb) {
-  const { watchedAt } = talk;
+function watchedAtValidation(_request, response, cb) {
+  const { watchedAt } = _request.body.talk;
   if (REGEX_TO_VALIDADE_DATE.test(watchedAt)) {
     return response.status(HTTP_BAD_REQUEST_STATUS).send({
       message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
