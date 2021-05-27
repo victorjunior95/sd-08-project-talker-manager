@@ -118,8 +118,8 @@ app.post(
   },
 );
 
-function I_TalkerEdited(name, age, talk, id){
-  return { 
+const I_TalkerEdited = (name, age, talk, id) => {
+  return {
     name,
     age,
     id: parseInt(id, 10),
