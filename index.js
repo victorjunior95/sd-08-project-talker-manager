@@ -61,9 +61,7 @@ app.get('/talker/search', tokenValidation, async (_request, response) => {
 app.get('/talker/:id', async (_request, response) => {
   const mockData = await fs.readFile(file);
   const { id } = _request.params;
-  const talker = JSON.parse(mockData).find(
-    (eachTalker) => eachTalker.id === parseInt(id, 10),
-  );
+  const talker = JSON.parse(mockData).find((eachTalker) => eachTalker.id === parseInt(id, 10));
   if (!talker) {
     return response.status(HTTP_NOT_FOUND_STATUS).send({
       message: 'Pessoa palestrante não encontrada',
@@ -76,14 +74,10 @@ app.post('/login', (_request, response) => {
   const { email, password } = _request.body;
   const token = crypto.randomBytes(8).toString('hex');
   if (isObject(emailValidation(email))) {
-    return response
-      .status(HTTP_BAD_REQUEST_STATUS)
-      .send(emailValidation(email));
+    return response.status(HTTP_BAD_REQUEST_STATUS).send(emailValidation(email));
   }
   if (isObject(passwordValidation(password))) {
-    return response
-      .status(HTTP_BAD_REQUEST_STATUS)
-      .send(passwordValidation(password));
+    return response.status(HTTP_BAD_REQUEST_STATUS).send(passwordValidation(password));
   }
   return response.status(HTTP_OK_STATUS).send({ token: `${token}` });
 });
@@ -118,7 +112,17 @@ app.post(
   },
 );
 
-const I_TalkerEdited = (name, age, talk, id) => {
+const interface = { // pattern factory
+  name,
+  age,
+  id: parseInt(id, 10),
+  talk: {
+    watchedAt: talk.watchedAt,
+    rate: talk.rate,
+  },
+};
+
+function talkerEdited(name, age, talk, id) {
   return {
     name,
     age,
@@ -128,7 +132,7 @@ const I_TalkerEdited = (name, age, talk, id) => {
       rate: talk.rate,
     },
   };
-}
+};
 
 app.put(
   '/talker/:id',
@@ -144,11 +148,11 @@ app.put(
     const talkers = JSON.parse(mockData);
     const { name, age, talk } = _request.body;
 
-    const editedTalker = I_TalkerEdited(name, age, talk, id);
+    const newTalker = talkerEdited(name, age, talk, id);
 
     const editedTalkers = [
       ...talkers.slice(0, id - 1),
-      editedTalker,
+      newTalker,
       ...talkers.slice(id - 1, talkers.length - 1),
     ];
 
