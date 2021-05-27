@@ -1,13 +1,13 @@
 const readFile = require('../helpers/readFile');
 const findPerson = require('../helpers/findPerson');
 const writePerson = require('../helpers/writePerson');
+const editPerson = require('../helpers/editPerson');
+const deletePerson = require('../helpers/deletePerson');
+const writeDelete = require('../helpers/writeDelete');
+const { notFoundPerson, msgDeletePerson } = require('../helpers/errorMessages');
 
 const pathTalker = './talker.json';
 const HTTP_OK_STATUS = 200;
-
-const notFoundPerson = {
-    message: 'Pessoa palestrante não encontrada',
-  };
 
 const get = (_req, resp) => {
     const fileContent = JSON.parse(readFile(pathTalker));
@@ -29,8 +29,32 @@ const postInsert = async (req, resp) => {
     resp.status(201).send(await writePerson('./talker.json', req.body));
 };
 
+const putEdit = async (req, resp) => {
+    const { id } = req.params;
+    const intID = parseInt(id, 10);
+    const fileContent = JSON.parse(readFile(pathTalker));
+    let result = findPerson(intID, fileContent);
+    
+    result = req.body;
+    resp.status(200).send(await editPerson('./talker.json', result, intID));
+};
+
+const deletId = async (req, resp) => {
+  const { id } = req.params;
+  const intID = parseInt(id, 10);
+  const fileContent = JSON.parse(readFile(pathTalker));
+  const result = deletePerson(intID, fileContent);
+  
+  const stringResult = JSON.stringify(result);
+  const final = await writeDelete('./talker.json', stringResult);
+  
+  if (final) return resp.status(200).send(msgDeletePerson);
+};
+
 module.exports = {
     get,
     getId,
     postInsert,
+    putEdit,
+    deletId,
 };

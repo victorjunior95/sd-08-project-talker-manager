@@ -9,4 +9,10 @@ router.post('/', authMiddleware, validation.validateName,
   validation.validateAge, validation.validateObjData,
    validation.validateRate, talkerController.postInsert);
 
+router.put('/:id', authMiddleware, validation.validateName,
+validation.validateAge, validation.validateObjData,
+ validation.validateRate, talkerController.putEdit);
+
+router.delete('/:id', authMiddleware, talkerController.deletId);
+
 module.exports = router;

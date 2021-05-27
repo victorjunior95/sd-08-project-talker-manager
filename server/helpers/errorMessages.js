@@ -49,6 +49,8 @@ const emptyEmail = {
   const talkEmput = {
     message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
   };
+
+  const msgDeletePerson = { message: 'Pessoa palestrante deletada com sucesso' };
   
   module.exports = {
     emptyEmail,
@@ -63,4 +65,5 @@ const emptyEmail = {
     dataError,
     rateError,
     talkEmput,
+    msgDeletePerson,
   };
