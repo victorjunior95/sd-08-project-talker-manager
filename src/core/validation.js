@@ -33,14 +33,10 @@ function isObject(param) {
 
 function tokenValidation(_request, response, cb) {
   if (!_request.headers.authorization) {
-    return response
-      .status(HTTP_UNAUTHORIZED_STATUS)
-      .send({ message: 'Token não encontrado' });
+    return response.status(HTTP_UNAUTHORIZED_STATUS).send({ message: 'Token não encontrado' });
   }
   if (_request.headers.authorization.length < 16) {
-    return response
-      .status(HTTP_UNAUTHORIZED_STATUS)
-      .send({ message: 'Token inválido' });
+    return response.status(HTTP_UNAUTHORIZED_STATUS).send({ message: 'Token inválido' });
   }
   cb();
 }
