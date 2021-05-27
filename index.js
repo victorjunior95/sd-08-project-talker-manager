@@ -14,8 +14,8 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
-app.use('/talker', talkers);
 app.use('/login', login);
+app.use('/talker', talkers);
 
 app.listen(PORT, () => {
   console.log('Online');
