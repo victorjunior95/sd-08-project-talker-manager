@@ -45,7 +45,7 @@ app.get('/talker/search', tokenValidation, async (_request, response) => {
   const mockData = await fs.readFile(file);
   const talkers = JSON.parse(mockData);
 
-  const querySearch = talkers.filter((talker) => {
+  const querySearch = talkers.filter(function (talker) {
     return talker.name.includes(query);
   });
 
