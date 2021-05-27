@@ -132,7 +132,7 @@ function talkerEdited(name, age, talk, id) {
       rate: talk.rate,
     },
   };
-};
+}
 
 app.put(
   '/talker/:id',
@@ -158,7 +158,7 @@ app.put(
 
     const jsonTalkers = JSON.stringify(editedTalkers);
     await fs.writeFile(file, jsonTalkers);
-    return response.status(HTTP_OK_STATUS).json(editedTalker);
+    return response.status(HTTP_OK_STATUS).json(newTalker);
   },
 );
 
