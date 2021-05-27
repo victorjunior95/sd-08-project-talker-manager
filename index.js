@@ -44,3 +44,8 @@ middlewares.verificarIdade,
 middlewares.verificarCampoTalk,
 middlewares.verificarDadosTalk,
 middlewares.editarPalestrante);
+
+// Requisito 6
+app.delete('/talker/:id',
+middlewares.verificarToken,
+middlewares.deletarPalestrante);
