@@ -7,6 +7,7 @@ const verificarIdade = require('./VerificarIdade.js');
 const verificarCampoTalk = require('./VerificarCampoTalk.js');
 const verificarDadosTalk = require('./VerificarDadosTalk.js');
 const adicionarPalestrante = require('./AdicionarPalestrante.js');
+const editarPalestrante = require('./EditarPalestrante.js');
 
 module.exports = {
   buscarPalestrantes,
@@ -18,4 +19,5 @@ module.exports = {
   verificarCampoTalk,
   verificarDadosTalk,
   adicionarPalestrante,
+  editarPalestrante,
 };

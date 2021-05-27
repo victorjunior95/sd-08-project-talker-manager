@@ -35,3 +35,12 @@ middlewares.verificarIdade,
 middlewares.verificarCampoTalk,
 middlewares.verificarDadosTalk,
 middlewares.adicionarPalestrante);
+
+// Requisito 5
+app.put('/talker/:id',
+middlewares.verificarToken,
+middlewares.verificarNome,
+middlewares.verificarIdade,
+middlewares.verificarCampoTalk,
+middlewares.verificarDadosTalk,
+middlewares.editarPalestrante);
