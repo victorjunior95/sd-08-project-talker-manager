@@ -40,22 +40,21 @@ app.get('/talker', async (_request, response) => {
   return response.status(HTTP_OK_STATUS).send(JSON.parse(mockData));
 });
 
-app.get('/talker/search', tokenValidation, async(_request, response) => {
+app.get('/talker/search', tokenValidation, async (_request, response) => {
   const query = _request.query.q;
   const mockData = await fs.readFile(file);
   const talkers = JSON.parse(mockData);
 
   const querySearch = talkers.filter((talker) => {
-    talker.name.includes(query);
-  })
+    return talker.name.includes(query);
+  });
 
-  if(query.length > 0) {
+  if (query.length > 0) {
     return response.status(HTTP_OK_STATUS).json([]);
   }
 
   return response.status(HTTP_OK_STATUS).json(querySearch);
 });
-
 
 app.get('/talker/:id', async (_request, response) => {
   const mockData = await fs.readFile(file);
