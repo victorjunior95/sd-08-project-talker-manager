@@ -46,7 +46,7 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 });
 
 // req-4
-app.post('/talker', authToken, authname, authAge, authTalk,authdata, (req, res) => {
+app.post('/talker', authToken, authname, authAge, authTalk, authdata, (req, res) => {
   talkers.push(req.body);
   res.status(201).send(talkers[talkers.length - 1]);
 });
