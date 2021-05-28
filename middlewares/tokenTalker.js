@@ -1,4 +1,4 @@
-const token = ((request, response, next) => {
+const tokenTalker = ((request, response, next) => {
   const { authorization } = request.headers;
   
   if (!authorization) {
@@ -15,4 +15,4 @@ const token = ((request, response, next) => {
   next();
 });
 
-module.exports = token;
+module.exports = tokenTalker;

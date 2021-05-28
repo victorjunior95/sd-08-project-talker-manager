@@ -4,7 +4,8 @@ const tokenTalker = require('../middlewares/tokenTalker');
 const nameTalker = require('../middlewares/nameTalker');
 const ageTalker = require('../middlewares/ageTalker');
 const talkTalker = require('../middlewares/talkTalker');
-const watchedAtRateTalker = require('../middlewares/watchedAtRateTalker');
+const watchedAtTalker = require('../middlewares/watchedAtTalker');
+const rateTalker = require('../middlewares/rateTalker');
 const sendTalkerPost = require('../middlewares/sendTalkerPost');
 const sendTalkerPut = require('../middlewares/sendTalkerPut');
 const sendTalkerDelete = require('../middlewares/sendTalkerDelete');
@@ -27,12 +28,12 @@ app.get('/:id', async (request, response) => {
 
 app.post('/', [
   tokenTalker, nameTalker, ageTalker,
-  talkTalker, watchedAtRateTalker, sendTalkerPost,
+  talkTalker, watchedAtTalker, rateTalker, sendTalkerPost,
 ]);
 
 app.put('/:id', [
   tokenTalker, nameTalker, ageTalker,
-  talkTalker, watchedAtRateTalker, sendTalkerPut,
+  talkTalker, watchedAtTalker, rateTalker, sendTalkerPut,
 ]);
 
 app.delete('/:id', [tokenTalker, sendTalkerDelete]);

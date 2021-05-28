@@ -1,12 +1,11 @@
 const rescue = require('express-rescue');
 const fs = require('fs');
-const data = require('../talker.json');
 
 const sendTalkerPut = (rescue(async (request, response) => {
+  const data = JSON.parse(fs.readFileSync('talker.json'));
   const { id } = request.params;
-  const { name, age } = request.body;
-  const { watchedAt, rate } = request.body.talk;
-  const nTalker = { id: +id, name, age, talk: { watchedAt, rate } };
+  const { name, age, talk } = request.body;
+  const nTalker = { name, age, id: +id, talk };
   data[id - 1] = nTalker;
 
   try {
@@ -15,6 +14,7 @@ const sendTalkerPut = (rescue(async (request, response) => {
   } catch (error) {
     throw new Error(error);
   }
+  
 }));
 
 module.exports = sendTalkerPut;
