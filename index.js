@@ -48,7 +48,7 @@ app.post('/talker', authToken, authname, authAge, authTalk, authdata, (req, res)
   talkers.push(req.body);
   fs.writeFileSync('./talker.json', JSON.stringify(talkers));
   
-  res.status(201).send(JSON.parse(talkers[talkers.length - 1]));
+  res.status(201).send(talkers.slice(-1));
 });
 
 // req-5
