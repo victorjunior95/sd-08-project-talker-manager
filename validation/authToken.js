@@ -2,8 +2,10 @@ const fs = require('fs');
 
 const authToken = (req, res, next) => {
   fs.readFileSync('./talker.json');
-  const tokenAtual = JSON.parse(req.headers.authorization.slice(7));
+  req.headers.authorization = JSON.parse(req.headers.authorization);
+  const tokenAtual = req.headers.authorization;
   const { token } = tokenAtual;
+  console.log(req.headers.authorization);
   if (!token) {
     return res.status(401).send(
       { message: 'Token não encontrado' },

@@ -3,7 +3,7 @@ const authtalk = (req, res, next) => {
   const { talk } = req.body;
   const regxp = /[1-3][0-9]\/[0-1][0-9]\/[0-2][0-9][0-9][0-9]/;
   const nota = /[1-5]/;
-  console.log(req.body);
+  // console.log(req.body);
   if (!regxp.test(talk.watchedAt)) {
     return res.status(400).json(
       { message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' },

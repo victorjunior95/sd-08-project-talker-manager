@@ -1,6 +1,6 @@
 /* verifica password da req */
 const authpaswd = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { password } = req.body;
   
   if (!password) {
