@@ -6,8 +6,8 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
