@@ -9,7 +9,7 @@ const PORT = '3000';
 
 const rescue = require('express-rescue');
 const crypto = require('crypto');
-const talkersFile = require('./middleware/fs-readFile');
+const middlewares = require('./middleware');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -18,13 +18,13 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', 
 rescue(async (_req, res, _next) => {
-  const talkers = await talkersFile.getTalker();
+  const talkers = await middlewares.fsTalkers.getTalker();
   res.status(200).json(talkers);
 }));
 
 app.get('/talker/:id', 
 rescue(async (req, res, _next) => {
-  const talkers = await talkersFile.getTalker();
+  const talkers = await middlewares.fsTalkers.getTalker();
   const idParams = parseInt(req.params.id, 10);
   const talker = talkers.find(({ id }) => id === idParams);
   if (!talker) {
@@ -35,11 +35,13 @@ rescue(async (req, res, _next) => {
 
 app.post('/login', (req, res, _next) => {
   const { email, password } = req.body;
-  if (!email) {
-    return res.status(400).json({ message: 'O campo "email" é obrigatório' });
-  }
-  if (!password) {
-    return res.status(400).json({ message: 'O campo "password" é obrigatório' });
+  const validLogin = [{ email }, { password }].find((validate) => {
+    const [value] = Object.values(validate);
+    return (!value);
+  });
+  if (validLogin) {
+    const field = Object.keys(validLogin)[0];
+    return res.status(400).json({ message: `O campo "${field}" é obrigatório` });
   }
   if (!email.match(/(.+@.+\.com)(\.br)?/)) {
     return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
@@ -50,6 +52,17 @@ app.post('/login', (req, res, _next) => {
   const token = crypto.randomBytes(8).toString('hex');
   res.status(200).json({ token });
 });
+
+app.post('/talker', middlewares.validToken, middlewares.validEmptyFields,
+middlewares.validTalker, middlewares.validTalk,
+rescue(async (req, res, _next) => {
+  const talkers = await middlewares.fsTalkers.getTalker();
+  const newTalker = req.body;
+  newTalker.id = talkers.length + 1;
+  talkers.push(newTalker);
+  await middlewares.fsTalkers.setTalker(talkers);
+  res.status(201).json(newTalker);
+}));
 
 app.listen(PORT, () => {
   console.log('Online');
