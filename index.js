@@ -36,35 +36,25 @@ app.get('/talker', async (_req, res) => {
   res.status(200).json(JSON.parse(data));
 });
 
-function validateEmail(email) {
-  const validEmail = /.+@[A-z]+[.]com/;
-  if (!email) return false;
-  return validEmail.test(email);
-}
-function validatePassword(password) { 
-  if (!password) return false;
-  if (password.length > 6) return true;
-}
 function messages(res, email, password) {
-  if (email === [{ email: '' }]) { 
+  const validEmail = /.+@[A-z]+[.]com/.test(email);
+  if (!email) {
     return res.status(400).json({ message: 'O campo "email" é obrigatório' });
   }
-  if (!email) {
+  if (!validEmail) {
     return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
-  if (password === [{ password: '' }]) { 
+  if (!password) {
     return res.status(400).json({ message: 'O campo "password" é obrigatório' });
   }
-  if (!password) { 
+  if (password.length < 6) { 
     return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
+  return true;
 }
 // Requisito 03 -----------------------------------------------------
 app.post('/login', (req, res) => {
-  const { body } = req;
-  const password = validatePassword(body.password);
-  const email = validateEmail(body.email);
-  const token = crypto.randomBytes(8).toString('hex'); 
-  messages(res, body.email, body.password);
-  if (password && email) return res.status(200).json({ token });
+  const { body } = req;  
+  const token = crypto.randomBytes(8).toString('hex');   
+  if (messages(res, body.email, body.password)) return res.status(200).json({ token });
 });
