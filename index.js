@@ -18,7 +18,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 // conteudo de talker .json
-
+const talkers = JSON.parse(fs.readFileSync('./talker.json'));
  // importando funcionalidades de validação
 const {
   authemail,
@@ -45,9 +45,10 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 
 // req-4
 app.post('/talker', authToken, authname, authAge, authTalk, authdata, (req, res) => {
-  fs.writeFileSync('./talker.json', JSON.stringify(req.body));
-  const talkers = JSON.parse(fs.readFileSync('./talker.json'));
-  res.status(201).send(talkers);
+  talkers.push(req.body);
+  fs.writeFileSync('./talker.json', JSON.stringify(talkers));
+  
+  res.status(201).send(JSON.parse(talkers[talkers.length - 1]));
 });
 
 // req-5

@@ -29,8 +29,8 @@ describe('4 - Crie o endpoint POST /talker', () => {
     await frisby
       .post(`${url}/login`, {
         body: {
-          email: "deferiascomigo@gmail.com",
-          password: "12345678"
+          email: 'deferiascomigo@gmail.com',
+          password: '12345678',
         },
       })
       .then((responseLogin) => {
