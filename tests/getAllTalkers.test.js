@@ -25,7 +25,6 @@ describe('1 - Crie o endpoint GET /talker', () => {
       .expect('status', 200)
       .then((responseGet) => {
         const { json } = responseGet;
-        console.log(json)
         expect(json).toEqual(talkersSeed);
       });
   });
@@ -38,7 +37,6 @@ describe('1 - Crie o endpoint GET /talker', () => {
       .expect('status', 200)
       .then((responseGet) => {
         const { json } = responseGet;
-        console.log(json)
         expect(json).toEqual([]);
       });
   });

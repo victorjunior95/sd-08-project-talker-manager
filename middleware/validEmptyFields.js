@@ -6,7 +6,7 @@ const validEmptyFields = (req, res, next) => {
   const { name, age, talk: { watchedAt, rate } } = req.body;
   const validTalkerData = [{ name }, { age }, { watchedAt }, { rate }].find((validate) => {
     const [value] = Object.values(validate);
-    return (!value);
+    return (value === undefined);
   });
   if (validTalkerData) {
     const field = Object.keys(validTalkerData)[0];
