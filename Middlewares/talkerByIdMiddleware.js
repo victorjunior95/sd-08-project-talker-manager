@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const talkerByIdMiddleware = async (req, res) => {
+const talkerByIdMiddleware = (req, res) => {
   const { id } = req.params;
   const dbTalker = JSON.parse(fs.readFileSync('talker.json', 'utf8'));
   const talkerById = dbTalker.find((talkerId) => talkerId.id === Number(id));
