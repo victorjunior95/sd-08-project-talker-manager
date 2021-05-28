@@ -51,10 +51,19 @@ const deletId = async (req, resp) => {
   if (final) return resp.status(200).send(msgDeletePerson);
 };
 
+const searchID = (req, resp) => {
+  const { q } = req.query;
+  const fileContent = JSON.parse(readFile(pathTalker));
+  const resposta = fileContent
+   .filter((value) => value.name.toLowerCase().includes(q.toLowerCase()));
+  resp.status(200).send(resposta);
+};
+
 module.exports = {
     get,
     getId,
     postInsert,
     putEdit,
     deletId,
+    searchID,
 };
