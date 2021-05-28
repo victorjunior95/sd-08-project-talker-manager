@@ -9,8 +9,11 @@ const rateTalker = require('../middlewares/rateTalker');
 const sendTalkerPost = require('../middlewares/sendTalkerPost');
 const sendTalkerPut = require('../middlewares/sendTalkerPut');
 const sendTalkerDelete = require('../middlewares/sendTalkerDelete');
+const searchTalker = require('../middlewares/searchTalker');
 
 const app = express();
+
+app.get('/search', [tokenTalker, searchTalker]);
 
 app.get('/', (_request, response) => {
   response.send(JSON.parse(fs.readFileSync('./talker.json', 'utf-8')));
