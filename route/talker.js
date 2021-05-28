@@ -54,4 +54,14 @@ middlewares.validTalker, middlewares.validTalk,
     res.status(200).json(updateTalker);
 }));
 
+router.delete('/:id', middlewares.validToken, 
+  rescue(async (req, res, _next) => {
+    const talkerId = parseInt(req.params.id, 10);
+    const talkers = await middlewares.fsTalkers.getTalker()
+      .then((list) => list
+        .filter((talkerByList) => talkerByList.id !== talkerId));
+    await middlewares.fsTalkers.setTalker(talkers);
+    res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+}));
+
 module.exports = router;
