@@ -45,7 +45,7 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 
 // req-4
 app.post('/talker', authToken, authname, authAge, authTalk, authdata, (req, res) => {
-  talkers = [req.body];
+  talkers = req.body;
   fs.writeFileSync('./talker.json', JSON.stringify(talkers));
   
   res.status(201).send(talkers);
