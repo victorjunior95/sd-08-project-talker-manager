@@ -120,14 +120,16 @@ const verifyToken = (token) => {
   return tokenRegex.test(token);
 };
 
-const checkToken = (req, res) => {
+const checkToken = (req, res, callback) => {
   const { authorization } = req.headers;
   if (!authorization) {
     return res.status(401).json({ message: 'Token não encontrado' });
   } if (!verifyToken(authorization)) {
     return res.status(401).json({ message: 'Token inválido' });
   }
-  checkName(req, res);
+  if (callback) {
+    callback(req, res);
+  }
 };
 
 const addTalker = async (req, res) => {
@@ -141,7 +143,7 @@ const addTalker = async (req, res) => {
 };
 
 app.post('/talker', rescue(async (req, res) => {
-  checkToken(req, res);
+  checkToken(req, res, checkName);
   const end = await addTalker(req, res);
   return end;
 }));
@@ -159,9 +161,20 @@ const updateTalker = async (req, res) => {
 };
 
 app.put('/talker/:id', rescue(async (req, res) => {
-  checkToken(req, res);
+  checkToken(req, res, checkName);
   const end = await updateTalker(req, res);
   return end;
+}));
+
+// Crie o endpoint DELETE /talker/:id
+
+app.delete('/talker/:id', rescue(async (req, res) => {
+  checkToken(req, res);
+  const idParam = Number(req.params.id);
+  const talkers = await getTalker();
+  const talkersFiltered = talkers.filter((talker) => talker.id !== idParam);
+  await setTalker(talkersFiltered);
+  return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
 }));
 
 // Crie o endpoint GET /talker/:id
