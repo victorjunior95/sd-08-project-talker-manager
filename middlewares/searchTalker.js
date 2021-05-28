@@ -11,7 +11,6 @@ const searchTalker = (request, response) => {
   } catch (error) {
     throw new Error(error);
   }
-  
 };
 
 module.exports = searchTalker;
