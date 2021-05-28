@@ -19,7 +19,6 @@ app.get('/', (_request, response) => {
 });
 // conteudo de talker .json
 
-
  // importando funcionalidades de validação
 const {
   authemail,
