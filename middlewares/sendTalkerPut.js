@@ -14,7 +14,6 @@ const sendTalkerPut = (rescue(async (request, response) => {
   } catch (error) {
     throw new Error(error);
   }
-  
 }));
 
 module.exports = sendTalkerPut;
