@@ -7,6 +7,7 @@ const authToken = require('./authToken');
 const authname = require('./authName');
 const authAge = require('./authAge');
 const authTalk = require('./authTalk');
+const authdata = require('./authdata');
 
 module.exports = {
   authemail,
@@ -17,4 +18,5 @@ module.exports = {
   authname,
   authAge,
   authTalk,
+  authdata,
 };
