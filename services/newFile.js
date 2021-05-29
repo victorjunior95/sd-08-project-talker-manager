@@ -1,5 +1,4 @@
 module.exports = {
-  id: 1,
   name: 'Danielle Santos',
   age: 56,
   talk: {
