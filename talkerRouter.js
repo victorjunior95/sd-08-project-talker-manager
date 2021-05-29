@@ -57,7 +57,7 @@ router.delete('/:id', (req, res, next) => {
   testToken(req.headers.authorization, res);
   talkers = readTalkers(talkers);
   const editId = Number(req.params.id);
-  console.log(`delete /id typeOf talkers: ${typeof (talkers)} id: ${editId} typeOf id : ${typeof (editId)}`);
+  // console.log(`delete /id typeOf talkers: ${typeof (talkers)} id: ${editId} typeOf id : ${typeof (editId)}`);
   console.log(talkers.length);
   delete talkers[editId - 1];
   console.log(talkers.length);
