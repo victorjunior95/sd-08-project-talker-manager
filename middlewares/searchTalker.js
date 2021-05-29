@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const searchTalker = (request, response) => {
   const data = JSON.parse(fs.readFileSync('talker.json'));
-  const query = request.query.q || data;
+  const query = request.query.q;
   
   try {
     if (!query) return response.status(200).send(data);
