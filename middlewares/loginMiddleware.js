@@ -1,25 +1,29 @@
-const validateLogin = [(req, res, next) => {
-  if (!req.body.email || req.body.email.length === 0) {
-    return res.status(400)
-    .json({ message: 'O campo "email" é obrigatório' }); 
-  }
-  const { email } = req.body;
-  if (!/^[A-Z0-9._-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i.test(email)) {
-    return res.status(400)
-      .json({ message: 'O "email" deve ter o formato "email@email.com"' }); 
-  }
+const Joi = require('joi');
+const Crypto = require('crypto');
+
+const schema = Joi.object({
+  email: Joi.string().email().message('O "email" deve ter o formato "email@email.com"').required(),
+  password: Joi.string().min(6).message('O "password" deve ter pelo menos 6 caracteres').required(),
+}).messages({
+  'any.required': 'O campo {#label} é obrigatório',
+});
+
+// https://www.digitalocean.com/community/tutorials/how-to-use-joi-for-node-api-schema-validation
+// https://stackoverflow.com/questions/48720942/node-js-joi-how-to-display-a-custom-error-messages
+
+function randomString(size = 16) {  
+  return Crypto
+    .randomBytes(size)
+    .toString('base64')
+    .slice(0, size);
+}
+
+const validateLogin = (req, res, next) => {
+  const { error } = schema.validate(req.body, { abortEarly: false });
+  if (error) return res.status(400).json({ message: error.message });
+  const token = randomString();
+  res.json({ token });
   next();
-},
-(req, res, next) => {
-  if (!req.body.password || req.body.password.length === 0) {
-    return res.status(400)
-      .json({ message: 'O campo "password" é obrigatório' }); 
-  }
-  if (req.body.password.length < 6) {
-    return res.status(400)
-      .json({ message: 'O "password" deve ter pelo menos 6 caracteres' }); 
-  }
-  next();
-}];
+};
 
 module.exports = validateLogin;

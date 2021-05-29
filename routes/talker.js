@@ -10,6 +10,22 @@ app.use(bodyParser.json());
 
 const data = 'talker.json';
 
+app.get('/search', [
+  tokenMiddleware,
+  (req, res, next) => {
+    const allTalkers = JSON.parse(fs.readFileSync(data));
+    if (!req.query || req.query === '') {
+      return res.status(200).json(allTalkers);
+    }
+    next();
+  },
+  (req, res) => {
+  const { q } = req.query;
+  const allTalkers = JSON.parse(fs.readFileSync(data));
+  const search = allTalkers.filter((talker) => talker.name.includes(q));
+  return res.json(search);
+}]);
+
 app.get('/', (_req, res) => {
   const allTalkers = JSON.parse(fs.readFileSync(data));
   res.status(200).json(allTalkers);
@@ -44,9 +60,9 @@ app.put('/:id', tokenMiddleware, validateMiddleware, async (req, res) => {
   const editedTalker = { ...req.body, id: specificTalker.id };
   allTalkers[specificTalker.id - 1] = editedTalker;
   const listString = JSON.stringify(allTalkers);
-  console.log(listString);
   await rewriteList(listString);
-  return res.status(200).json(req.body);
+  const json = JSON.stringify(editedTalker);
+  return res.status(200).json(JSON.parse(json));
 });
 
 app.delete('/:id', tokenMiddleware, async (req, res) => {
@@ -57,23 +73,5 @@ app.delete('/:id', tokenMiddleware, async (req, res) => {
   await rewriteList(listString);
   return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
 });
-
-app.get('/search?q=searchTerm', [
-  tokenMiddleware,
-  (req, res, next) => {
-    const allTalkers = JSON.parse(fs.readFileSync(data));
-    if (!req.query || req.query === '') {
-      return res.status(200).json(allTalkers);
-    }
-    next();
-  },
-  (req, _res) => {
-  const { q } = req.query;
-  const allTalkers = JSON.parse(fs.readFileSync(data));
-  console.log(req.query, q);
-  const search = allTalkers.filter((talker) => Object.values(talker)
-    .some((value) => talker[value].includes(q)));
-  console.log(search);
-}]);
 
 module.exports = app;
