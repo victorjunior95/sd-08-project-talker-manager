@@ -46,9 +46,15 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 // req-4
 app.post('/talker', authToken, authname, authAge, authTalk, authdata, (req, res) => {
   talkers = req.body;
+  
   fs.writeFileSync('./talker.json', JSON.stringify(talkers));
   
-  res.status(201).send(talkers);
+  let te = Object.entries(talkers);
+   te.splice(1, 0, ['id', 5]);
+   te = Object.fromEntries(te);
+   console.log(te);
+
+  res.status(201).send(te);
 });
 
 // req-5

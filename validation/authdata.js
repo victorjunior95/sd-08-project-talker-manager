@@ -6,6 +6,6 @@ const authdata = (req, res, next) => {
       { message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' },
     ); 
 }
-    next();
+next();
     };
 module.exports = authdata;
