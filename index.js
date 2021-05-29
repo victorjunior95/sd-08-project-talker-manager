@@ -46,10 +46,10 @@ app.get('/', (_request, response) => response.status(HTTP_OK_STATUS).send(
 // O endpoint deve retornar um array de palestrantes que contenham em seu nome o termo pesquisado no queryParam da URL. Devendo retornar o status 200, com o seguinte corpo:
 // queryExemplo => /search?q=Ke
 // corpo: [{id: 1, name: "Keanu Reeves", age: 56, talk: { watchedAt: "22/10/2019", rate: 5, } }];
-app.get('/talker/search', [tokenValidation, (req, res) => {
+app.get('/talker/search', [tokenValidation, async (req, res) => {
   try {
     const queryString = req.query.q;
-    const allTalkers = getSyncData();
+    const allTalkers = await getSyncData();
     const founded = allTalkers.filter((palestrant) => palestrant.name.includes(queryString));
     return res.status(200).send(founded);
   } catch (error) {
@@ -61,9 +61,9 @@ app.get('/talker/search', [tokenValidation, (req, res) => {
 // Os seguintes pontos serão avaliados:
 // O endpoint deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o status 200, com o seguinte corpo: [...]
 // Caso não exista nenhuma pessoa palestrante cadastrada o endpoint deve retornar um array vazio e o status 200.
-app.get('/talker', (_req, res) => {
+app.get('/talker', async (_req, res) => {
   try {
-    const allTalkers = getSyncData();
+    const allTalkers = await getSyncData();
     return res.status(HTTP_OK_STATUS).send(allTalkers); // o teste sempre pede pra retornar o arquivo JSON, desnecessário if/else, como o README induz a crer.
   } catch (error) {
     return res.status(500).send({ error });
@@ -73,10 +73,10 @@ app.get('/talker', (_req, res) => {
 // 2 - Crie o endpoint GET /talker/:id
 // O endpoint deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200 ao fazer uma requisição /talker/1, com o seguinte corpo: [...]
 // Caso não seja encontrada uma pessoa palestrante com base no id da rota, o endpoint deve retornar o status 404 com o seguinte corpo: { "message": "Pessoa palestrante não encontrada" }
-app.get('/talker/:id', (req, res) => {
+app.get('/talker/:id', async (req, res) => {
   try {
     const idParams = Number(req.params.id);
-    const palestrantId = getSyncData().find((element) => element.id === idParams);
+    const palestrantId = await getSyncData().find((element) => element.id === idParams);
     if (!palestrantId) {
     return res.status(404).send({
         message: 'Pessoa palestrante não encontrada',
@@ -95,7 +95,6 @@ app.get('/talker/:id', (req, res) => {
 // Há mais instruções no functions > validations > [loginValidation, nameAgeValidation, talkValidation]
 
 app.post('/login', 
-[
   loginValidation,
   (_req, res) => {
     try {
@@ -104,8 +103,7 @@ app.post('/login',
     } catch (error) {
       return res.status(500).send({ error });
     }
-},
-]);
+});
 
 // 4 - Crie o endpoint POST /talker
 // Os seguintes pontos serão avaliados:
@@ -120,16 +118,16 @@ app.post('/login',
 //   }
 // }
 // Aí vem as instruções de loginValidation; então nameAgeValidation; então talkValidation[talkObjValidation, talkComponentsValidation];
-app.post('/talker', [
+app.post('/talker', 
   tokenValidation,
   nameAgeValidation, 
   talkObjValidation,
   talkComponentsValidation, 
   // Caso esteja tudo certo, retorne o status 201 e a pessoa cadastrada.
   // O endpoint deve retornar o status 201 e a pessoa palestrante que foi cadastrada, da seguinte forma: { "id": 1, "name": "Danielle Santos", "age": 56, "talk": { "watchedAt": "22/10/2019", "rate": 4 } }
-  ((req, res) => {
+  (async (req, res) => {
     try {
-      const allTalkers = getSyncData();
+      const allTalkers = await getSyncData();
       const newTalker = req.body;
       newTalker.id = allTalkers.length + 1;
       allTalkers.push(newTalker);
@@ -138,8 +136,7 @@ app.post('/talker', [
     } catch (error) {
       return res.status(500).send({ error });
     }
-  }),
-]);
+  }));
 
 // 5 - Crie o endpoint PUT /talker/:id
 // Os seguintes pontos serão avaliados:
@@ -152,11 +149,11 @@ app.put('/talker/:id', [
   tokenValidation,
   nameAgeValidation, 
   talkObjValidation,
-  talkComponentsValidation, (req, res) => {
+  talkComponentsValidation, async (req, res) => {
     try {
       const idParams = Number(req.params.id);
-      const everyData = getSyncData();
-      let toUpdate = getSyncData().find((element) => element.id === idParams);
+      const everyData = await getSyncData();
+      let toUpdate = await getSyncData().find((element) => element.id === idParams);
       const requestBody = req.body;  
       requestBody.id = toUpdate.id;
       if (toUpdate) {
@@ -176,9 +173,9 @@ app.put('/talker/:id', [
 // Os seguintes pontos serão avaliados:
 // A requisição deve ter o token de autenticação nos headers. (repetir tudo que envolve o token)
 // O endpoint deve deletar uma pessoa palestrante com base no id da rota. Devendo retornar o status 200, com o seguinte corpo: { "message": "Pessoa palestrante deletada com sucesso" }
-app.delete('/talker/:id', [tokenValidation, (req, res) => {
+app.delete('/talker/:id', tokenValidation, async (req, res) => {
   try {
-    const allTalkers = getSyncData();
+    const allTalkers = await getSyncData();
     const idParams = req.params.id;
     const deleteUpdate = allTalkers.filter((talker) => talker.id !== Number(idParams));
     writeSyncData('./talker.json', deleteUpdate); // o requisito pede para deletar do arquivo json, mas não pede a pessoa deletada;
@@ -186,6 +183,6 @@ app.delete('/talker/:id', [tokenValidation, (req, res) => {
   } catch (error) {
     return res.status(500).send({ error });
   }
-}]);
+});
 
 app.listen(PORT, () => console.log('Online')); // eu sou a única mudança (último 57,14%, não passou os reqs 4-6, lançar os dados de novo²)

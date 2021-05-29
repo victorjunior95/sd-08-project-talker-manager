@@ -58,11 +58,14 @@ const promiseRs1 = () => new Promise((resolve, reject) => {
 const tokenGenerate = (size) => {
   const chars = [...'abcdefghijklmniopqrstuvwyxzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'];
   // and then just do:
-  const token = [...Array(size)].map((_usage) => 
-    chars[Math.round(Math.random() * chars.length)]).join``; // join`` == join('') || join(``); fonte https://stackoverflow.com/questions/64993915/what-does-join-mean-in-javascript
+  const token = [...Array(size)].map((_usage) =>
+    chars[Math.floor(Math.random() * chars.length)]).join``; // join`` == join('') || join(``); fonte https://stackoverflow.com/questions/64993915/what-does-join-mean-in-javascript
   return token;
-  };
+};
 
+// const Tken = tokenGenerate(16);
+
+// console.log(Tken, Tken.length);
 module.exports = {
   getSyncData,
   // fsPromiseData1,
