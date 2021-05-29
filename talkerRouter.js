@@ -8,11 +8,11 @@ let talkers = [];
 
 const router = express.Router();
 
-router.get('/search', (req, res, next) => {
-  testToken(req.headers.authorization, res);
+router.get('/search', async (req, res, next) => {
+  await testToken(req.headers.authorization, res);
   // const searched = req.query.q;
-  const result = [];
-  talkers = readTalkers(talkers);
+  let result = [];
+  talkers = await readTalkers(talkers);
   // console.log(talkers);
   if (talkers.length < 1) {
     res.status(200).json(talkers);
@@ -21,68 +21,65 @@ router.get('/search', (req, res, next) => {
   const regex1 = new RegExp(req.query.q, 'gim');
   for (let i = 0; i < talkers.length; i += 1) {
     if (regex1.test(talkers[i].name)) {
-      result.push(talkers[i]);
+      console.log(`${talkers[i].name} ${regex1}  ${regex1.test(talkers[i].name)} ${result.length}`);
+      result = [...result, talkers[i]];
     }
-    // console.log(`${talkers[i].name} ${regex1}  ${regex1.test(talkers[i].name)} ${result.length}`);
   }
   res.status(200).json(result);
   next();
 });
-
-// if (talkers[i][key].indexOf(searched) = -1) {
-//   result.push(talkers[i]);
-// }
 // https://stackoverflow.com/questions/8517089/js-search-in-object-values
-router.post('/', (req, res, next) => {
+
+router.post('/', async (req, res, next) => {
   // console.log(`post /${req.body}`);
   testToken(req.headers.authorization, res);
   checkTalker(req, res);
-  talkers = readTalkers(talkers);
+  talkers = await readTalkers(talkers);
   const newId = talkers.length;
   talkers[newId] = { id: newId + 1, ...req.body };
   // console.log(talkers);
-  writeTalkers(talkers);
+  await writeTalkers(talkers);
   res.status(201).json({ id: newId + 1, ...req.body });
   next();
 });
 
-router.get('/', (_req, res, next) => {
+router.get('/', async (_req, res, next) => {
   // console.log('get');
-  talkers = readTalkers(talkers);
+  talkers = await readTalkers(talkers);
   res.status(200).json(talkers);
   next();
 });
 
-router.delete('/:id', (req, res, next) => {
-  testToken(req.headers.authorization, res);
+router.delete('/:id', async (req, res, next) => {
+  await testToken(req.headers.authorization, res);
   talkers = readTalkers(talkers);
   const editId = Number(req.params.id);
   // console.log(`delete /id typeOf talkers: ${typeof (talkers)} id: ${editId} typeOf id : ${typeof (editId)}`);
-  console.log(talkers.length);
+  // console.log(talkers.length);
   delete talkers[editId - 1];
-  console.log(talkers.length);
-  writeTalkers(talkers);
+  // console.log(talkers.length);
+  await writeTalkers(talkers);
   res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
   next();
 });
 
-router.put('/:id', (req, res, next) => {
-  testToken(req.headers.authorization, res);
-  checkTalker(req, res);
-  talkers = readTalkers(talkers);
+router.put('/:id', async (req, res, next) => {
+  await testToken(req.headers.authorization, res);
+  await checkTalker(req, res);
+  talkers = await readTalkers(talkers);
   const editId = Number(req.params.id);
   // console.log(`put /id body: ${req.body} id: ${editId} typeOf id : ${typeof (editId)}`);
   // const talkerId = talkers.find((talker) => talker.id === Number(editId));
   talkers[editId] = { id: editId, ...req.body };
-  writeTalkers(talkers);
-  talkers = readTalkers(talkers);
+  await writeTalkers(talkers);
+  talkers = await readTalkers(talkers);
   // console.log(talkers);
   res.status(200).json({ id: editId, ...req.body });
   next();
 });
 
-router.get('/:id', (req, res, next) => {
-  talkers = readTalkers(talkers);
+router.get('/:id', async (req, res, next) => {
+  talkers = await readTalkers(talkers);
   const id = Number(req.params.id);
   // console.log(`get /id body: ${req.body} id: ${id} typeOf id : ${typeof (id)}`);
   const talkerId = talkers.find((talker) => talker.id === Number(id));
