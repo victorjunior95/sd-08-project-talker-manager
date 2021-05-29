@@ -21,7 +21,7 @@ router.get('/search', async (req, res, next) => {
   const regex1 = new RegExp(req.query.q, 'gim');
   for (let i = 0; i < talkers.length; i += 1) {
     if (regex1.test(talkers[i].name)) {
-      console.log(`${talkers[i].name} ${regex1}  ${regex1.test(talkers[i].name)} ${result.length}`);
+      // console.log(`${talkers[i].name} ${regex1}  ${regex1.test(talkers[i].name)} ${result.length}`);
       result = [...result, talkers[i]];
     }
   }
