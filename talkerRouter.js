@@ -13,7 +13,7 @@ router.get('/search', (req, res, next) => {
   // const searched = req.query.q;
   const result = [];
   talkers = readTalkers(talkers);
-  console.log(talkers);
+  // console.log(talkers);
   if (talkers.length < 1) {
     res.status(200).json(talkers);
     next();
@@ -23,7 +23,7 @@ router.get('/search', (req, res, next) => {
     if (regex1.test(talkers[i].name)) {
       result.push(talkers[i]);
     }
-    console.log(`${talkers[i].name} ${regex1}  ${regex1.test(talkers[i].name)} ${result.length}`);
+    // console.log(`${talkers[i].name} ${regex1}  ${regex1.test(talkers[i].name)} ${result.length}`);
   }
   res.status(200).json(result);
   next();
@@ -57,10 +57,10 @@ router.delete('/:id', (req, res, next) => {
   testToken(req.headers.authorization, res);
   talkers = readTalkers(talkers);
   const editId = Number(req.params.id);
-  // console.log(`delete /id body: ${req.body} id: ${editId} typeOf id : ${typeof (editId)}`);
-  // console.log(talkers);
-  delete talkers[editId];
-  // console.log(talkers);
+  console.log(`delete /id typeOf talkers: ${typeof (talkers)} id: ${editId} typeOf id : ${typeof (editId)}`);
+  console.log(talkers.length);
+  delete talkers[editId - 1];
+  console.log(talkers.length);
   writeTalkers(talkers);
   res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
   next();
