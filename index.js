@@ -168,6 +168,24 @@ app.put('/talker/:id',
     }
 });
 
+app.delete('/talker/:id',
+ getValidToken, 
+ (req, res) => {
+  try {
+    const talkers = JSON.parse(fs.readFileSync(FILE_NAME, 'utf-8'));
+    const idToDelete = Number(req.params.id);
+    const deleteTalker = talkers.filter((talker) => talker.id !== idToDelete);
+    fs.writeFileSync('talker.json', JSON.stringify(deleteTalker));
+    return res
+    .status(200)
+    .json({ message: 'Pessoa palestrante deletada com sucesso' });
+  } catch (err) {
+    return res
+    .status(500)
+    .send({ err });
+  }
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
