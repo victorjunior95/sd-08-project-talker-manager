@@ -4,7 +4,7 @@ const randomCharacter = require('./Middlewares/randomCharacter');
 
 const router = express.Router();
 router.post('/', (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   // console.log(`${req.query.eamil}  email `);
   const re = /\S+@\S+\.\S+/;
   if (!req.body.password) {
