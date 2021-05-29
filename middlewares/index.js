@@ -1,5 +1,7 @@
-const talker = require('./talker');
+const name = require('./nameTalker');
+const age = require('./ageTalker');
 
-module.exports = {
-    talker,
+module.exports = {   
+    name, 
+    age,
 };
