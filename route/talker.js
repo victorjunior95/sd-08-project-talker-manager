@@ -7,8 +7,25 @@ const middlewares = require('../middleware');
 
 router.use(bodyParser.json());
 
+const searchName = async (req) => {
+  const talkers = await middlewares.fsTalkers.getTalker()
+    .then((list) => list
+      .filter((talkerList) => talkerList.name.includes(req.query.search)));
+  return talkers;
+};
+
+router.get('/search', middlewares.validToken,
+rescue(async (req, res, _next) => {
+  if (req.query.search) {
+    const result = await searchName(req);
+    return res.status(200).json(result);
+  }
+  const talkers = await middlewares.fsTalkers.getTalker();
+  res.status(200).json(talkers);
+}));
+
 router.get('/', 
-rescue(async (_req, res, _next) => {
+rescue(async (req, res, _next) => {
   const talkers = await middlewares.fsTalkers.getTalker();
   res.status(200).json(talkers);
 }));
@@ -59,7 +76,7 @@ router.delete('/:id', middlewares.validToken,
     const talkerId = parseInt(req.params.id, 10);
     const talkers = await middlewares.fsTalkers.getTalker()
       .then((list) => list
-        .filter((talkerByList) => talkerByList.id !== talkerId));
+        .filter((talkerList) => talkerList.id !== talkerId));
     await middlewares.fsTalkers.setTalker(talkers);
     res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
 }));
