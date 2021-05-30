@@ -1,14 +1,15 @@
-const checkAuth = (token, res) => {
-  if (!token) {
-    res.status(401).send({ message: 'Token não encontrado' });
-    return false;
+const checkAuth = (req, res, next) => {
+  const { authorization } = req.headers;
+
+  if (!authorization) {
+    return res.status(401).send({ message: 'Token não encontrado' });
   }
 
-  if (token && token.toString().length !== 16) {
-    res.status(401).send({ message: 'Token inválido' });
-    return false;
+  if (authorization.toString().length !== 16) {
+    return res.status(401).send({ message: 'Token inválido' });
   }
-  return true;
+
+  next();
 };
 
 module.exports = checkAuth;

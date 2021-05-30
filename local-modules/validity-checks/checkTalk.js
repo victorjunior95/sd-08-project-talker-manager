@@ -1,46 +1,48 @@
-// Date validation:
+const checkTalkExistence = (req, res, next) => {
+  const { watchedAt, rate } = req.body.talk || { watchedAt: '', rate: '' };
 
-const checkExistence = (watchedAt, rate, res) => {
-  if (!watchedAt || !rate) {
-    res.status(400).send({
+  if (!watchedAt || (!rate && rate !== 0)) {
+    return res.status(400).send({
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
-    return false;
   }
-  return true;
+
+  next();
 };
 
-function isValidDate(dateString) {
+const isValidDate = (dateString) => {
   if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString)) return false;
 
   const dateArray = dateString.split('/');
   const rearrangedDate = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`;
 
   return !Number.isNaN(Date.parse(rearrangedDate));
-}
+};
 
-const checkWatchedAt = (watchedAt, res) => {
+const checkTalkWatchedAt = (req, res, next) => {
+  const { watchedAt } = req.body.talk || { watchedAt: '' };
+
   if (!isValidDate(watchedAt)) {
-    res.status(400).send({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
-    return false;
+    return res.status(400).send({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
   }
-  return true;
+
+  next();
 };
 
-const checkRate = (rate, res) => {
+const checkTalkRate = (req, res, next) => {
+  const { rate } = req.body.talk || { rate: '' };
+
   if (!Number.isInteger(rate) || rate < 1 || rate > 5) {
-    res.status(400).send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
-    return false;
+    return res.status(400).send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
-  return true;
+
+  next();
 };
 
-const checkTalk = (talk, res) => {
-  const { watchedAt, rate } = talk || { watchedAt: '', rate: '' };
-
-  const exists = checkExistence(watchedAt, rate, res);
-  const dateIsCorrect = exists ? checkWatchedAt(watchedAt, res) : false;
-  if (dateIsCorrect) return checkRate(rate, res);
+const checkTalk = {
+  checkTalkExistence,
+  checkTalkWatchedAt,
+  checkTalkRate,
 };
 
 module.exports = checkTalk;

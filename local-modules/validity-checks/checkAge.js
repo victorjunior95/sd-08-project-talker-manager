@@ -1,14 +1,15 @@
-const checkAge = (age, res) => {
+const checkAge = (req, res, next) => {
+  const { age } = req.body;
+
   if (!age && parseInt(age, 10) !== 0) {
-    res.status(400).send({ message: 'O campo "age" é obrigatório' });
-    return false;
+    return res.status(400).send({ message: 'O campo "age" é obrigatório' });
   }
 
-  if (age && parseInt(age, 10) < 18) {
-    res.status(400).send({ message: 'A pessoa palestrante deve ser maior de idade' });
-    return false;
+  if (parseInt(age, 10) < 18) {
+    return res.status(400).send({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
-  return true;
+
+  next();
 };
 
 module.exports = checkAge;

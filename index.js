@@ -1,6 +1,9 @@
 const express = require('express');
-
+const { checkAge, checkAuth, checkName, checkTalk } = require('./local-modules/validity-checks');
 const { createTalker, getAllTalkers, getTalkerById, login } = require('./local-modules');
+
+const { mailChecker, passwordChecker, sendToken } = login;
+const { checkTalkExistence, checkTalkWatchedAt, checkTalkRate } = checkTalk;
 
 const app = express();
 app.use(express.json());
@@ -17,9 +20,18 @@ app.get('/talker', getAllTalkers);
 
 app.get('/talker/:id', getTalkerById);
 
-app.post('/login', login);
+app.post('/login', mailChecker, passwordChecker, sendToken);
 
-app.post('/talker', createTalker);
+app.post(
+  '/talker',
+  checkAuth,
+  checkName,
+  checkAge,
+  checkTalkExistence,
+  checkTalkWatchedAt,
+  checkTalkRate,
+  createTalker,
+);
 
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);

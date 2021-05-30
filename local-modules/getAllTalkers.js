@@ -1,10 +1,12 @@
-const fs = require('fs/promises');
+const fs = require('fs');
 
 const getAllTalkers = (_req, res) => {
-  fs.readFile('talker.json')
-    .then((raw) => JSON.parse(raw))
-    .then((data) => res.send(data))
-    .catch((err) => console.error(err));
+  try {
+    const talkers = JSON.parse(fs.readFileSync('talker.json', 'utf-8'));
+    res.send(talkers);
+  } catch (err) {
+    res.status(500).send('Could not process information');
+  }
 };
 
 module.exports = getAllTalkers;

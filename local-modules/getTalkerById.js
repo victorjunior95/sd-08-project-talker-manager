@@ -1,19 +1,16 @@
-const fs = require('fs/promises');
+const fs = require('fs');
 
 const getTalkerById = (req, res) => {
-  fs.readFile('talker.json')
-    .then((raw) => JSON.parse(raw))
-    .then((data) => {
-      const id = parseInt(req.params.id, 10);
-      const matchedTalker = data.find((talker) => talker.id === id);
+  const talkers = JSON.parse(fs.readFileSync('talker.json'));
+  const id = parseInt(req.params.id, 10);
 
-      if (matchedTalker) {
-        res.send(matchedTalker);
-      }
+  const matchedTalker = talkers.find((talker) => talker.id === id);
 
-      res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
-    })
-    .catch((err) => console.error(err));
+  if (matchedTalker) {
+    res.send(matchedTalker);
+  } else {
+    res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
+  }
 };
 
 module.exports = getTalkerById;
