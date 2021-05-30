@@ -7,6 +7,7 @@ const {
   getAllTalkers,
   getTalkerById,
   login,
+  searchTalker,
 } = require('./local-modules');
 
 const { mailChecker, passwordChecker, sendToken } = login;
@@ -24,6 +25,8 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', getAllTalkers);
+
+app.get('/talker/search', checkAuth, searchTalker);
 
 app.get('/talker/:id', getTalkerById);
 
