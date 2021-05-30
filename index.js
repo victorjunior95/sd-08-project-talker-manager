@@ -22,6 +22,10 @@ app.post('/login', middleware.verifyLogin);
 
 app.post('/talker', middleware.verifyToken, middleware.verifyTalker, middleware.addTalk);
 
+app.put('/talker/:id', middleware.verifyToken, middleware.verifyTalker, middleware.editTalk);
+
+app.delete('/talker/:id', middleware.verifyToken, middleware.deleteTalk);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
