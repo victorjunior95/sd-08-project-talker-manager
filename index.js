@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const rescue = require('express-rescue');
+// const rescue = require('express-rescue');
 const middlewares = require('./middlewares');
 
 const registeredSpeakers = require('./fs-utils');
@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
-app.get('/talker/search', middlewares.tokenValidation, rescue(async (req, res) => {
+app.get('/talker/search', middlewares.tokenValidation, (async (req, res) => {
   const talkers = await registeredSpeakers.getRegisteredSpeakers();
   const { q } = req.query;
   if (q) {
@@ -21,12 +21,12 @@ app.get('/talker/search', middlewares.tokenValidation, rescue(async (req, res) =
   return res.status(200).json(talkers);
 }));
 
-app.get('/talker', rescue(async (req, res) => {
+app.get('/talker', (async (req, res) => {
   const talkers = await registeredSpeakers.getRegisteredSpeakers();
   res.status(200).json(talkers);
 }));
 
-app.get('/talker/:id', rescue(async (req, res) => {
+app.get('/talker/:id', (async (req, res) => {
   const talkers = await registeredSpeakers.getRegisteredSpeakers();
   const talkerById = talkers.find((talker) => 
   parseInt(talker.id, 0) === parseInt(req.params.id, 0));
@@ -41,7 +41,7 @@ app.post('/login', middlewares.login);
 
 app.post('/talker', middlewares.tokenValidation, middlewares.nameValidation,
  middlewares.ageValidation, middlewares.talkValidation, middlewares.watchedAtValidation,
-  middlewares.rateValidation, rescue(async (req, res) => {
+  middlewares.rateValidation, (async (req, res) => {
     const talkers = await registeredSpeakers.getRegisteredSpeakers();
     const newTalker = req.body;
     newTalker.id = talkers.length + 1;
@@ -52,7 +52,7 @@ app.post('/talker', middlewares.tokenValidation, middlewares.nameValidation,
 
   app.put('/talker/:id', middlewares.tokenValidation, middlewares.nameValidation,
   middlewares.ageValidation, middlewares.talkValidation, middlewares.rateValidation,   
-   middlewares.watchedAtValidation, rescue(async (req, res) => {
+   middlewares.watchedAtValidation, (async (req, res) => {
     const id = Number(req.params.id);
     const talkers = await registeredSpeakers.getRegisteredSpeakers();
     const newTalker = { ...req.body, id };
@@ -64,7 +64,7 @@ app.post('/talker', middlewares.tokenValidation, middlewares.nameValidation,
     res.status(200).json(newTalker);
   }));
 
-  app.delete('/talker/:id', middlewares.tokenValidation, rescue(async (req, res) => {
+  app.delete('/talker/:id', middlewares.tokenValidation, (async (req, res) => {
     const id = Number(req.params.id);
     const talkers = await registeredSpeakers.getRegisteredSpeakers();
     const deleteById = talkers.find((talker) => talker.id !== id);
