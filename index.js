@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const alltalkers = require('./routes/talker');
+const allTalkers = require('./routes/talker');
 const login = require('./routes/login');
 
 const app = express();
@@ -14,7 +14,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.use('/talker', alltalkers);
+app.use('/talker', allTalkers);
 app.use('/login', login);
 
 app.listen(PORT, () => {

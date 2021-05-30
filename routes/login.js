@@ -7,6 +7,8 @@ const {
 } = require('./helpers');
 
 const router = express.Router();
+const SUCCESS = 200;
+const BAD_REQUEST = 400;
 
 const token = tokenGenerator();
 
@@ -15,20 +17,20 @@ router.post('/', (request, response) => {
   const checkEmail = checkValidityEmail(email);
   const checkPassword = checkValidityPassword(password);
   if (!email) {
-    response.status(400).send({ message: 'O campo "email" é obrigatório' });
+    response.status(BAD_REQUEST).send({ message: 'O campo "email" é obrigatório' });
   } else if (!checkEmail) {
     response
-      .status(400)
+      .status(BAD_REQUEST)
       .send({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
   if (!password) {
-    response.status(400).send({ message: 'O campo "password" é obrigatório' });
+    response.status(BAD_REQUEST).send({ message: 'O campo "password" é obrigatório' });
   } else if (!checkPassword) {
     response
-      .status(400)
+      .status(BAD_REQUEST)
       .send({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
-  return response.status(200).send({ token });
+  return response.status(SUCCESS).send({ token });
 });
 
 module.exports = router;
