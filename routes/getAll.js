@@ -1,6 +1,7 @@
 const fs = require('fs');
+const rescue = require('express-rescue');
 
-const getAll = async (req, res) => {
+const getAll = rescue(async (req, res) => {
     fs.readFile('talker.json', 'utf8', async (err, data) => {
         if (err) {
             res.status(200).json([]);
@@ -8,6 +9,6 @@ const getAll = async (req, res) => {
             res.status(200).json(JSON.parse(data));
         }
     });
-};
+});
 
 module.exports = getAll;

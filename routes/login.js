@@ -1,7 +1,7 @@
 const validator = require('email-validator');
 const token = require('../services/token');
 
-const login = async (req, res) => {
+const login = (req, res) => {
         const { email, password } = req.body;
         const validation = validator.validate(email);
         if (!email) return res.status(400).json({ message: 'O campo "email" é obrigatório' });

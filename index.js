@@ -26,10 +26,10 @@ app.get('/talker/:id', getAllById);
 app.post('/login', login);
 
 app.post('/talker', [middlewares.token, middlewares.name, middlewares.age, middlewares.talk, 
-createTalker]);
+middlewares.watchedAt, middlewares.rate, createTalker]);
 
-app.put('/talker/:id', [middlewares.token, middlewares.name, middlewares.age, middlewares.talk, 
-  editTalker]);
+app.put('/talker/:id', [middlewares.token, middlewares.name, middlewares.age, 
+middlewares.watchedAt, middlewares.talk, middlewares.rate, editTalker]);
 
 app.delete('/talker/:id', deleteTalker);
 
