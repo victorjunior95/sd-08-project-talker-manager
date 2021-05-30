@@ -12,6 +12,7 @@ app.get('/', (req, res) => {
   res.status(200).json(allTalkers);
 });
 
+// READ
 // localhost:3000/talker/:id
 app.get('/:id', (req, res) => {
   const { id: reqId } = req.params;
