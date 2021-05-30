@@ -19,44 +19,40 @@ app.get('/', (_request, response) => {
 app.get('/talker', middlewaresPalestrantes.getAllTalkers);
 
 // Req 02
-app.get('talker/:id', middlewaresPalestrantes.palestrantePorId);
+app.get('/talker/:id', middlewaresPalestrantes.palestrantePorId);
 
 // Req 03
-app.post('/login', middlewaresLogin.verificaLogin, (_request, _response) => {});
+app.post('/login', middlewaresLogin);
 
 // Req 04
 app.post('/talker',
-middlewaresPalestrantes.adicionaPalestrante,
-middlewaresPalestrantes.verificaTalk,
-middlewaresPalestrantes.verificaWatchedAt,
-middlewaresPalestrantes.verificaIdade,
-middlewaresPalestrantes.verificaNome,
-middlewaresPalestrantes.verificaRate,
 middlewaresPalestrantes.verificaToken,
-(_request, _response) => {});
+middlewaresPalestrantes.verificaNome,
+middlewaresPalestrantes.verificaIdade,
+middlewaresPalestrantes.verificaTalk,
+middlewaresPalestrantes.verificaRate,
+middlewaresPalestrantes.verificaWatchedAt,
+middlewaresPalestrantes.adicionaPalestrante);
 
 // Req 05
 app.put('/talker/:id',
 middlewaresPalestrantes.adicionaPalestrante,
-middlewaresPalestrantes.editaPalestrante,
+// middlewaresPalestrantes.editaPalestrante,
 middlewaresPalestrantes.verificaTalk,
 middlewaresPalestrantes.verificaWatchedAt,
 middlewaresPalestrantes.verificaIdade,
 middlewaresPalestrantes.verificaNome,
 middlewaresPalestrantes.verificaRate,
-middlewaresPalestrantes.verificaToken,
-(_request, _response) => {});
+middlewaresPalestrantes.verificaToken);
 
 // Req 06
 app.delete('/talker/:id',
 middlewaresPalestrantes.verificaToken,
-middlewaresPalestrantes.deletaPalestrante,
-(_request, _response) => {});
+middlewaresPalestrantes.deletaPalestrante);
 
 // Req 07
 app.get('/talker/search',
-middlewaresPalestrantes.pesquisaPalestrante,
-(_request, _response) => {});
+middlewaresPalestrantes.pesquisaPalestrante);
 
 // Testando porta
 app.listen(PORT, () => {

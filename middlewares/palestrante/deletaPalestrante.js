@@ -1,16 +1,14 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 
 module.exports = async (request, response, _next) => {
   const { id } = request.params;
-  const listaDePalestrantes = await JSON.parse(fs.readFile('./talker.json'));
+  const data = await fs.readFile('../../talker.json', 'utf8');
+  const listaDePalestrantes = JSON.parse(data);
 
-  const palestrante = listaDePalestrantes.filter((pessoa) => pessoa.id !== parseInt(id, 10));
-
-  const novaListaDePalestrantes = listaDePalestrantes.splice(palestrante, 1)[0];
+  const palestrante = [listaDePalestrantes].filter((pessoa) => pessoa.id !== Number(id));
 
   try {
-    await fs.writeFile('./talker.json', JSON.stringify(novaListaDePalestrantes));
-
+    await fs.writeFile('../../talker.json', JSON.stringify(palestrante));
     return response.status(200).send({ message: 'Pessoa palestrante deletada com sucesso' });
   } catch (error) {
     return response.status(400).send(`Error: ${error.message}`);
