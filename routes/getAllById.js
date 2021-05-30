@@ -6,10 +6,9 @@ const getAllById = rescue(async (req, res) => {
         const file = JSON.parse(data);
         const result = file.find(({ id }) => id === Number(req.params.id));
         if (!result) {
-            res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
-        } else {
-            res.status(200).json(result);
-        }
+            return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+        } 
+           return res.status(200).json(result);
     });
 });
 

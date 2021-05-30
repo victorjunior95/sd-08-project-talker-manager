@@ -10,8 +10,8 @@ const createTalker = rescue(async (req, res) => {
     const id = { id: 1 };
     const newTalker = Object.assign(id, newFile);
     file.push(newTalker);
-    const newResult = await JSON.stringify(file, null, 2);
-    fs.writeFile('talker.json', newResult, 'utf-8', async (err) => {
+    const newResult = JSON.stringify(file, null, 2);
+    fs.writeFileSync('talker.json', newResult, 'utf-8', async (err) => {
          if (err) throw err;
          res.status(201).json(newTalker);
     });
