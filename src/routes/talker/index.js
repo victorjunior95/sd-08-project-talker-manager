@@ -1,8 +1,8 @@
 const express = require('express');
 const middleware = require('../../middleware');
 
-const route = express.Router();
+const router = express.Router();
 
-route.get('/', middleware.talker.getAllTalker);
-
-module.exports = route;
+router.get('/', middleware.talker.getAllTalker);
+router.get('/:id', middleware.talker.getTalkerById);
+module.exports = router;
