@@ -19,5 +19,5 @@ app.listen(PORT, () => {
 
 app.get('/talker', async (_request, response) => {
   const data = await fs.readFile('./talker.json', 'utf8');
-  return response.status(200).json(await JSON.parse(data));
+  return response.status(HTTP_OK_STATUS).send(await JSON.parse(data));
 });
