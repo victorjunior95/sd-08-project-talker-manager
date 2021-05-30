@@ -1,24 +1,27 @@
 const fs = require('fs');
+const rescue = require('express-rescue');
 
-const editTalker = async (req, res) => {
-    // const { name, age, talk: { watchedAt, rate } } = req.body;
-    // const newFile = { name, age, talk: { watchedAt, rate } };
-    const { authorization } = req.headers;
+const talk = require('../talker.json');
+
+const editTalker = rescue(async (req, res) => {
     const { id } = req.params;
+    const { authorization } = req.headers;
     if (!authorization) return res.status(401).json({ message: 'Token não encontrado' });
-    if (authorization.length === 16) return res.status(401).json({ message: 'Token inválido' });
-    fs.readFile('talker.json', (err, data) => {
-        if (err) console.log(err);        
-        const result = JSON.parse(data).filter((elem) => elem.id !== Number(id));
-        console.log(result);
-        // const idNew = { id: 1 };
-        // const newTalker = Object.assign(idNew, newFile);
-        // result.push(newTalker);
-        // const newResult = JSON.stringify(result, null, 2);
-        // fs.writeFile('talker.json', newResult, (erro) => {
-        //     if (erro) throw err;
-        //     res.status(201).json(newTalker);       // });
-    });
-};   
+    if (authorization.length !== 16) {
+        return res.status(401)
+        .json({ message: 'Token inválido' }); 
+    }       
+    const file = talk;
+    const talkersWithoutId = file.filter((talker) => talker.id !== Number(id));
+
+  const updateTalker = {
+    id: Number(id),
+    ...req.body,
+  };
+  const updatedTalker = talkersWithoutId.concat(updateTalker);
+    const newResult = JSON.stringify(updatedTalker, null, 2);
+    fs.writeFileSync('talker.json', newResult, 'utf-8'); 
+    res.status(200).json(updateTalker);    
+});   
 
 module.exports = editTalker;

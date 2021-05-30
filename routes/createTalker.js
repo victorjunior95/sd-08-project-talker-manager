@@ -5,7 +5,6 @@ const talk = require('../talker.json');
 const createTalker = rescue(async (req, res) => {
     const { name, age, talk: { watchedAt, rate } } = req.body;
     const newFile = { name, age, talk: { watchedAt, rate } };
-    console.log('n');
     const file = talk;
     const id = Math.max(...talk.map((element) => element.id)) + 1;
     const newTalker = { id, ...newFile };
