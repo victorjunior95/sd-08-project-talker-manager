@@ -1,8 +1,8 @@
 const talkMiddleware = (req, res, next) => {
   const {
-    talk: { watchedAt, rate },
+    talk,
   } = req.body;
-  if (!watchedAt || typeof rate !== 'number') {
+  if (!talk || !talk.watchedAt || typeof talk.rate !== 'number') {
     return res
       .status(400)
       .send({

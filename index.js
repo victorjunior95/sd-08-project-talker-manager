@@ -29,8 +29,8 @@ app.post(
   auth, 
   nameMiddleware, 
   ageMiddleware, 
-  watchedAtandRate, 
   talkMiddleware,
+  watchedAtandRate, 
   (req, res) => {
     const newTalker = req.body;
     postTalker(newTalker);

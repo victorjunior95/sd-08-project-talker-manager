@@ -35,7 +35,9 @@ describe('4 - Crie o endpoint POST /talker', () => {
       })
       .then((responseLogin) => {
         const { body } = responseLogin;
+        console.log(body)
         const result = JSON.parse(body);
+        console.log(result)
         return frisby
           .setup({
             request: {
