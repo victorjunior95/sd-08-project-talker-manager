@@ -30,6 +30,17 @@ app.get('/:id', (req, res) => { // localhost:3000/talker/:id
 });
 
 app.use(tokenMiddleware);
+
+app.delete('/:id', tokenMiddleware, (req, res) => { // localhost:3000/talker/:id
+  const { id } = req.params;
+  const numId = Number(id);
+  const allTalkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
+  const index = numId - 1;
+  allTalkers.splice(index, 1);
+  fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(allTalkers));
+  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+});
+
 app.use(nameMiddleware);
 app.use(ageMiddleware);
 app.use(talkMiddleware);
@@ -47,7 +58,7 @@ app.post('/', (req, res) => { // localhost:3000/talker/
 app.put('/:id', (req, res) => { // localhost:3000/talker/:id
   const { id } = req.params;
   const allTalkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
-  allTalkers[id - 1] = {id: Number(id), ...req.body};
+  allTalkers[id - 1] = { id: Number(id), ...req.body };
   fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(allTalkers));
   res.status(200).json(allTalkers[id - 1]);
 });
