@@ -20,5 +20,5 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-app.use('/talker', talker);
+app.get('/talker', talker);
 app.get('/talker/:id', talkerById);
