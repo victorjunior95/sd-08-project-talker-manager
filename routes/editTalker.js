@@ -12,15 +12,12 @@ const editTalker = rescue(async (req, res) => {
         .json({ message: 'Token inválido' }); 
     }       
     const file = talk;
-    const talkersWithoutId = file.filter((talker) => talker.id !== Number(id));
+    const talkerId = file.filter((talker) => talker.id !== Number(id));
 
-  const updateTalker = {
-    id: Number(id),
-    ...req.body,
-  };
-  const updatedTalker = talkersWithoutId.concat(updateTalker);
-    const newResult = JSON.stringify(updatedTalker, null, 2);
-    fs.writeFileSync('talker.json', newResult, 'utf-8'); 
+    const updateTalker = { id: Number(id), ...req.body };
+    const newUpdate = talkerId.concat(updateTalker);
+    const result = JSON.stringify(newUpdate, null, 2);
+    fs.writeFileSync('talker.json', result, 'utf-8'); 
     res.status(200).json(updateTalker);    
 });   
 
