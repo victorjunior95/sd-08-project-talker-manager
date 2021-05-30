@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { retornaPalestrantes } = require('./middlewares');
+const { retornaUmPalestrante } = require('./middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -15,6 +16,9 @@ app.get('/', (_request, response) => {
 
 // crie o endpoint GET /talker
 app.get('/talker', retornaPalestrantes);
+
+// crie o endpoint GET /talker/:id
+app.get('/talker/:id', retornaUmPalestrante);
 
 app.listen(PORT, () => {
   console.log('Online');
