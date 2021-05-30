@@ -6,8 +6,11 @@ module.exports = async (request, response, _next) => {
 
   const palestrante = listaDePalestrantes.filter((pessoa) => pessoa.id !== parseInt(id, 10));
 
+  const novaListaDePalestrantes = listaDePalestrantes.splice(palestrante, 1)[0];
+
   try {
-    await fs.writeFile('./talker.json', JSON.stringify(palestrante));
+    await fs.writeFile('./talker.json', JSON.stringify(novaListaDePalestrantes));
+
     return response.status(200).send({ message: 'Pessoa palestrante deletada com sucesso' });
   } catch (error) {
     return response.status(400).send(`Error: ${error.message}`);

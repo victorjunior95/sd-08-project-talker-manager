@@ -1,6 +1,5 @@
 const geraToken = require('./geraToken');
 const verificaEmail = require('./verificaEmail');
-const verificaSenha = require('./verificaSenha');
 
 const verificaLogin = (request, response, _next) => {
   const { email, password } = request.body;
@@ -10,10 +9,10 @@ const verificaLogin = (request, response, _next) => {
     return response.status(400).send({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
 
-  if (!verificaSenha) {
+  if (!password) {
     return response.status(400).send({ message: 'O campo "password" é obrigatório' });
   }
-  if (!verificaSenha(password)) {
+  if (password.length < 6) {
     return response.status(400).send({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
 
