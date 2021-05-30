@@ -51,7 +51,8 @@ app.post('/talker', authToken, authname, authAge, authTalk, authdata, async (req
    te.splice(1, 0, ['id', 5]);
    te = Object.fromEntries(te);
    talkers.splice(0, 1, te);
-   fs.writeFileSync('./talker.json', JSON.stringify(talkers));
+  talkers.push(...(JSON.parse(fs.readFileSync('./talker.json'))));
+  fs.writeFileSync('./talker.json', JSON.stringify(talkers));
    console.log(talkers);
    
   res.status(201).json(talkers[0]);
