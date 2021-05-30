@@ -22,4 +22,5 @@ router.get('/:id', async (_request, response) => {
   }
    response.status(NOT_FOUND).json({ message: 'Pessoa palestrante não encontrada' });
 });
+
 module.exports = router;
