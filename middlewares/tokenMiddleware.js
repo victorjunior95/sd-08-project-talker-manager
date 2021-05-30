@@ -8,4 +8,4 @@ module.exports = (req, res, next) => {
     return res.status(401).send({ message: 'Token inválido' });
   }
   return next();
-}
+};

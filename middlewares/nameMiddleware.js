@@ -8,4 +8,4 @@ module.exports = (req, res, next) => {
     return res.status(400).send({ message: 'O "name" deve ter pelo menos 3 caracteres' });
   }
   return next();
-}
+};

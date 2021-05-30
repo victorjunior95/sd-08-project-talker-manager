@@ -8,4 +8,4 @@ module.exports = (req, res, next) => {
     return res.status(400).send({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
   return next();
-}
+};
