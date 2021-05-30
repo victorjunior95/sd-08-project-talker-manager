@@ -6,8 +6,8 @@ const getAll = require('./routes/getAll');
 const getAllById = require('./routes/getAllById');
 const login = require('./routes/login');
 const createTalker = require('./routes/createTalker');
-// const editTalker = require('./routes/editTalker');
-// const deleteTalker = require('./routes/deleteTalker');
+const editTalker = require('./routes/editTalker');
+const deleteTalker = require('./routes/deleteTalker');
 
 const middlewares = require('./middlewares');
 
@@ -26,13 +26,13 @@ app.get('/talker/:id', getAllById);
 
 app.post('/login', login);
 
-app.post('/talker', middlewares.token, middlewares.name, middlewares.age, middlewares.talk, 
-middlewares.watchedAt, middlewares.rate, createTalker);
+app.post('/talker', [middlewares.token, middlewares.name, middlewares.age, middlewares.talk, 
+middlewares.watchedAt, middlewares.rate, createTalker]);
 
-// app.put('/talker/:id', [middlewares.token, middlewares.name, middlewares.age, 
-// middlewares.watchedAt, middlewares.talk, middlewares.rate, editTalker]);
+app.put('/talker/:id', [middlewares.token, middlewares.name, middlewares.age, 
+middlewares.watchedAt, middlewares.talk, middlewares.rate, editTalker]);
 
-// app.delete('/talker/:id', deleteTalker);
+app.delete('/talker/:id', deleteTalker);
 
 app.listen(PORT, () => {
     console.log('Online');

@@ -1,10 +1,9 @@
 const validator = require('email-validator');
-const rescue = require('express-rescue');
 const token = require('../services/token');
 
-const login = rescue(async (req, res) => {
+const login = (req, res) => {
         const { email, password } = req.body;
-        const validation = await validator.validate(email);
+        const validation = validator.validate(email);
         if (!email) return res.status(400).json({ message: 'O campo "email" é obrigatório' });
         if (!validation) {
        return res
@@ -18,6 +17,6 @@ const login = rescue(async (req, res) => {
       }
         
       return res.status(200).json({ token: token() });
-});
+};
 
 module.exports = login;
