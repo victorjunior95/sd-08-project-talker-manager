@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const talker = require('./middlewares/talker');
 const talkerById = require('./middlewares/talkerById');
+const login = require('./middlewares/login');
 
 const app = express();
 app.use(bodyParser.json());
