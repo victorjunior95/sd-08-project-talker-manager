@@ -1,4 +1,4 @@
-const name = (req, res, next) => {
+const nameMiddleware = (req, res, next) => {
   const { name } = req.body;
   
   if (!name) return res.status(400).send({ message: 'O campo "name" é obrigatório' });
@@ -10,4 +10,4 @@ const name = (req, res, next) => {
 next();
   };
 
-module.exports = name;
+module.exports = nameMiddleware;

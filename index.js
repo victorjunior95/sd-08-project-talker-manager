@@ -4,10 +4,10 @@ const talker = require('./Middlewares/talker');
 const talkerByIdMiddleware = require('./Middlewares/talkerById');
 const login = require('./Middlewares/login');
 const auth = require('./Middlewares/auth');
-const name = require('./Middlewares/name');
-const age = require('./Middlewares/age');
+const ageMiddleware = require('./Middlewares/age');
+const nameMiddleware = require('./Middlewares/name');
 const watchedAtandRate = require('./Middlewares/watchedAtandRate');
-const talk = require('./Middlewares/talk');
+const talkMiddleware = require('./Middlewares/talk');
 const { postTalker, showLastTalker } = require('./helpers/DBManagement');
 
 const app = express();
@@ -27,10 +27,10 @@ app.post('/login', login);
 app.post(
   '/talker',
   auth, 
-  name, 
-  age, 
+  nameMiddleware, 
+  ageMiddleware, 
   watchedAtandRate, 
-  talk,
+  talkMiddleware,
   (req, res) => {
     const newTalker = req.body;
     postTalker(newTalker);

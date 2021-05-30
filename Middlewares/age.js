@@ -1,4 +1,4 @@
-const age = (req, res, next) => {
+const ageMiddleware = (req, res, next) => {
   const { age } = req.body;
   
   if (!age) return res.status(400).send({ message: 'O campo "age" é obrigatório' });
@@ -10,4 +10,4 @@ const age = (req, res, next) => {
 next();
   };
 
-module.exports = age;
+module.exports = ageMiddleware;

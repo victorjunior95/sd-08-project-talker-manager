@@ -1,4 +1,4 @@
-const talk = (req, res, next) => {
+const talkMiddleware = (req, res, next) => {
   const {
     talk: { watchedAt, rate },
   } = req.body;
@@ -13,4 +13,4 @@ const talk = (req, res, next) => {
   next();
 };
 
-module.exports = talk;
+module.exports = talkMiddleware;
