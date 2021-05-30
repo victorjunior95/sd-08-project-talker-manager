@@ -10,14 +10,10 @@ function verifyEmail(email) {
   return emailRegex.test(email);
 }
 
-// function verifyToken(token) {
-//   const tokenRegex = /^(\d|\w){16}$/gm;
-//   return tokenRegex.test(token);
-// }
-
-// CREATE
-// localhost:3000/login/
-app.post('/', (req, res) => {
+/* Referência (-- Exercício 1 --):
+https://app.betrybe.com/course/back-end/nodejs/express-http-with-nodejs-practing/solutions
+*/
+app.post('/', (req, res) => { // localhost:3000/login/
   const { body } = req;
   const emailIsValid = verifyEmail(body.email);
 
