@@ -3,8 +3,8 @@ const boom = require('@hapi/boom');
 const { readDataTalkers } = require('../../utils/readDataTalkers');
 
 module.exports = rescue(async (req, res) => {
-  const { id } = req.params;
- /*  try { */
+  /*  try { */
+    const { id } = req.params;
     const dataTalkers = await readDataTalkers();
     const idTalker = dataTalkers.find((talker) => talker.id === +id);
     if (!idTalker) throw boom.notFound('Pessoa palestrante não encontrada');
