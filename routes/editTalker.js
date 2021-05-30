@@ -1,8 +1,8 @@
 const fs = require('fs');
 
 const editTalker = async (req, res) => {
-    const { name, age, talk: { watchedAt, rate } } = req.body;
-    const newFile = { name, age, talk: { watchedAt, rate } };
+    // const { name, age, talk: { watchedAt, rate } } = req.body;
+    // const newFile = { name, age, talk: { watchedAt, rate } };
     const { authorization } = req.headers;
     const { id } = req.params;
     if (!authorization) return res.status(401).json({ message: 'Token não encontrado' });
