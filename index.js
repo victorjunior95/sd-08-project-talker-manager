@@ -10,6 +10,7 @@ const watchedAtandRate = require('./Middlewares/watchedAtandRate');
 const talkMiddleware = require('./Middlewares/talk');
 const { postTalker, showLastTalker } = require('./helpers/DBManagement');
 const putMiddleware = require('./Middlewares/putMiddleware');
+const deleteMiddleware = require('./Middlewares/deleteMiddleware');
 
 const app = express();
 app.use(bodyParser.json());
@@ -47,6 +48,12 @@ app.put(
   talkMiddleware, 
   watchedAtandRate,
   putMiddleware,
+);
+
+app.delete(
+  '/talker/:id', 
+  auth,
+  deleteMiddleware,
 );
 
 app.listen(PORT, () => {
