@@ -1,6 +1,6 @@
 const ValidaData = (date) => /^\d{2}\/\d{2}\/\d{4}$/g.test(date);
 
-const verificaWatchedAt = (request, response, next) => {
+module.exports = (request, response, next) => {
   const { watchedAt } = request.body.talk;
 
   if (!ValidaData(watchedAt)) {
@@ -10,5 +10,3 @@ const verificaWatchedAt = (request, response, next) => {
 
   next();
 };
-
-module.exports = verificaWatchedAt;

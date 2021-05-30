@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const pesquisaPalestrante = async (request, response, _next) => {
+module.exports = async (request, response, _next) => {
   const listaDePalestrantes = await JSON.parse(fs.readFile('./talker.json'));
   let query = request.query.q;
 
@@ -17,5 +17,3 @@ const pesquisaPalestrante = async (request, response, _next) => {
   });
   return response.status(200).json(lista);
 };
-
-module.exports = pesquisaPalestrante;

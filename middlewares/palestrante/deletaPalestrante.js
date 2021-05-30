@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const deletaPalestrante = async (request, response, _next) => {
+module.exports = async (request, response, _next) => {
   const { id } = request.params;
   const listaDePalestrantes = await JSON.parse(fs.readFile('./talker.json'));
 
@@ -13,5 +13,3 @@ const deletaPalestrante = async (request, response, _next) => {
     return response.status(400).send(`Error: ${error.message}`);
   }
 };
-
-module.exports = deletaPalestrante;

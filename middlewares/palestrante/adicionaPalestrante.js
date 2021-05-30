@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 
-const adicionaPalestrante = async (request, response, _next) => {
+module.exports = async (request, response, _next) => {
   const listaDePalestrantes = await JSON.parse(fs.readFile('./talker.json', 'utf8'));
   const { body } = request;
 
@@ -10,5 +10,3 @@ const adicionaPalestrante = async (request, response, _next) => {
   await fs.writeFile('./talker.json', JSON.stringify(listaDePalestrantes));
   response.status(201).json(body);
 };
-
-module.exports = adicionaPalestrante;

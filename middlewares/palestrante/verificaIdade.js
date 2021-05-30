@@ -1,4 +1,4 @@
-const verificaIdade = (request, response, next) => {
+module.exports = (request, response, next) => {
   const { age } = request.body;
   if (!age) {
     response.status(400).send({ message: 'O campo "age" é obrigatório' });
@@ -8,5 +8,3 @@ const verificaIdade = (request, response, next) => {
   }
   next();
 };
-
-module.exports = verificaIdade;

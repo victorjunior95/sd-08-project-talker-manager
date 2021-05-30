@@ -1,4 +1,4 @@
-const verificaTalk = (request, response, next) => {
+module.exports = (request, response, next) => {
   const { talk } = request.body;
   const { watchedAt, rate } = request.body.talk;
 
@@ -11,5 +11,3 @@ const verificaTalk = (request, response, next) => {
   }
   next();
 };
-
-module.exports = verificaTalk;

@@ -2,7 +2,7 @@ const geraToken = require('./geraToken');
 const verificaEmail = require('./verificaEmail');
 const verificaSenha = require('./verificaSenha');
 
-module.exports = (request, response, _next) => {
+const verificaLogin = (request, response, _next) => {
   const { email, password } = request.body;
 
   if (!email) return response.status(400).send({ message: 'O campo "email" é obrigatório' });
@@ -19,3 +19,5 @@ module.exports = (request, response, _next) => {
 
   response.status(200).send({ token: geraToken() });
 };
+
+module.exports = verificaLogin;

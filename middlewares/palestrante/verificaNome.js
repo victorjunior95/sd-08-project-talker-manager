@@ -1,4 +1,4 @@
-const verificaNome = (request, response, next) => {
+module.exports = (request, response, next) => {
   const { name } = request.body;
   if (!name) {
     response.status(400).send({ message: 'O campo "name" é obrigatório' });
@@ -8,5 +8,3 @@ const verificaNome = (request, response, next) => {
   }
   next();
 };
-
-module.exports = verificaNome;

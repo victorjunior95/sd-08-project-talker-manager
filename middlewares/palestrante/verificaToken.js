@@ -1,4 +1,4 @@
-const verificaToken = (request, response, next) => {
+module.exports = (request, response, next) => {
   const { authorization } = request.headers;
   if (!authorization) {
     return response.status(401).send({ message: 'Token não encontrado' });
@@ -8,5 +8,3 @@ const verificaToken = (request, response, next) => {
   }
   next();
 };
-
-module.exports = verificaToken;

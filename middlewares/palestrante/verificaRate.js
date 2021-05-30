@@ -1,4 +1,4 @@
-const verificaRate = (request, response, next) => {
+module.exports = (request, response, next) => {
   const { rate } = request.body.talk;
 
   if (rate < 1 || rate > 5) {
@@ -8,5 +8,3 @@ const verificaRate = (request, response, next) => {
 
   next();
 };
-
-module.exports = verificaRate;
