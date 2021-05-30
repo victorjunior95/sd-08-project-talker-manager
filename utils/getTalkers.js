@@ -1,4 +1,4 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 
 module.exports = async (fileName) => fs.readFile(fileName, 'utf8')
     .then((fileContent) => JSON.parse(fileContent))
