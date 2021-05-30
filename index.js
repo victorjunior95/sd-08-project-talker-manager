@@ -10,6 +10,7 @@ const { validaData } = require('./middlewares');
 const { verificaTalk } = require('./middlewares');
 const { retornaUmPalestrante } = require('./middlewares');
 const { validaLogin } = require('./middlewares');
+const { editaUmPalestrante } = require('./middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -41,6 +42,16 @@ verificaTalk,
 verificaNota,
 validaData,
 adicionaUmPalestrante);
+
+// crie o endpoint PUT /talker/:id
+app.put('/talker/:id',
+validaTokenAutenticacao,
+validaNome,
+validaIdade,
+verificaTalk,
+verificaNota,
+validaData,
+editaUmPalestrante);
 
 app.listen(PORT, () => {
   console.log('Online');

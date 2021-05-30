@@ -8,6 +8,7 @@ const validaIdade = require('./validaIdade');
 const verificaNota = require('./verificaNota');
 const validaData = require('./validaData');
 const verificaTalk = require('./verificaTalk');
+const editaUmPalestrante = require('./editaUmPalestrante');
 
 module.exports = {
   retornaPalestrantes,
@@ -20,4 +21,5 @@ module.exports = {
   verificaNota,
   validaData,
   verificaTalk,
+  editaUmPalestrante,
 };
