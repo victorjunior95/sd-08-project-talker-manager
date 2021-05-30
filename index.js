@@ -7,6 +7,7 @@ const {
   adicionaPalestrante,
   deletaPalestrante,
   editaPalestrante,
+  pesquisaPalestrante,
   verificaTalk,
   verificaWatchedAt,
   verificaIdade,
@@ -76,3 +77,7 @@ app.put('/talker/:id',
 app.delete('/talker/:id',
   verificaToken,
   deletaPalestrante);
+
+// Req 07
+app.get('/talker/search',
+  pesquisaPalestrante);

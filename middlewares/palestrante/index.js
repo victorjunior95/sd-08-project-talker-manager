@@ -1,6 +1,7 @@
 const adicionaPalestrante = require('./adicionaPalestrante.js');
 const deletaPalestrante = require('./deletaPalestrante.js');
 const editaPalestrante = require('./editaPalestrante.js');
+const pesquisaPalestrante = require('./pesquisaPalestrante.js');
 const verificaIdade = require('./verificaIdade.js');
 const verificaNome = require('./verificaNome.js');
 const verificaRate = require('./verificaRate.js');
@@ -12,6 +13,7 @@ module.exports = {
   adicionaPalestrante,
   deletaPalestrante,
   editaPalestrante,
+  pesquisaPalestrante,
   verificaIdade,
   verificaNome,
   verificaRate,
