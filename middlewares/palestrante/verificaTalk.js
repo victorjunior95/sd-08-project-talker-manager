@@ -2,7 +2,7 @@ const verificaTalk = (request, response, next) => {
   const { talk } = request.body;
   const { watchedAt, rate } = request.body.talk;
 
-  if (!talk || !watchedAt || !rate) {
+  if (!talk || !watchedAt || rate === undefined || rate === '""') {
     return response
       .status(400)
       .send({
