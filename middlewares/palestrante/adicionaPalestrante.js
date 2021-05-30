@@ -1,14 +1,20 @@
 const fs = require('fs').promises;
 
 module.exports = async (request, response, _next) => {
-  const data = await fs.readFile('../../talker.json', 'utf8');
-  const listaDePalestrantes = (JSON.parse(data));
+  const data = await fs.readFile('./talker.json', 'utf8');
+  const listaDePalestrantes = await JSON.parse(data);
   
   const { body } = request;
 
-  body.id = listaDePalestrantes.length + 1;
-  // listaDePalestrantes.push(body);
-
-  await fs.writeFile('../../talker.json', JSON.stringify(listaDePalestrantes));
-  response.status(201).json(body);
+  if (listaDePalestrantes) {
+    const novoPalestrante = { id: [listaDePalestrantes].length + 1, ...body };
+  
+    [listaDePalestrantes].push(novoPalestrante);
+    try {
+      await fs.writeFile('./talker.json', JSON.stringify(listaDePalestrantes));
+      return response.status(201).json(novoPalestrante);
+    } catch (error) {
+      return response.status(400).send(`Error: ${error.message}`);
+    }
+  }
 };

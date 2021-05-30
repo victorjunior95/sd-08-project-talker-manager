@@ -52,6 +52,7 @@ middlewaresPalestrantes.deletaPalestrante);
 
 // Req 07
 app.get('/talker/search',
+middlewaresPalestrantes.verificaToken,
 middlewaresPalestrantes.pesquisaPalestrante);
 
 // Testando porta
