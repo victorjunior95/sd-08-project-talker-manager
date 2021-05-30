@@ -6,6 +6,7 @@ const valid = require('./valid');
 const createTalker = require('./createTalker');
 const modTalker = require('./modTalker');
 const removeTalker = require('./removeTalker');
+const searchTalkers = require('./searchTalkers');
 
 module.exports = {
   getTalkers,
@@ -16,4 +17,5 @@ module.exports = {
   createTalker,
   modTalker,
   removeTalker,
+  searchTalkers,
 };
