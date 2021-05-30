@@ -1,6 +1,12 @@
 const express = require('express');
 const { checkAge, checkAuth, checkName, checkTalk } = require('./local-modules/validity-checks');
-const { createTalker, getAllTalkers, getTalkerById, login } = require('./local-modules');
+const {
+  createTalker,
+  editTalker,
+  getAllTalkers,
+  getTalkerById,
+  login,
+} = require('./local-modules');
 
 const { mailChecker, passwordChecker, sendToken } = login;
 const { checkTalkExistence, checkTalkWatchedAt, checkTalkRate } = checkTalk;
@@ -31,6 +37,17 @@ app.post(
   checkTalkWatchedAt,
   checkTalkRate,
   createTalker,
+);
+
+app.put(
+  '/talker/:id',
+  checkAuth,
+  checkName,
+  checkAge,
+  checkTalkExistence,
+  checkTalkWatchedAt,
+  checkTalkRate,
+  editTalker,
 );
 
 app.listen(PORT, () => {
