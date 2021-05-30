@@ -11,7 +11,7 @@ module.exports = (_req, res, _next) => {
       return res.status(200).json(JSON.parse(data));
     })
     .catch((err) => {
-      console.error(`Não foi possível ler o arquivo ${pathArquivo}\n Erro: ${err}`);
+      console.error(err);
       process.exit(1);
     });
 };
