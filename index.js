@@ -1,6 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { retornaPalestrantes } = require('./middlewares');
+const { adicionaUmPalestrante } = require('./middlewares');
+const { validaTokenAutenticacao } = require('./middlewares');
+const { validaNome } = require('./middlewares');
+const { validaIdade } = require('./middlewares');
+const { verificaNota } = require('./middlewares');
+const { validaData } = require('./middlewares');
+const { verificaTalk } = require('./middlewares');
 const { retornaUmPalestrante } = require('./middlewares');
 const { validaLogin } = require('./middlewares');
 
@@ -23,6 +30,17 @@ app.get('/talker/:id', retornaUmPalestrante);
 
 // crie o endpoint POST /login
 app.post('/login', validaLogin);
+
+// crie o endpoint POST /talker
+/* Ajuda do Paulo Simões para validar os testes */
+app.post('/talker',
+validaTokenAutenticacao,
+validaNome,
+validaIdade,
+verificaTalk,
+verificaNota,
+validaData,
+adicionaUmPalestrante);
 
 app.listen(PORT, () => {
   console.log('Online');
