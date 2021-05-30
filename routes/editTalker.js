@@ -17,8 +17,7 @@ const editTalker = async (req, res) => {
         // const newResult = JSON.stringify(result, null, 2);
         // fs.writeFile('talker.json', newResult, (erro) => {
         //     if (erro) throw err;
-        //     res.status(201).json(newTalker);  
-        // });
+        //     res.status(201).json(newTalker);       // });
     });
 };   
 
