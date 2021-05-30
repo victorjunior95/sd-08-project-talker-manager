@@ -3,7 +3,8 @@ const fs = require('fs');
 const db = 'talker.json';
 
 const getDB = () => JSON.parse(fs.readFileSync(db, 'utf-8'));
-// console.log(getDB());
+
+const initialDB = getDB();
 
 const updateDB = (content) => fs.writeFileSync(db, JSON.stringify(content));
 // console.log(updateDB('textodeteste'));
@@ -23,6 +24,7 @@ const showLastTalker = () => {
 
 module.exports = {
   getDB,
+  initialDB,
   updateDB,
   postTalker,
   showLastTalker,

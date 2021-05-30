@@ -9,6 +9,7 @@ const nameMiddleware = require('./Middlewares/name');
 const watchedAtandRate = require('./Middlewares/watchedAtandRate');
 const talkMiddleware = require('./Middlewares/talk');
 const { postTalker, showLastTalker } = require('./helpers/DBManagement');
+const putMiddleware = require('./Middlewares/putMiddleware');
 
 const app = express();
 app.use(bodyParser.json());
@@ -35,8 +36,17 @@ app.post(
     const newTalker = req.body;
     postTalker(newTalker);
     res.status(201).json(showLastTalker());
-  },
-  
+  },  
+);
+
+app.put(
+  '/talker/:id', 
+  auth, 
+  nameMiddleware, 
+  ageMiddleware, 
+  talkMiddleware, 
+  watchedAtandRate,
+  putMiddleware,
 );
 
 app.listen(PORT, () => {
