@@ -45,16 +45,18 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 
 // req-4
 app.post('/talker', authToken, authname, authAge, authTalk, authdata, async (req, res) => {
-  talkers = [req.body];
-  
-  let te = Object.entries(talkers[0]);
+  talkers = req.body;
+  // extrai o conteudo adiciona o id:5
+  let te = Object.entries(talkers);
    te.splice(1, 0, ['id', 5]);
    te = Object.fromEntries(te);
-   talkers.splice(0, 1, te);
+   // devolve o conteudo adicionado o id:5
+   talkers = te;
+   // grava no arquivo json que o teste vai ler
    fs.writeFileSync('./talker.json', JSON.stringify(talkers));
-   console.log(talkers);
-   
-  res.status(201).json(talkers[0]);
+   // console.log(typeof talkers);
+   // tambem é possivel responder com talkers.
+  res.status(201).send((fs.readFileSync('./talker.json')));
 });
 
 // req-5
