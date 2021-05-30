@@ -20,4 +20,4 @@ app.listen(PORT, () => {
 });
 
 app.use('/talker', talker);
-app.use('/talker:id', talkerById);
+app.get('/talker:id', talkerById);
