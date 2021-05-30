@@ -8,4 +8,4 @@ module.exports = (req, res, _next) => {
     return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
   }
   res.status(200).send(search);
-}
+};

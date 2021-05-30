@@ -7,8 +7,6 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
-const fs = require('fs');
-
 const middleware = require('./middlewares');
 
 // não remova esse endpoint, e para o avaliador funcionar
@@ -22,7 +20,7 @@ app.get('/talker/:id', middleware.getTalkById);
 
 app.post('/login', middleware.verifyLogin);
 
-app.post('/talker', middleware.verifyToken, middleware.verifyTalk, middleware.addTalk);
+app.post('/talker', middleware.verifyToken, middleware.verifyTalker, middleware.addTalk);
 
 app.listen(PORT, () => {
   console.log('Online');

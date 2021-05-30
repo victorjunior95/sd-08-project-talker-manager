@@ -1,4 +1,3 @@
-
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   console.log(req.headers);
@@ -9,4 +8,4 @@ module.exports = (req, res, next) => {
     return res.status(401).send({ message: 'Token inválido' });
   }
   next();
-}
+};
