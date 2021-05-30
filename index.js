@@ -5,6 +5,8 @@ const fs = require('fs').promises;
 const middlewares = require('./middlewares/login/verificaLogin');
 const {
   adicionaPalestrante,
+  deletaPalestrante,
+  editaPalestrante,
   verificaTalk,
   verificaWatchedAt,
   verificaIdade,
@@ -58,3 +60,19 @@ app.post('/talker',
   verificaNome,
   verificaRate,
   verificaToken);
+
+// Req 05
+app.put('/talker/:id',
+  adicionaPalestrante,
+  editaPalestrante,
+  verificaTalk,
+  verificaWatchedAt,
+  verificaIdade,
+  verificaNome,
+  verificaRate,
+  verificaToken);
+
+// Req 06
+app.delete('/talker/:id',
+  verificaToken,
+  deletaPalestrante);

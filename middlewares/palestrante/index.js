@@ -1,15 +1,21 @@
-const verificaToken = require('./verificaToken.js');
-const verificaNome = require('./verificaNome.js');
-const verificaIdade = require('./verificaIdade.js');
-const verificaCampo = require('./verificaCampo.js');
-const verificaDados = require('./verificaDados.js');
 const adicionaPalestrante = require('./adicionaPalestrante.js');
+const deletaPalestrante = require('./deletaPalestrante.js');
+const editaPalestrante = require('./editaPalestrante.js');
+const verificaIdade = require('./verificaIdade.js');
+const verificaNome = require('./verificaNome.js');
+const verificaRate = require('./verificaRate.js');
+const verificaTalk = require('./verificaTalk.js');
+const verificaToken = require('./verificaToken.js');
+const verificaWatchedAt = require('./verificaWatchedAt.js');
 
 module.exports = {
   adicionaPalestrante,
-  verificaToken,
-  verificaNome,
+  deletaPalestrante,
+  editaPalestrante,
   verificaIdade,
-  verificaCampo,
-  verificaDados,
+  verificaNome,
+  verificaRate,
+  verificaTalk,
+  verificaToken,
+  verificaWatchedAt,
 };
