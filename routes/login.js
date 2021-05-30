@@ -18,17 +18,17 @@ app.post('/', (req, res) => { // localhost:3000/login/
   const emailIsValid = verifyEmail(body.email);
 
   if (!body.email) {
-    return res.status(400).json({ message: 'O campo "email" é obrigatório' });
+    res.status(400).json({ message: 'O campo "email" é obrigatório' });
   } if (!emailIsValid) {
-    return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
+    res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
   }
   if (!body.password) {
-    return res.status(400).json({ message: 'O campo "password" é obrigatório' });
+    res.status(400).json({ message: 'O campo "password" é obrigatório' });
   } if (body.password.length < 6) {
-    return res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
+    res.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
   const token = crypto.randomBytes(8).toString('hex');
-  return res.status(200).json({ token });
+  res.status(200).json({ token });
 });
 
 module.exports = app;

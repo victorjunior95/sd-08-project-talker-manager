@@ -10,6 +10,17 @@ const talkIsValidMiddleware = require('../middlewares/talkIsValidMiddleware');
 const app = express();
 app.use(bodyParser.json());
 
+app.get('/search', tokenMiddleware, (req, res) => { // localhost:3000/talker/search
+  const { q } = req.query;
+  const allTalkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
+  const searchTerm = allTalkers.filter(({ name }) => name.includes(q));
+
+  if (searchTerm) {
+    res.status(200).json(searchTerm);
+  }
+  res.status(200).json(allTalkers);
+});
+
 app.get('/', (req, res) => { // localhost:3000/talker/
   const allTalkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
   res.status(200).json(allTalkers);
@@ -24,14 +35,14 @@ app.get('/:id', (req, res) => { // localhost:3000/talker/:id
   const talkerById = allTalkers.find(({ id }) => id === Number(reqId));
 
   if (talkerById) {
-    return res.status(200).json(talkerById);
+    res.status(200).json(talkerById);
   }
-  return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+  res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
 app.use(tokenMiddleware);
 
-app.delete('/:id', tokenMiddleware, (req, res) => { // localhost:3000/talker/:id
+app.delete('/:id', (req, res) => { // localhost:3000/talker/:id
   const { id } = req.params;
   const numId = Number(id);
   const allTalkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
