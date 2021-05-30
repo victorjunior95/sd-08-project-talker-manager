@@ -11,7 +11,6 @@ const getTalkers = (url) => fs.readFile(url, 'utf8')
 
 module.exports = rescue(async (req, res, _next) => {
   const { q } = req.query;
-  console.log(q)
 
   const talkers = await getTalkers(pathArquivo);
   const filteredTalkers = talkers.data
