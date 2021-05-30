@@ -5,6 +5,7 @@ const talker = require('./talker.js');
 const talkerId = require('./talkerId.js');
 const talkerLogin = require('./talkerLogin.js');
 const newTalker = require('./newTalker.js');
+const editTalker = require('./editTalker.js');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.post('/login', talkerLogin);
 app.get('/talker/:id', talkerId);
 app.use('/talker', talker); 
 app.use(newTalker);
+app.use(editTalker);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
