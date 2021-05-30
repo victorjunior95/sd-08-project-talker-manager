@@ -2,6 +2,7 @@ const express = require('express');
 const { checkAge, checkAuth, checkName, checkTalk } = require('./local-modules/validity-checks');
 const {
   createTalker,
+  deleteTalker,
   editTalker,
   getAllTalkers,
   getTalkerById,
@@ -49,6 +50,8 @@ app.put(
   checkTalkRate,
   editTalker,
 );
+
+app.delete('/talker/:id', checkAuth, deleteTalker);
 
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);
