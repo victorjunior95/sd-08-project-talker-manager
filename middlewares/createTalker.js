@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
-const isValidTalker = require('../helpers/isValidTalker');
 const rescue = require('express-rescue');
+const isValidTalker = require('../helpers/isValidTalker');
 
 const pathArquivo = './talker.json';
 const getTalkers = (url) => fs.readFile(url, 'utf8')
