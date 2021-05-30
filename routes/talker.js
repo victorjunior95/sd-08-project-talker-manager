@@ -44,4 +44,12 @@ app.post('/', (req, res) => { // localhost:3000/talker/
   res.status(201).json(createTalker);
 });
 
+app.put('/:id', (req, res) => { // localhost:3000/talker/:id
+  const { id } = req.params;
+  const allTalkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
+  allTalkers[id - 1] = {id: Number(id), ...req.body};
+  fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(allTalkers));
+  res.status(200).json(allTalkers[id - 1]);
+});
+
 module.exports = app;
