@@ -1,7 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
-const middlewares = require('./services/verificaLogin');
+
+const middlewares = require('./middlewares/login/verificaLogin');
+const {
+  adicionaPalestrante,
+  verificaTalk,
+  verificaWatchedAt,
+  verificaIdade,
+  verificaNome,
+  verificaRate,
+  verificaToken,
+} = require('./middlewares/palestrante');
 
 const app = express();
 app.use(bodyParser.json());
@@ -38,3 +48,13 @@ app.get('talker/:id', async (request, response) => {
 
 // Req 03
 app.post('/login', middlewares.verificaLogin.js);
+
+// Req 04
+app.post('/talker',
+  adicionaPalestrante,
+  verificaTalk,
+  verificaWatchedAt,
+  verificaIdade,
+  verificaNome,
+  verificaRate,
+  verificaToken);
