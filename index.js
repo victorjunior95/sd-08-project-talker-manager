@@ -1,8 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const talker = require('./Middlewares/talkerMiddleware');
-const talkerById = require('./Middlewares/talkerByIdMiddleware');
-const login = require('./Middlewares/loginMiddleware');
+const talker = require('./Middlewares/talker');
+const talkerByIdMiddleware = require('./Middlewares/talkerById');
+const login = require('./Middlewares/login');
+const auth = require('./Middlewares/auth');
+const name = require('./Middlewares/name');
+const age = require('./Middlewares/age');
+const watchedAtandRate = require('./Middlewares/watchedAtandRate');
+const talk = require('./Middlewares/talk');
+const { postTalker, showLastTalker } = require('./helpers/DBManagement');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,8 +22,22 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', talker);
-app.get('/talker/:id', talkerById);
+app.get('/talker/:id', talkerByIdMiddleware);
 app.post('/login', login);
+app.post(
+  '/talker',
+  auth, 
+  name, 
+  age, 
+  watchedAtandRate, 
+  talk,
+  (req, res) => {
+    const newTalker = req.body;
+    postTalker(newTalker);
+    res.status(201).json(showLastTalker());
+  },
+  
+);
 
 app.listen(PORT, () => {
   console.log('Online');

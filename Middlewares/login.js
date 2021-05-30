@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-const loginMiddleware = (req, res) => {
+const login = (req, res) => {
   const { email, password } = req.body;
   if (!email) return res.status(400).send({ message: 'O campo "email" é obrigatório' });
   if (!password) return res.status(400).send({ message: 'O campo "password" é obrigatório' });
@@ -22,4 +22,4 @@ const loginMiddleware = (req, res) => {
 // regex disponível no slack da turma 07, thread do dia 06/01/2021  
 // formula de geração de token disponível em qastack.com.br/programming/8855687/secure-random-token-in-node-js
 
-module.exports = loginMiddleware;
+module.exports = login;
