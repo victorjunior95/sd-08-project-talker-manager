@@ -12,7 +12,7 @@ router.get('/search', middlewares.authToken, async (req, res) => {
   const searchTerm = req.query.q;
   const talkers = await utils.getTalkers(FILE);
   const foundedTalkers = talkers
-    .filter((talker) => talker.name.inclues(searchTerm));
+    .filter((talker) => talker.name.includes(searchTerm));
   res.status(200).json(foundedTalkers);
 });
 
@@ -31,15 +31,16 @@ router.get('/:id', async (req, res) => {
 
 router.use(middlewares.authToken);
 
-router.post('/', middlewares.validateTalkerNameAndAge,
-middlewares.validateTalk,
-middlewares.validateDateAndRate,
+router.post('/', 
+  middlewares.validateTalkerNameAndAge,
+  middlewares.validateTalk,
+  middlewares.validateDateAndRate,
   async (req, res) => {
   const talker = req.body;
   const talkers = await utils.getTalkers(FILE);
   const newTalker = { ...talker, id: talkers.length + 1 };
-  await utils.setTalker(talkers, newTalker);
-  res.status(200).json(newTalker);
+  utils.setTalker(talkers, newTalker);
+  res.status(201).json(newTalker);
 });
 
 router.put('/:id', middlewares.validateTalkerNameAndAge,

@@ -8,7 +8,7 @@ router.use(bodyParser.json());
 
 router.use(middlewares.authLogin);
 
-router.post('/', (req, res) => {
+router.post('/', (_req, res) => {
   const token = utils.generateToken();
   res.status(200).send({ token });
 });
