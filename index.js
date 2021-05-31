@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const talker = require('./routes/talker');
+const login = require('./routes/login');
 // const fs = require('fs');
 
 const app = express();
@@ -19,6 +20,8 @@ app.use('/talker', talker);
 //   const datafs = await fs.readFile(JSON.parse('./talker.json'));
 //   console.log(datafs);
 // });
+
+app.use('/login', login);
 
 app.listen(PORT, () => {
   console.log('Online');
