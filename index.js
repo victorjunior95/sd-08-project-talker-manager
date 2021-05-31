@@ -123,22 +123,17 @@ app.route('/talker')
   })
   .post(validateTokenMiddleware, validateTalkerMiddleware, (req, resp) => {
     const { name, age, talk } = req.body;
-    // const { authorization: token } = req.headers;
-    // const errToken = validateToken(token);
-    // if (errToken) {
-    //   const err = new Error(errToken);
-    //   err.status = 401;
-    //   return next(err);
-    // }
-    // const errTalk = validateTalker(name, age, talk);
-    // if (errTalk) {
-    //   const err = new Error(errTalk);
-    //   err.status = 400;
-    //   return next(err);
-    // }
     const data = successAddTalk({ name, age, talk });
     resp.status(201).json(data);
   });
+
+app.get('/talker/search', validateTokenMiddleware, (req, resp) => {
+  const searchTerm = req.query.q;
+  const data = getData();
+  if (!searchTerm) resp.status(HTTP_OK_STATUS).json(data);
+  const result = data.filter(({ name }) => name.includes(searchTerm));
+  resp.status(HTTP_OK_STATUS).json(result);
+});
 
 app.route('/talker/:id')
   .get((req, resp, next) => {
@@ -154,21 +149,15 @@ app.route('/talker/:id')
   .all(validateTokenMiddleware)
   .put(validateTalkerMiddleware, (req, resp) => {
     const { name, age, talk } = req.body;
-    // const errTalk = validateTalker(name, age, talk);
-    // if (errTalk) {
-    //   const err = new Error(errTalk);
-    //   err.status = 400;
-    //   return next(err);
-    // }
     const id = parseInt(req.params.id, 10);
     const data = successEditTalk({ name, age, talk }, id);
-    resp.status(200).json(data);
+    resp.status(HTTP_OK_STATUS).json(data);
   })
   .delete((req, resp) => {
     const data = getData();
     const removedTalker = data.filter(({ id }) => id !== parseInt(req.params.id, 10));
     writeData(removedTalker);
-    resp.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+    resp.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante deletada com sucesso' });
   });
 
 app.use((err, _req, res, _next) => { res.status(err.status).json({ message: err.message }); });
