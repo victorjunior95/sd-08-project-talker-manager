@@ -45,6 +45,6 @@ app.put('/talker/:id',
   checkName,
   checkAge,
   checkTalk,
-  checkTalkWatched,
   checkTalkRate,
+  checkTalkWatched,
   updateTalker);
