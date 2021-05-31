@@ -8,23 +8,14 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
-app.get('/talker', (_req, resp) => {
+const getData = () => {
   const file = fs.readFileSync('./talker.json');
-  const data = JSON.parse(file || '[]');
-  resp.status(HTTP_OK_STATUS).json(data);
-});
+  return JSON.parse(file || '[]');
+};
 
-app.get('/talker/:id', (req, resp, next) => {
-  const file = fs.readFileSync('./talker.json');
-  const data = JSON.parse(file || '[]');
-  const talker = data.find(({ id }) => req.params.id === id.toString());
-  if (talker !== undefined) resp.status(HTTP_OK_STATUS).json(talker);
-  else {
-    const error = new Error('Pessoa palestrante não encontrada');
-    error.status = 404;
-    return next(error);
-  }
-});
+const writeData = (data) => {
+  fs.writeFileSync('./talker.json', JSON.stringify(data));
+};
 
 const validateLogin = (email, password) => {
   if (!email) return 'O campo "email" é obrigatório';
@@ -87,77 +78,90 @@ const validateTalker = (name, age, talk) => {
 };
 
 const successAddTalk = (data) => {
-  const dataFs = fs.readFileSync('./talker.json');
-  const array = JSON.parse(dataFs);
+  const array = getData();
   const id = !array || array.length === 0 ? 1 : array.sort((a, b) => b.id - a.id)[0].id + 1;
   const dataToBeAdded = { id, ...data };
   const newData = [...array, dataToBeAdded];
-  fs.writeFileSync('./talker.json', JSON.stringify(newData));
+  writeData(newData);
   return dataToBeAdded;
 };
 
 const successEditTalk = (data, idEdit) => {
-  const dataFs = fs.readFileSync('./talker.json');
-  const array = JSON.parse(dataFs);
+  const array = getData();
   const dataToBeAdded = { id: idEdit, ...data };
   const editedArray = array.map((talker) => (talker.id === idEdit ? dataToBeAdded : talker));
-  fs.writeFileSync('./talker.json', JSON.stringify(editedArray));
+  writeData(editedArray);
   return dataToBeAdded;
 };
 
-app.post('/talker', (req, resp, next) => {
-  const { name, age, talk } = req.body;
-  const { authorization: token } = req.headers;
-  const errToken = validateToken(token);
-  if (errToken) {
-    const err = new Error(errToken);
-    err.status = 401;
-    return next(err);
-  }
-  const errTalk = validateTalker(name, age, talk);
-  if (errTalk) {
-    const err = new Error(errTalk);
-    err.status = 400;
-    return next(err);
-  }
-  const data = successAddTalk({ name, age, talk });
-  resp.status(201).json(data);
-});
+app.route('/talker')
+  .get((_req, resp) => {
+    const data = getData();
+    resp.status(HTTP_OK_STATUS).json(data);
+  })
+  .post((req, resp, next) => {
+    const { name, age, talk } = req.body;
+    const { authorization: token } = req.headers;
+    const errToken = validateToken(token);
+    if (errToken) {
+      const err = new Error(errToken);
+      err.status = 401;
+      return next(err);
+    }
+    const errTalk = validateTalker(name, age, talk);
+    if (errTalk) {
+      const err = new Error(errTalk);
+      err.status = 400;
+      return next(err);
+    }
+    const data = successAddTalk({ name, age, talk });
+    resp.status(201).json(data);
+  });
 
-app.put('/talker/:id', (req, resp, next) => {
-  const { name, age, talk } = req.body;
-  const { authorization: token } = req.headers;
-  const errToken = validateToken(token);
-  if (errToken) {
-    const err = new Error(errToken);
-    err.status = 401;
-    return next(err);
-  }
-  const errTalk = validateTalker(name, age, talk);
-  if (errTalk) {
-    const err = new Error(errTalk);
-    err.status = 400;
-    return next(err);
-  }
-  const id = parseInt(req.params.id, 10);
-  const data = successEditTalk({ name, age, talk }, id);
-  resp.status(200).json(data);
-});
-
-app.delete('/talker/:id', (req, resp, next) => {
-  const { authorization: token } = req.headers;
-  const errToken = validateToken(token);
-  if (errToken) {
-    const err = new Error(errToken);
-    err.status = 401;
-    return next(err);
-  }
-  const file = fs.readFileSync('./talker.json');
-  const data = JSON.parse(file);
-  const removedTalker = data.filter(({ id }) => id !== parseInt(req.params.id, 10));
-  fs.writeFileSync('./talker.json', JSON.stringify(removedTalker));
-  resp.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
-});
+app.route('/talker/:id')
+  .get((req, resp, next) => {
+    const data = getData();
+    const talker = data.find(({ id }) => req.params.id === id.toString());
+    if (talker !== undefined) resp.status(HTTP_OK_STATUS).json(talker);
+    else {
+      const error = new Error('Pessoa palestrante não encontrada');
+      error.status = 404;
+      return next(error);
+    }
+  })
+  .put((req, resp, next) => {
+    const { name, age, talk } = req.body;
+    const { authorization: token } = req.headers;
+    const errToken = validateToken(token);
+    if (errToken) {
+      const err = new Error(errToken);
+      err.status = 401;
+      return next(err);
+    }
+    const errTalk = validateTalker(name, age, talk);
+    if (errTalk) {
+      const err = new Error(errTalk);
+      err.status = 400;
+      return next(err);
+    }
+    const id = parseInt(req.params.id, 10);
+    const data = successEditTalk({ name, age, talk }, id);
+    resp.status(200).json(data);
+  })
+  .delete((req, resp, next) => {
+    const { authorization: token } = req.headers;
+    const errToken = validateToken(token);
+    if (errToken) {
+      const err = new Error(errToken);
+      err.status = 401;
+      return next(err);
+    }
+    const file = fs.readFileSync('./talker.json');
+    const data = JSON.parse(file);
+    const removedTalker = data.filter(({ id }) => id !== parseInt(req.params.id, 10));
+    fs.writeFileSync('./talker.json', JSON.stringify(removedTalker));
+    resp.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+  });
 
 app.use((err, _req, res, _next) => { res.status(err.status).json({ message: err.message }); });
 // não remova esse endpoint, e para o avaliador funcionar
