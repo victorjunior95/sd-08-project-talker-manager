@@ -5,6 +5,14 @@ const talker = require('./middlewares/talker');
 const talkerById = require('./middlewares/talkerById');
 const login = require('./middlewares/login');
 
+const checkToken = require('./middlewares/checkToken');
+const checkName = require('./middlewares/checkName');
+const checkAge = require('./middlewares/checkAge');
+const checkTalk = require('./middlewares/checkTalk');
+const checkTalkWatched = require('./middlewares/checkTalkWatched');
+const checkTalkRate = require('./middlewares/checkTalkRate');
+const newTalker = require('./middlewares/newTalker');
+
 const app = express();
 app.use(bodyParser.json());
 
@@ -23,3 +31,11 @@ app.listen(PORT, () => {
 app.get('/talker', talker);
 app.get('/talker/:id', talkerById);
 app.post('/login', login);
+app.post('/talker',
+  checkToken,
+  checkName,
+  checkAge,
+  checkTalk,
+  checkTalkWatched,
+  checkTalkRate,
+  newTalker);
