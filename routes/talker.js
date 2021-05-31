@@ -18,6 +18,14 @@ const talkerRead = JSON.parse(readTalker());
 
 const validations = require('../middlewares/validations');
 
+router.get('/search', validations.tokenMidd, (req, res, _next) => {
+  const { q } = req.query;
+  const search = talkerRead.filter((item) => item.name.includes(q));
+
+  if (search) return res.status(200).json(search);
+  return res.status(200).json(talkerRead);
+});
+
 router.get('/', (req, res, _next) => {
   console.log(readTalker);
   if (readTalker) return res.status(200).json(JSON.parse(readTalker()));
