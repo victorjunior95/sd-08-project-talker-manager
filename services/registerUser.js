@@ -11,7 +11,6 @@ module.exports = (req, res) => {
     talk,
   };
   dataToUse.push(newUser);
-  console.log(dataToUse, 'datatouse');
   fs.writeFileSync('talker.json', JSON.stringify(dataToUse));
   return res.status(201).json(newUser);
 };

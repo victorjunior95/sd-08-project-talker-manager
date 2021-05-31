@@ -9,6 +9,9 @@ const talkValidation = require('./services/talkValidation');
 const rateValidation = require('./services/rateValidation');
 const dateValidation = require('./services/dateValidation');
 const registerUser = require('./services/registerUser');
+const updateUser = require('./services/updateUser');
+const deleteUser = require('./services/deleteUser');
+const searchUser = require('./services/searchUser');
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,6 +20,7 @@ const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
 app.get('/talker', (_req, res) => {
+  console.log('get geral');
   fs.readFile('talker.json')
     .then((data) => {
       res.status(200).json(JSON.parse(data));
@@ -26,7 +30,10 @@ app.get('/talker', (_req, res) => {
     });
 });
 
+app.get('/talker/search', auth, searchUser);
+
 app.get('/talker/:id', (req, res) => {
+  console.log('get by id');
   fs.readFile('talker.json')
     .then((data) => {
       const { id } = req.params;
@@ -40,6 +47,19 @@ app.get('/talker/:id', (req, res) => {
       res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
     });
 });
+
+app.delete('/talker/:id', auth, deleteUser);
+
+app.put(
+  '/talker/:id',
+  auth,
+  nameValidation,
+  ageValidation,
+  talkValidation,
+  rateValidation,
+  dateValidation,
+  updateUser,
+);
 
 app.post(
   '/talker',
