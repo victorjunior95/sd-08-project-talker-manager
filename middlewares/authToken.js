@@ -1,10 +1,11 @@
 module.exports = (req, res, next) => {
-  const { token } = req.headers;
-  if (token.length !== 16) {
-    res.status(401).json({ token: 'Token inválido' });
+  const { authorization } = req.headers;
+  console.log(authorization);
+  if (!authorization) {
+    res.status(401).json({ message: 'Token não encontrado' });
   }
-  if (!token) {
-    res.status(401).json({ token: 'Token não encontrado' });
+  if (authorization.length !== 16) {
+    res.status(401).json({ message: 'Token inválido' });
   }
   next();
 };

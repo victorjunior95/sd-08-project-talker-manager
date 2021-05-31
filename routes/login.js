@@ -8,10 +8,9 @@ router.use(bodyParser.json());
 
 router.use(middlewares.authLogin);
 
-router.post('/', (_req, res) => {
+router.post('/', (req, res) => {
   const token = utils.generateToken();
-  console.log(token);
-  res.status(200).json({ token });
+  res.status(200).send({ token });
 });
 
 module.exports = router;
