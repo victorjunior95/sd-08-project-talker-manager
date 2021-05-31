@@ -44,7 +44,7 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 });
 
 // req-4
-app.post('/talker', authToken, authname, authAge, authTalk, authdata, async (req, res) => {
+/* app.post('/talker', authToken, authname, authAge, authTalk, authdata, async (req, res) => {
   const novoTalker = [req.body];
   
   let te = Object.entries(novoTalker[0]);
@@ -56,9 +56,10 @@ app.post('/talker', authToken, authname, authAge, authTalk, authdata, async (req
   // console.log(novoTalker);
    
   res.status(201).json(novoTalker[0]);
-});
+}); */
 
 // req-5
+// app.put('/talk/:id');
 
 app.listen(PORT, () => {
   console.log('Online');
