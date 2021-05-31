@@ -7,6 +7,7 @@ const talkerLogin = require('./talkerLogin.js');
 const newTalker = require('./newTalker.js');
 const editTalker = require('./editTalker.js');
 const deleteTalker = require('./deleteTalker.js');
+const searchTalker = require('./searchTalker.js');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
+app.use(searchTalker);
 app.post('/login', talkerLogin);
 app.get('/talker/:id', talkerId);
 app.use('/talker', talker); 
