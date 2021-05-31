@@ -1,6 +1,6 @@
 const express = require('express');
 
-const fs = require('fs');
+// const fs = require('fs');
 
 const bodyParser = require('body-parser');
 
@@ -24,11 +24,11 @@ const {
   authpaswd,
   req1,
   req2,
-  authToken,
+ /*  authToken,
   authname,
   authAge,
   authTalk,
-  authdata,
+  authdata, */
 } = require('./validation');
 // const talkers = require('./helpers/talkers');
 
