@@ -94,13 +94,7 @@ const successEditTalk = (data, idEdit) => {
   return dataToBeAdded;
 };
 
-app.route('/talker')
-  .get((_req, resp) => {
-    const data = getData();
-    resp.status(HTTP_OK_STATUS).json(data);
-  })
-  .post((req, resp, next) => {
-    const { name, age, talk } = req.body;
+const validateTokenMiddleware = (req, _resp, next) => {
     const { authorization: token } = req.headers;
     const errToken = validateToken(token);
     if (errToken) {
@@ -108,12 +102,40 @@ app.route('/talker')
       err.status = 401;
       return next(err);
     }
+    next();
+};
+
+const validateTalkerMiddleware = (req, _resp, next) => {
+    const { name, age, talk } = req.body;
     const errTalk = validateTalker(name, age, talk);
     if (errTalk) {
       const err = new Error(errTalk);
       err.status = 400;
       return next(err);
     }
+    next();
+};
+
+app.route('/talker')
+  .get((_req, resp) => {
+    const data = getData();
+    resp.status(HTTP_OK_STATUS).json(data);
+  })
+  .post(validateTokenMiddleware, validateTalkerMiddleware, (req, resp) => {
+    const { name, age, talk } = req.body;
+    // const { authorization: token } = req.headers;
+    // const errToken = validateToken(token);
+    // if (errToken) {
+    //   const err = new Error(errToken);
+    //   err.status = 401;
+    //   return next(err);
+    // }
+    // const errTalk = validateTalker(name, age, talk);
+    // if (errTalk) {
+    //   const err = new Error(errTalk);
+    //   err.status = 400;
+    //   return next(err);
+    // }
     const data = successAddTalk({ name, age, talk });
     resp.status(201).json(data);
   });
@@ -129,37 +151,23 @@ app.route('/talker/:id')
       return next(error);
     }
   })
-  .put((req, resp, next) => {
+  .all(validateTokenMiddleware)
+  .put(validateTalkerMiddleware, (req, resp) => {
     const { name, age, talk } = req.body;
-    const { authorization: token } = req.headers;
-    const errToken = validateToken(token);
-    if (errToken) {
-      const err = new Error(errToken);
-      err.status = 401;
-      return next(err);
-    }
-    const errTalk = validateTalker(name, age, talk);
-    if (errTalk) {
-      const err = new Error(errTalk);
-      err.status = 400;
-      return next(err);
-    }
+    // const errTalk = validateTalker(name, age, talk);
+    // if (errTalk) {
+    //   const err = new Error(errTalk);
+    //   err.status = 400;
+    //   return next(err);
+    // }
     const id = parseInt(req.params.id, 10);
     const data = successEditTalk({ name, age, talk }, id);
     resp.status(200).json(data);
   })
-  .delete((req, resp, next) => {
-    const { authorization: token } = req.headers;
-    const errToken = validateToken(token);
-    if (errToken) {
-      const err = new Error(errToken);
-      err.status = 401;
-      return next(err);
-    }
-    const file = fs.readFileSync('./talker.json');
-    const data = JSON.parse(file);
+  .delete((req, resp) => {
+    const data = getData();
     const removedTalker = data.filter(({ id }) => id !== parseInt(req.params.id, 10));
-    fs.writeFileSync('./talker.json', JSON.stringify(removedTalker));
+    writeData(removedTalker);
     resp.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
   });
 
