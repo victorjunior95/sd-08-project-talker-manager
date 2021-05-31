@@ -1,7 +1,7 @@
-const fs = require('fs');
+const { talkers } = require('../helpers/talkers');
 
 const req1 = (req, res) => res.status(200).send(
-  JSON.parse(fs.readFileSync('./talker.json')),
+  talker),
   
   );
 

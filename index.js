@@ -17,8 +17,7 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
-// conteudo de talker .json
-let talkers = JSON.parse(fs.readFileSync('./talker.json'));
+
  // importando funcionalidades de validação
 const {
   authemail,
@@ -33,7 +32,9 @@ const {
 } = require('./validation');
 
 // req-1
-app.get('/talker', req1);
+app.get('/talker', (req, res) => {
+  res.status(200).send(talkers());
+ });
 
 // req-2
 app.get('/talker/:id', req2);
