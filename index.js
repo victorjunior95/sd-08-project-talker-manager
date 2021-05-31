@@ -12,6 +12,7 @@ const checkTalk = require('./middlewares/checkTalk');
 const checkTalkWatched = require('./middlewares/checkTalkWatched');
 const checkTalkRate = require('./middlewares/checkTalkRate');
 const newTalker = require('./middlewares/newTalker');
+const updateTalker = require('./middlewares/updateTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -39,3 +40,11 @@ app.post('/talker',
   checkTalkWatched,
   checkTalkRate,
   newTalker);
+app.put('/talker/:id',
+  checkToken,
+  checkName,
+  checkAge,
+  checkTalk,
+  checkTalkWatched,
+  checkTalkRate,
+  updateTalker);

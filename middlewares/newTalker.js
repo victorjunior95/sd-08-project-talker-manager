@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 const db = 'talker.json';
 
 const newTalker = (req, res) => {
