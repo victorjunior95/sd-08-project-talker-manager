@@ -1,7 +1,7 @@
-const fs = require('fs');
+const talkers = require('../helpers/talkers');
 
 // variaveis contendo valores uteis
-const content = JSON.parse(fs.readFileSync('./talker.json'));
+const content = talkers();
 const ids = [];
 
 function preencheids() {

@@ -32,9 +32,7 @@ const {
 } = require('./validation');
 
 // req-1
-app.get('/talker', (req, res) => {
-  res.status(200).send(talkers());
- });
+app.get('/talker', req1);
 
 // req-2
 app.get('/talker/:id', req2);
