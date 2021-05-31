@@ -3,6 +3,7 @@ const fs = require('fs').promises;
 module.exports = async (request, response, _next) => {
   const data = await fs.readFile('./talker.json', 'utf8');
   const listaDePalestrantes = (JSON.parse(data));
+
   let query = request.query.q;
 
   if (!query) {

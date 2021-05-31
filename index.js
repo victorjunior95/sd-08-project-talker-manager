@@ -36,14 +36,13 @@ middlewaresPalestrantes.adicionaPalestrante);
 
 // Req 05
 app.put('/talker/:id',
-middlewaresPalestrantes.adicionaPalestrante,
-// middlewaresPalestrantes.editaPalestrante,
-middlewaresPalestrantes.verificaTalk,
-middlewaresPalestrantes.verificaWatchedAt,
-middlewaresPalestrantes.verificaIdade,
+middlewaresPalestrantes.verificaToken,
 middlewaresPalestrantes.verificaNome,
+middlewaresPalestrantes.verificaIdade,
+middlewaresPalestrantes.verificaTalk,
 middlewaresPalestrantes.verificaRate,
-middlewaresPalestrantes.verificaToken);
+middlewaresPalestrantes.verificaWatchedAt,
+middlewaresPalestrantes.editaPalestrante);
 
 // Req 06
 app.delete('/talker/:id',

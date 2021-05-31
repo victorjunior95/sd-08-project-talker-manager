@@ -1,16 +1,14 @@
-// TODO terminar req 05
+const fs = require('fs').promises;
 
-// const fs = require('fs');
+module.exports = async (request, response, _next) => {
+  const data = await fs.readFile('./talker.json', 'utf8');
+  const listaDePalestrantes = JSON.parse(data);
+  const { id } = request.params;
 
-// const editaPalestrante = async (request, response, _next) => {
-//   const { id } = request.params;
-//   const palestrantes = await JSON.parse(fs.readFile('./talker.json'));
-
-//   palestrantes.findIndex((talker) => talker.id === Number(id));
-
-//   await fs.writeFile('./talker.json', JSON.stringify(palestrantes));
-
-//   response.status(200).json();
-// };
-
-// module.exports = editaPalestrante;
+  const palestrante = listaDePalestrantes.map((pessoa) => {
+    if (pessoa.id === Number(id)) return { ...pessoa, ...request.body };
+    return pessoa;
+  });
+  await fs.writeFile('./talker.json', JSON.stringify(palestrante));
+  response.status(200).json(palestrante.find((pessoa) => pessoa.id === Number(id)));
+};
