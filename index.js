@@ -30,7 +30,7 @@ const {
   authTalk,
   authdata,
 } = require('./validation');
-const talkers = require('./helpers/talkers');
+// const talkers = require('./helpers/talkers');
 
 // req-1
 app.get('/talker', req1);
@@ -53,7 +53,7 @@ app.post('/talker', authToken, authname, authAge, authTalk, authdata, async (req
    novoTalker.splice(0, 1, te);
    novoTalker.push(...(JSON.parse(fs.readFileSync('./talker.json'))));
   fs.writeFileSync('./talker.json', JSON.stringify(novoTalker));
-   console.log(novoTalker);
+  // console.log(novoTalker);
    
   res.status(201).json(novoTalker[0]);
 });
