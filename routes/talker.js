@@ -1,5 +1,7 @@
 const express = require('express');
 
+const fs = require('fs');
+
 const bodyParser = require('body-parser');
 
 const router = express.Router();
@@ -18,12 +20,15 @@ const talkerRead = JSON.parse(readTalker());
 
 const validations = require('../middlewares/validations');
 
-router.get('/search', validations.tokenMidd, (req, res, _next) => {
+router.get('/search', validations.tokenMidd, (req, res) => {
   const { q } = req.query;
-  const search = talkerRead.filter((item) => item.name.includes(q));
+  const talkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
+  const search = talkers.filter(({ name }) => name.includes(q));
 
-  if (search) return res.status(200).json(search);
-  return res.status(200).json(talkerRead);
+  if (search) {
+    res.status(200).json(search);
+  }
+  res.status(200).json(talkers);
 });
 
 router.get('/', (req, res, _next) => {
