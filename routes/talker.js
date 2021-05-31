@@ -8,7 +8,15 @@ const FILE = 'talker.json';
 const router = express.Router();
 router.use(bodyParser.json());
 
-router.get('/', async (req, res) => {
+router.get('/search', middlewares.authToken, async (req, res) => {
+  const searchTerm = req.query.q;
+  const talkers = await utils.getTalkers(FILE);
+  const foundedTalkers = talkers
+    .filter((talker) => talker.name.inclues(searchTerm));
+  res.status(200).json(foundedTalkers);
+});
+
+router.get('/', async (_req, res) => {
   const talkers = await utils.getTalkers(FILE);
   res.status(200).send(talkers);
 });
@@ -31,7 +39,7 @@ middlewares.validateDateAndRate,
   const talkers = await utils.getTalkers(FILE);
   const newTalker = { ...talker, id: talkers.length + 1 };
   await utils.setTalker(talkers, newTalker);
-  res.status(201).json(newTalker);
+  res.status(200).json(newTalker);
 });
 
 router.put('/:id', middlewares.validateTalkerNameAndAge,
@@ -47,6 +55,14 @@ router.put('/:id', middlewares.validateTalkerNameAndAge,
   });
   utils.updateTalkers(updatedTalkers);
   res.status(200).json(updatedTalker);
+});
+
+router.delete('/:id', async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const talkers = await utils.getTalkers(FILE);
+  const updatedTalkers = talkers.filter((talker) => talker.id !== id);
+  utils.updateTalkers(updatedTalkers);
+  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
 });
 
 module.exports = router;
