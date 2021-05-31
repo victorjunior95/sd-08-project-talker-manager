@@ -30,6 +30,7 @@ const {
   authTalk,
   authdata,
 } = require('./validation');
+const talkers = require('./helpers/talkers');
 
 // req-1
 app.get('/talker', req1);
@@ -44,17 +45,17 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 
 // req-4
 app.post('/talker', authToken, authname, authAge, authTalk, authdata, async (req, res) => {
-  talkers = [req.body];
+  const novoTalker = [req.body];
   
-  let te = Object.entries(talkers[0]);
+  let te = Object.entries(novoTalker[0]);
    te.splice(1, 0, ['id', 5]);
    te = Object.fromEntries(te);
-   talkers.splice(0, 1, te);
-  talkers.push(...(JSON.parse(fs.readFileSync('./talker.json'))));
-  fs.writeFileSync('./talker.json', JSON.stringify(talkers));
-   console.log(talkers);
+   novoTalker.splice(0, 1, te);
+   novoTalker.push(...(JSON.parse(fs.readFileSync('./talker.json'))));
+  fs.writeFileSync('./talker.json', JSON.stringify(novoTalker));
+   console.log(novoTalker);
    
-  res.status(201).json(talkers[0]);
+  res.status(201).json(novoTalker[0]);
 });
 
 // req-5
