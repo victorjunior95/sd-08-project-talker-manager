@@ -13,6 +13,7 @@ const checkTalkWatched = require('./middlewares/checkTalkWatched');
 const checkTalkRate = require('./middlewares/checkTalkRate');
 const newTalker = require('./middlewares/newTalker');
 const updateTalker = require('./middlewares/updateTalker');
+const deleteTalker = require('./middlewares/deleteTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -48,3 +49,6 @@ app.put('/talker/:id',
   checkTalkRate,
   checkTalkWatched,
   updateTalker);
+app.delete('/talker/:id',
+  checkToken,
+  deleteTalker);
