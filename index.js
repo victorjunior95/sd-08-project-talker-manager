@@ -9,7 +9,7 @@ const PORT = '3000';
 
 const rescue = require('express-rescue');
 const crypto = require('crypto');
-const talkersFile = require('./middleware/fs-readFile');
+const talkersFile = require('./middlewares/readFile');
 
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
