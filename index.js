@@ -4,6 +4,7 @@ const rescue = require('express-rescue');
 
 const desafio01 = require('./desafios/desafio01');
 const desafio02 = require('./desafios/router02');
+const desafio03 = require('./desafios/router03');
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,7 +18,7 @@ app.get('/', (_request, response) => {
 app.get('/talker',
   rescue(async (_req, res) => {
     const readTalkers = await desafio01();
-    console.log(readTalkers);
+
     res
       .status(HTTP_OK_STATUS)
       .send(readTalkers);
@@ -29,6 +30,7 @@ app.get('/talker',
   });
 
   app.use('/talker', desafio02);
+  app.use('/login', desafio03);
   
 app.listen(PORT, () => {
   console.log('Online');
