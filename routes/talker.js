@@ -42,16 +42,34 @@ router.use(getRate);
 
 router.post('/', async (request, response) => {
   const reqbody = request.body;
-
   const file = await fs.readFile('./talker.json');
   const result = JSON.parse(file.toString('utf-8'));
-  // const file = fs.readFile(`${__dirname}/../talker.json`);
   // const result = JSON.parse(file.toString('utf-8'));
+  // const file = fs.readFile(`${__dirname}/../talker.json`);
   reqbody.id = result.length + 1;
   result.push(reqbody);
   fs.writeFile('./talker.json', JSON.stringify(result));
-
+  
   response.status(CREATED).send(reqbody);
+});
+
+router.put('/:id', async (request, response) => {
+  const { id } = request.params;
+  const { name, age, talk } = request.body;
+  const file = await fs.readFile('./talker.json');
+  const result = JSON.parse(file.toString('utf-8'));
+  result[id - 1] = {
+    id: Number(id),
+    name,
+    age: Number(age),
+    talk: {
+      watchedAt: talk.watchedAt,
+      rate: Number(talk.rate),
+    },
+  };
+  console.log(result);
+  fs.writeFile('./talker.json', JSON.stringify(result));
+  response.status(SUCCESS).send(result[id - 1]);
 });
 
 module.exports = router;

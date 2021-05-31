@@ -6,12 +6,12 @@ const BAD_REQUEST = 400;
 const getData = (request, response, next) => {
   const { talk } = request.body;
   const IsValidWatchedAt = validateData(talk.watchedAt);
-  if (!talk.watchedAt) {
-    return response.status(BAD_REQUEST).json({
-      message:
-        'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
-    });
-  }
+  // if (!talk.watchedAt) {
+  //   return response.status(BAD_REQUEST).json({
+  //     message:
+  //       'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+  //   });
+  // }
   if (!IsValidWatchedAt) {
     return response
       .status(BAD_REQUEST)

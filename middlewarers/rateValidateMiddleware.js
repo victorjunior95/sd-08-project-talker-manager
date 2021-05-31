@@ -10,12 +10,12 @@ const getRate = (request, response, next) => {
   const { talk } = request.body;
   const IsValidRate = validateRate(talk.rate);
 
-  if (!talk.rate) {
-    return response.status(BAD_REQUEST).json({
-      message:
-        'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
-    });
-  }
+  // if (!talk.rate) {
+  //   return response.status(BAD_REQUEST).json({
+  //     message:
+  //       'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+  //   });
+  // }
   if (!IsValidRate) {
     return response
       .status(BAD_REQUEST)
