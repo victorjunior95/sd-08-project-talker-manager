@@ -1,10 +1,9 @@
 module.exports = (req, res, next) => {
-  const { talk } = req.body;
-  if (!talk) {
+  if (req.body.talk === undefined) {
     res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
-  if (!talk.rate || !talk.watchedAt) {
+  if (req.body.talk.watchedAt === undefined || req.body.talk.rate === undefined) {
     res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
   }
