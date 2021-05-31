@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { retornaPalestrantes } = require('./middlewares');
+const { retornaPalestrantes, deletaUmPalestrante } = require('./middlewares');
 const { adicionaUmPalestrante } = require('./middlewares');
 const { validaTokenAutenticacao } = require('./middlewares');
 const { validaNome } = require('./middlewares');
@@ -52,6 +52,9 @@ verificaTalk,
 verificaNota,
 validaData,
 editaUmPalestrante);
+
+// crie o endpoint DELETE /talker/:id
+app.delete('/talker/:id', validaTokenAutenticacao, deletaUmPalestrante);
 
 app.listen(PORT, () => {
   console.log('Online');

@@ -9,6 +9,7 @@ const verificaNota = require('./verificaNota');
 const validaData = require('./validaData');
 const verificaTalk = require('./verificaTalk');
 const editaUmPalestrante = require('./editaUmPalestrante');
+const deletaUmPalestrante = require('./deletaUmPalestrante');
 
 module.exports = {
   retornaPalestrantes,
@@ -22,4 +23,5 @@ module.exports = {
   validaData,
   verificaTalk,
   editaUmPalestrante,
+  deletaUmPalestrante,
 };
