@@ -177,7 +177,20 @@ app.delete('/talker/:id', rescue(async (req, res) => {
   return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
 }));
 
-// Crie o endpoint GET /talker/:id
+// Crie o endpoint GET /talker/search?q=searchTerm
+
+app.get('/talker/search', rescue(async (req, res) => {
+  checkToken(req, res);
+  const { q } = req.query;
+  const talkers = await getTalker();
+  if (q) {
+    const filteredTalkers = talkers.filter(({ name }) => name.includes(q));
+    return res.status(200).json(filteredTalkers);
+  }
+  res.status(200).json(talkers);
+}));
+
+// // Crie o endpoint GET /talker/:id
 
 app.get(
   '/talker/:id',
