@@ -10,6 +10,10 @@ const readTalker = require('../services/readTalker');
 
 const createTalker = require('../services/writeTalker');
 
+const editTalker = require('../services/editTalker');
+
+const deleteTalker = require('../services/deleteTalker');
+
 const talkerRead = JSON.parse(readTalker());
 
 const validations = require('../middlewares/validations');
@@ -42,6 +46,31 @@ validations.rateMid,
   };
   createTalker(obj);
   return res.status(201).json({ name, id: talkerRead.length + 1, age, talk });
+});
+
+router.put('/:id', validations.tokenMidd,
+validations.nameMid,
+validations.ageMid,
+validations.talkWatchedMid,
+validations.rateMid,
+(req, res, _next) => {
+  const { id } = req.params;
+  const { name, age, talk } = req.body;
+  const obj = {
+    name,
+    id,
+    age,
+    talk,
+  };
+
+  editTalker(id, obj);
+  return res.status(200).json({ obj });
+});
+
+router.delete('/:id', validations.tokenMidd, (req, res, _next) => {
+  const { id } = req.params;
+  deleteTalker(Number(id));
+  return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
 });
 
 module.exports = router;
