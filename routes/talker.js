@@ -1,5 +1,9 @@
 const express = require('express');
+
 const fs = require('fs');
+
+// Middleware
+const { tokenMidd, ageMidd, nameMidd, talkMidd, talkValiMidd } = require('../middlewares');
 
 const router = express.Router();
 
@@ -22,11 +26,11 @@ router.get('/', (_req, res) => {
   try {
     const datatalkers = fsdata();
     if (datatalkers) {
-          res.status(200).json(datatalkers);
-          console.log(datatalkers);
-        } else {
-          res.status(200).json([]);
-        }
+      res.status(200).json(datatalkers);
+      // console.log(datatalkers);
+    } else {
+      res.status(200).json([]);
+    }
   } catch (err) {
     return res.status(500).send({ err });
   }
@@ -48,6 +52,27 @@ router.get('/:id', (req, res) => {
   } catch (err) {
     return res.status(500).send({ err });
   }
+});
+
+router.use(tokenMidd, ageMidd, nameMidd, talkMidd, talkValiMidd);
+
+// A requisição deve ter o token de autenticação nos headers.
+// auxilio dos alunos Karine , Rita , Arnaelcio
+// https://github.com/tryber/sd-08-project-talker-manager/tree/ana-karine-sd-08-project-talker-manager
+// https://github.com/tryber/sd-08-project-talker-manager/tree/RitaJeveaux-talker-manager
+// https://github.com/tryber/sd-08-project-talker-manager/tree/arnaelcio-sd-08-project-talker-manager
+
+// requisito 4
+router.post('/', (req, res) => {
+  const createTalker = req.body;
+  const allTalkers = fsdata();
+  // const allTalkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
+  createTalker.id = allTalkers.length + 1;
+  allTalkers.push(createTalker);
+  // console.log(allTalkers);
+  // fs.writeFile(`${__dirname} ${allTalkers}`, JSON.stringify(allTalkers));
+  fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(allTalkers));
+  res.status(201).json(createTalker);
 });
 
 module.exports = router;
