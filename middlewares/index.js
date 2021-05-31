@@ -1,4 +1,3 @@
-
 const fsTalkers = require('./talkersFile');
 const validEmptyFields = require('./validEmptyFields');
 const validToken = require('./validToken');
