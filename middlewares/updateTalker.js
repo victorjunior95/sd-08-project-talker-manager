@@ -6,12 +6,8 @@ const updateTalker = (req, res) => {
   const { id } = req.params;
   const talkers = JSON.parse(fs.readFileSync(db, 'utf-8'));
 
-  const resp = talkers.find((talker) => {
-    if (Number(talker.id) === Number(id)) {
-      talker = { ...talker, ...req.body };
-    }
-    return talker;
-  });
+  let resp = talkers.find((talker) => Number(talker.id) === Number(id));
+  resp = { ...resp, ...req.body };
   res.status(200).json(resp);
 };
 
