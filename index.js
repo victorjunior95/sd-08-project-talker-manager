@@ -12,7 +12,7 @@ app.get('/', (_request, response) => {
 });
 
 const rescue = require('express-rescue');
-const talkersFile = require('./middlewares/fs-readFile');
+const talkersFile = require('./middlewares/readFile');
 
 app.get('/talker', 
 rescue(async (_req, res, _next) => {
