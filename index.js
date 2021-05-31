@@ -5,6 +5,7 @@ const rescue = require('express-rescue');
 const desafio01 = require('./desafios/desafio01');
 const desafio02 = require('./desafios/router02');
 const desafio03 = require('./desafios/router03');
+const desafio04 = require('./desafios/router04');
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,9 +30,9 @@ app.get('/talker',
     .send([]);
   });
 
-  app.use('/talker', desafio02);
+  app.use('/talker', desafio02, desafio04);
   app.use('/login', desafio03);
-  
+
 app.listen(PORT, () => {
   console.log('Online');
 });
