@@ -32,8 +32,18 @@ router.get('/:id', async (_request, response) => {
   response
     .status(NOT_FOUND)
     .json({ message: 'Pessoa palestrante não encontrada' });
-});
-
+  });
+  
+  router.delete('/:id', getToken, async (request, response) => {
+    const { id } = request.params;
+    const index = id - 1;
+    const file = await fs.readFile(FILE);
+    const result = JSON.parse(file.toString('utf-8'));
+  result.splice(index, 1);
+    console.log(result);
+    fs.writeFile(FILE, JSON.stringify(result));
+    response.status(SUCCESS).send({ message: 'Pessoa palestrante deletada com sucesso' });
+  });
 router.use(getToken);
 router.use(getName);
 router.use(getAge);
@@ -72,5 +82,6 @@ router.put('/:id', async (request, response) => {
   fs.writeFile(FILE, JSON.stringify(result));
   response.status(SUCCESS).send(result[id - 1]);
 });
+
 
 module.exports = router;
