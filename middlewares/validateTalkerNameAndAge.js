@@ -1,16 +1,16 @@
 module.exports = (req, res, next) => {
   const { name, age } = req.body;
   if (!name) {
-    res.status(400).json({ message: 'O campo "name" é obrigatório' });
+    return res.status(400).json({ message: 'O campo "name" é obrigatório' });
   }
   if (name.length < 3) {
-    res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
+    return res.status(400).json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
   }
   if (!age) {
-    res.status(400).json({ message: 'O campo "age" é obrigatório' });
+    return res.status(400).json({ message: 'O campo "age" é obrigatório' });
   }
   if (age < 18) {
-    res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
+    return res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
   next();
 };
