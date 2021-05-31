@@ -44,6 +44,7 @@ router.get('/:id', async (_request, response) => {
     fs.writeFile(FILE, JSON.stringify(result));
     response.status(SUCCESS).send({ message: 'Pessoa palestrante deletada com sucesso' });
   });
+
 router.use(getToken);
 router.use(getName);
 router.use(getAge);
