@@ -72,7 +72,7 @@ const checkTalkFields = (watchedAt, rate) => {
 
 const validateTalk = (talk) => {
   const { watchedAt, rate } = talk || {};
-  if (!talk || !watchedAt || !rate) {
+  if (!talk || watchedAt === undefined || rate === undefined) {
     return 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios';
   }
   return checkTalkFields(watchedAt, rate);
@@ -96,6 +96,15 @@ const successAddTalk = (data) => {
   return dataToBeAdded;
 };
 
+const successEditTalk = (data, idEdit) => {
+  const dataFs = fs.readFileSync('./talker.json');
+  const array = JSON.parse(dataFs);
+  const dataToBeAdded = { id: idEdit, ...data };
+  const editedArray = array.map((talker) => (talker.id === idEdit ? dataToBeAdded : talker));
+  fs.writeFileSync('./talker.json', JSON.stringify(editedArray));
+  return dataToBeAdded;
+};
+
 app.post('/talker', (req, resp, next) => {
   const { name, age, talk } = req.body;
   const { authorization: token } = req.headers;
@@ -113,6 +122,41 @@ app.post('/talker', (req, resp, next) => {
   }
   const data = successAddTalk({ name, age, talk });
   resp.status(201).json(data);
+});
+
+app.put('/talker/:id', (req, resp, next) => {
+  const { name, age, talk } = req.body;
+  const { authorization: token } = req.headers;
+  const errToken = validateToken(token);
+  if (errToken) {
+    const err = new Error(errToken);
+    err.status = 401;
+    return next(err);
+  }
+  const errTalk = validateTalker(name, age, talk);
+  if (errTalk) {
+    const err = new Error(errTalk);
+    err.status = 400;
+    return next(err);
+  }
+  const id = parseInt(req.params.id, 10);
+  const data = successEditTalk({ name, age, talk }, id);
+  resp.status(200).json(data);
+});
+
+app.delete('/talker/:id', (req, resp, next) => {
+  const { authorization: token } = req.headers;
+  const errToken = validateToken(token);
+  if (errToken) {
+    const err = new Error(errToken);
+    err.status = 401;
+    return next(err);
+  }
+  const file = fs.readFileSync('./talker.json');
+  const data = JSON.parse(file);
+  const removedTalker = data.filter(({ id }) => id !== parseInt(req.params.id, 10));
+  fs.writeFileSync('./talker.json', JSON.stringify(removedTalker));
+  resp.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
 });
 
 app.use((err, _req, res, _next) => { res.status(err.status).json({ message: err.message }); });
