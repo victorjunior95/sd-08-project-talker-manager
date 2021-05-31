@@ -14,15 +14,16 @@ const router = express.Router();
 const SUCCESS = 200;
 const CREATED = 201;
 const NOT_FOUND = 404;
+const FILE = './talker.json';
 
 router.get('/', async (_request, response) => {
-  const file = await fs.readFile('./talker.json');
+  const file = await fs.readFile(FILE);
   const result = JSON.parse(file.toString('utf-8'));
   response.status(SUCCESS).send(result);
 });
 
 router.get('/:id', async (_request, response) => {
-  const file = await fs.readFile('./talker.json');
+  const file = await fs.readFile(FILE);
   const result = JSON.parse(file.toString('utf-8'));
   const res = result.find(({ id }) => id === Number(_request.params.id));
   if (res) {
@@ -42,13 +43,13 @@ router.use(getRate);
 
 router.post('/', async (request, response) => {
   const reqbody = request.body;
-  const file = await fs.readFile('./talker.json');
+  const file = await fs.readFile(FILE);
   const result = JSON.parse(file.toString('utf-8'));
   // const result = JSON.parse(file.toString('utf-8'));
   // const file = fs.readFile(`${__dirname}/../talker.json`);
   reqbody.id = result.length + 1;
   result.push(reqbody);
-  fs.writeFile('./talker.json', JSON.stringify(result));
+  fs.writeFile(FILE, JSON.stringify(result));
   
   response.status(CREATED).send(reqbody);
 });
@@ -56,7 +57,7 @@ router.post('/', async (request, response) => {
 router.put('/:id', async (request, response) => {
   const { id } = request.params;
   const { name, age, talk } = request.body;
-  const file = await fs.readFile('./talker.json');
+  const file = await fs.readFile(FILE);
   const result = JSON.parse(file.toString('utf-8'));
   result[id - 1] = {
     id: Number(id),
@@ -68,7 +69,7 @@ router.put('/:id', async (request, response) => {
     },
   };
   console.log(result);
-  fs.writeFile('./talker.json', JSON.stringify(result));
+  fs.writeFile(FILE, JSON.stringify(result));
   response.status(SUCCESS).send(result[id - 1]);
 });
 
