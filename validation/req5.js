@@ -28,7 +28,7 @@ const req5 = (req, res) => {
    edited.push(...(JSON.parse(fs.readFileSync('./talker.json'))));
 
    fs.writeFileSync('./talker.json', JSON.stringify(edited));
-   console.log(edited);
+   // console.log(edited);
     res.status(200).json(edited[0]);
  };
 

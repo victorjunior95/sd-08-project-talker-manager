@@ -27,11 +27,13 @@ const {
   req1,
   req2,
   req5,
+  req6,
   authToken,
   authname,
   authAge,
   authTalk,
   authdata,
+  
   } = require('./validation');
 // const talkers = require('./helpers/talkers');
 
@@ -63,6 +65,12 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 // req-5
  app.put('/talker/:id', authToken, authname, authAge, authTalk, authdata,
   req5);
+
+// req-6
+app.delete('/talker/:id', authToken, req6, (req, res) => {
+   res.status(200).send({ message: 'Pessoa palestrante deletada com sucesso',
+  }); 
+});  
 
 app.listen(PORT, () => {
   console.log('Online');
