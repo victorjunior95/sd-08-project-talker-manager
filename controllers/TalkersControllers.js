@@ -9,6 +9,7 @@ module.exports = {
 
   search(request, response) {
     const { q } = request.query;
+    
     const talkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
     const searchTerm = talkers.filter(({ name }) => name.includes(q));
 
@@ -21,6 +22,7 @@ module.exports = {
 
   id(request, response) {
     const { id: requestId } = request.params;
+
     const talkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
     const talkerById = talkers.find(({ id }) => id === Number(requestId));
 
@@ -33,6 +35,7 @@ module.exports = {
 
   create(request, response) {
     const createTalker = request.body;
+
     const talkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
 
     createTalker.id = talkers.length + 1;
@@ -44,6 +47,7 @@ module.exports = {
 
   update(request, response) {
     const { id } = request.params;
+
     const talkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
 
     talkers[id - 1] = { id: Number(id), ...request.body };
