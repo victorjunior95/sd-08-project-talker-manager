@@ -1,6 +1,8 @@
 const express = require('express');
 
-// const fs = require('fs');
+// const rescue = require('express-rescue');
+
+const fs = require('fs');
 
 const bodyParser = require('body-parser');
 
@@ -24,11 +26,11 @@ const {
   authpaswd,
   req1,
   req2,
- /*  authToken,
+  authToken,
   authname,
   authAge,
   authTalk,
-  authdata, */
+  authdata, 
 } = require('./validation');
 // const talkers = require('./helpers/talkers');
 
@@ -40,12 +42,12 @@ app.get('/talker/:id', req2);
 
 // req-3
 app.post('/login', authpaswd, authemail, (req, res) => {
-  res.status(200).send({ token: (Math.random()).toString(2).substring(2, 18) }); 
+ res.status(200).send({ token: (Math.random()).toString(2).substring(2, 18) }); 
 });
 
 // req-4
-/* app.post('/talker', authToken, authname, authAge, authTalk, authdata, async (req, res) => {
-  const novoTalker = [req.body];
+ app.post('/talker', authToken, authname, authAge, authTalk, authdata, (req, res) => {
+ const novoTalker = [req.body];
   
   let te = Object.entries(novoTalker[0]);
    te.splice(1, 0, ['id', 5]);
@@ -54,9 +56,8 @@ app.post('/login', authpaswd, authemail, (req, res) => {
    novoTalker.push(...(JSON.parse(fs.readFileSync('./talker.json'))));
   fs.writeFileSync('./talker.json', JSON.stringify(novoTalker));
   // console.log(novoTalker);
-   
-  res.status(201).json(novoTalker[0]);
-}); */
+  res.status(201).send(novoTalker[0]);
+}); 
 
 // req-5
 // app.put('/talk/:id');
