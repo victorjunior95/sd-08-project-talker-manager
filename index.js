@@ -29,6 +29,8 @@ app.post(
   middlewares.nameValidation,
   middlewares.ageValidation,
   middlewares.talkValidation,
+  middlewares.talkWatchedAtValidation,
+  middlewares.talkRateValidation,
   middlewares.postTalker,
 );
 
