@@ -82,7 +82,7 @@ router.delete('/:id', (req, res) => {
 router.use(ageMidd, nameMidd, talkMidd, talkValiMidd);
 
 // A requisição deve ter o token de autenticação nos headers.
-// auxilio dos alunos Karine , Rita , Arnaelcio
+// auxilio dos alunos Karine , Rita , Arnaelcio no requisito 4
 // https://github.com/tryber/sd-08-project-talker-manager/tree/ana-karine-sd-08-project-talker-manager
 // https://github.com/tryber/sd-08-project-talker-manager/tree/RitaJeveaux-talker-manager
 // https://github.com/tryber/sd-08-project-talker-manager/tree/arnaelcio-sd-08-project-talker-manager
