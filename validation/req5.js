@@ -10,7 +10,7 @@ function preencheids() {
 
 preencheids();
 
-const req2 = (req, res) => {
+const req5 = (req, res) => {
   const arr = [];
   const edited = [req.body];
     if (!ids.includes(+req.params.id)) {
@@ -19,13 +19,15 @@ const req2 = (req, res) => {
      arr.push(content.find((obj) => obj.id === +req.params.id));
      arr.push(...edited); 
      
-   let te = Object.entries(edited);
+   let te = Object.entries(edited[0]);
    te.splice(1, 0, ['id', 5]);
    te = Object.fromEntries(te);
    edited.splice(0, 1, te);
    edited.push(...(JSON.parse(fs.readFileSync('./talker.json'))));
-   fs.writeFileSync('./talker.json', JSON.stringify(arr[1]));
-     return (res.status(200).json(arr));
+
+   fs.writeFileSync('./talker.json', JSON.stringify(edited));
+   console.log(edited);
+    res.status(200).json(edited[0]);
  };
 
- module.exports = req2;
+ module.exports = req5;
