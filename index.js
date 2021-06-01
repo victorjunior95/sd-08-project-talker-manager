@@ -26,12 +26,13 @@ const {
   authpaswd,
   req1,
   req2,
+  req5,
   authToken,
   authname,
   authAge,
   authTalk,
-  authdata, 
-} = require('./validation');
+  authdata,
+  } = require('./validation');
 // const talkers = require('./helpers/talkers');
 
 // req-1
@@ -60,7 +61,8 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 }); 
 
 // req-5
-// app.put('/talk/:id');
+ app.put('/talker/:id', authToken, authname, authAge, authTalk, authdata,
+  req5);
 
 app.listen(PORT, () => {
   console.log('Online');
