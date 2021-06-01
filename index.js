@@ -13,7 +13,26 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
 const path = './talker.json';
+
+function authToken(req, res, next) {
+   const { authorization } = req.headers;
+   if (!authorization) return res.status(401).json({ message: 'Token não encontrado' });
+   if (authorization.length !== 16) return res.status(401).json({ message: 'Token inválido' });
+   return next();
+}
+
+// Requisito 7 ----------------------------------
+app.get('/talker/search', authToken, async (req, res) => {
+  const data = await fs.readFile(path, 'utf8');
+  const talkers = JSON.parse(data);
+  const { q } = req.query;  
+  const search = talkers.filter((talker) => talker.name.includes(q));  
+  if (search) return res.status(200).json(search);
+  res.status(200).json(talkers);
+});
+
 // Requisito 01 -----------------------------------------------------
 app.get('/talker', async (req, res) => { 
   const data = await fs.readFile(path, 'utf8');
@@ -55,13 +74,6 @@ app.post('/login', messages, (req, res) => {
   const token = crypto.randomBytes(8).toString('hex');
   return res.status(200).json({ token });
 });
-
-function authToken(req, res, next) {
-   const { authorization } = req.headers;
-   if (!authorization) return res.status(401).json({ message: 'Token não encontrado' });
-   if (authorization.length !== 16) return res.status(401).json({ message: 'Token inválido' });
-   return next();
-}
 
 // Requisito 04 ----------------------------------------------------
 function isValidName(req, res, next) {
@@ -160,8 +172,7 @@ app.delete('/talker/:id', authToken, async (req, res) => {
   const { id } = req.params;
   const numId = Number(id);
   const data = await fs.readFile(path, 'utf8');
-  const talkers = JSON.parse(data); 
-  // const findTalker = talkers.find((talker) => talker.id === parseInt(id, 10));
+  const talkers = JSON.parse(data);
   const index = numId - 1;
   talkers.splice(index, 1);
   fs.writeFile('./talker.json', JSON.stringify(talkers));
