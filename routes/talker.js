@@ -11,6 +11,17 @@ const router = express.Router();
 // https://github.com/tryber/sd-08-project-talker-manager/tree/eric-massaki-talker-manager-project
 const fsdata = () => JSON.parse(fs.readFileSync('talker.json', 'utf8'));
 
+router.get('/search', tokenMidd, (req, res) => {
+  const { q } = req.query;
+  const allTalkers = fsdata();
+  const searchTerm = allTalkers.filter(({ name }) => name.includes(q));
+
+  if (searchTerm) {
+    res.status(200).json(searchTerm);
+  }
+  res.status(200).json(allTalkers);
+});
+
 // requisito 1
 // router.get('/', (_req, res) => {
 //   const fsdata = fs.readFileSync(path.join(__dirname, '../talker.json'));
