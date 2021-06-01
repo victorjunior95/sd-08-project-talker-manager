@@ -54,7 +54,21 @@ router.get('/:id', (req, res) => {
   }
 });
 
-router.use(tokenMidd, ageMidd, nameMidd, talkMidd, talkValiMidd);
+router.use(tokenMidd);
+
+// requisito 6
+router.delete('/:id', (req, res) => { 
+  const { id } = req.params;
+  const idNum = Number(id);
+  console.log(idNum);
+  const allTalkers = fsdata();
+  const index = idNum - 1;
+  allTalkers.splice(index, 1);
+  fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(allTalkers));
+  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+});
+
+router.use(ageMidd, nameMidd, talkMidd, talkValiMidd);
 
 // A requisição deve ter o token de autenticação nos headers.
 // auxilio dos alunos Karine , Rita , Arnaelcio
@@ -83,4 +97,5 @@ router.put('/:id', (req, res) => {
   fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(allTalkers));
   res.status(200).json(allTalkers[id - 1]);
 });
+
 module.exports = router;
