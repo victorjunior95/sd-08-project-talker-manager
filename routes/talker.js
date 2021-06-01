@@ -75,4 +75,12 @@ router.post('/', (req, res) => {
   res.status(201).json(createTalker);
 });
 
+// requisito 5
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const allTalkers = fsdata();
+  allTalkers[id - 1] = { id: Number(id), ...req.body };
+  fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(allTalkers));
+  res.status(200).json(allTalkers[id - 1]);
+});
 module.exports = router;
