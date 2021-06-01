@@ -1,11 +1,13 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
+
+const filePath = './talker.json';
 
 async function getTalker() {
-  const response = await fs.readFile('./talker.json', 'utf-8');
-
-  return JSON.parse(response);
+  const response = await fs.readFile(filePath, 'utf-8');
+  const data = await JSON.parse(response);
+  return data;
 }
 
 // getTalker().then((data) => console.log(data));
 
-module.exports = { getTalker };
+module.exports = getTalker;
