@@ -8,6 +8,7 @@ function writeTalkers(talkers) {
     } catch (err) {
         // console.error(`Erro ao ler o arquivo: ${err.path}`);
         // console.log(err);
+        // console.log(err);
     }
 }
 module.exports = writeTalkers;
