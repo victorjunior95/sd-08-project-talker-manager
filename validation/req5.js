@@ -10,8 +10,10 @@ function preencheids() {
 
 preencheids();
 
+// refaore essa função depois para não precisar de arr
 const req5 = (req, res) => {
   const arr = [];
+  console.log(typeof arr);
   const edited = [req.body];
     if (!ids.includes(+req.params.id)) {
     return (res.status(404).send({ message: 'Pessoa palestrante não encontrada' })); 
