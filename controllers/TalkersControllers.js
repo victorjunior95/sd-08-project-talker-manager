@@ -8,12 +8,12 @@ module.exports = {
   },
 
   search(request, response) {
-    const { query } = request.query;
+    const { q } = request.query;
     const talkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
-    const search = talkers.filter(({ name }) => name.includes(query));
+    const searchTerm = talkers.filter(({ name }) => name.includes(q));
 
-    if (search) {
-      response.status(200).json(search);
+    if (searchTerm) {
+      response.status(200).json(searchTerm);
     }
 
     response.status(200).json(talkers);
