@@ -72,6 +72,9 @@ app.delete('/talker/:id', authToken, req6, (req, res) => {
   }); 
 });  
 
+// req-7
+app.get('/talker/search?q=Ke');
+
 app.listen(PORT, () => {
   console.log('Online');
 });
