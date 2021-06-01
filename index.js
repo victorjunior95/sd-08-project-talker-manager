@@ -15,12 +15,21 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', middlewares.getTalkers);
 app.get('/talker/:id', middlewares.getTalkerById);
+
 app.post(
   '/login',
   middlewares.tokenGenerator,
   middlewares.emailValidation,
   middlewares.passwordValidation,
   middlewares.login,
+);
+app.post(
+  '/talker',
+  middlewares.tokenValidation,
+  middlewares.nameValidation,
+  middlewares.ageValidation,
+  middlewares.talkValidation,
+  middlewares.postTalker,
 );
 
 app.listen(PORT, () => {

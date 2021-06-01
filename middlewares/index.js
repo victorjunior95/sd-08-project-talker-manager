@@ -4,6 +4,11 @@ const login = require('./login');
 const tokenGenerator = require('./tokenGenerator');
 const emailValidation = require('./emailValidation');
 const passwordValidation = require('./passwordValidation');
+const tokenValidation = require('./tokenValidation');
+const postTalker = require('./postTalker');
+const nameValidation = require('./nameValidation');
+const ageValidation = require('./ageValidation');
+const talkValidation = require('./talkValidation');
 
 module.exports = {
   getTalkers,
@@ -12,4 +17,9 @@ module.exports = {
   tokenGenerator,
   emailValidation,
   passwordValidation,
+  tokenValidation,
+  postTalker,
+  nameValidation,
+  ageValidation,
+  talkValidation,
 };
