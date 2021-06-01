@@ -34,6 +34,17 @@ app.post(
   middlewares.postTalker,
 );
 
+app.put(
+  '/talker/:id',
+  middlewares.tokenValidation,
+  middlewares.nameValidation,
+  middlewares.ageValidation,
+  middlewares.talkValidation,
+  middlewares.talkWatchedAtValidation,
+  middlewares.talkRateValidation,
+  middlewares.putTalker,
+);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
