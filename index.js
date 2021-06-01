@@ -13,11 +13,10 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
-
+const path = './talker.json';
 // Requisito 01 -----------------------------------------------------
-app.get('/talker', async (req, res) => {
-  // eslint-disable-next-line sonarjs/no-duplicate-string
-  const data = await fs.readFile('./talker.json', 'utf8');
+app.get('/talker', async (req, res) => { 
+  const data = await fs.readFile(path, 'utf8');
   res.status(200).json(JSON.parse(data));
 });
 
@@ -42,7 +41,7 @@ function messages(req, res, next) {
 // Requisito 02 -----------------------------------------------------
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params; 
-  const data = await fs.readFile('./talker.json', 'utf8');
+  const data = await fs.readFile(path, 'utf8');
   const talkers = JSON.parse(data);
   const findTalker = talkers.find((talker) => talker.id === parseInt(id, 10));
       if (!findTalker) {
@@ -109,8 +108,7 @@ function isValidRateDate(req, res, next) {
 }
 
 function isValidTalk(req, res, next) {
-  const { talk } = req.body;
-  // const { watchedAt, rate } = talk;
+  const { talk } = req.body;  
   if (!talk) {
     return res.status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' });
@@ -121,14 +119,13 @@ function isValidTalk(req, res, next) {
     .status(400)
     .json({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
-  }
-  // isValidRateDate();
+  } 
   return next();
 }
 
 app.post('/talker', authToken, isValidName, isValidAge, isValidTalk, isValidRateDate, 
   async (req, res) => {
-  const data = await fs.readFile('./talker.json', 'utf8');
+  const data = await fs.readFile(path, 'utf8');
   const talker = JSON.parse(data); 
   const addTalker = req.body;
   addTalker.id = talker.length + 1;
@@ -140,7 +137,7 @@ app.post('/talker', authToken, isValidName, isValidAge, isValidTalk, isValidRate
 // Requisito 5 ------------------------------
 app.put('/talker/:id', authToken, isValidName, isValidAge, isValidTalk, isValidRateDate, 
   async (req, res) => {
-  const data = await fs.readFile('./talker.json');
+  const data = await fs.readFile(path);
   const talkers = JSON.parse(data.toString('utf8'));
   const { id } = req.params;
   const { name, age, talk } = req.body;
@@ -162,7 +159,7 @@ app.put('/talker/:id', authToken, isValidName, isValidAge, isValidTalk, isValidR
 app.delete('/talker/:id', authToken, async (req, res) => {
   const { id } = req.params;
   const numId = Number(id);
-  const data = await fs.readFile('./talker.json', 'utf8');
+  const data = await fs.readFile(path, 'utf8');
   const talkers = JSON.parse(data); 
   // const findTalker = talkers.find((talker) => talker.id === parseInt(id, 10));
   const index = numId - 1;
