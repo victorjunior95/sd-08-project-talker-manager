@@ -11,7 +11,7 @@ const putTalker = (req, res, _next) => {
   talkers[talkerIndex] = editedTalker;
   fs.writeFileSync('./talker.json', JSON.stringify(talkers));
 
-  return res.status(201).json(editedTalker);
+  return res.status(200).json(editedTalker);
 };
 
 module.exports = putTalker;
