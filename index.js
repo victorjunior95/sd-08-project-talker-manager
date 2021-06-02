@@ -59,6 +59,14 @@ middlewares.validationRate, async (req, res) => {
   res.status(200).json(editTalker);
   });
 
+ // 6 - Crie o endpoint DELETE /talker/:id
+ app.delete('/talker/:id', middlewares.validationToken, async (req, res) => {
+  const id = Number(req.params.id);
+  const path = await fsfunctions.readDataTalkers();
+  const verifyDeleteById = path.find((data) => data.id !== id);
+  await fsfunctions.writeDataTalkers(verifyDeleteById);
+  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+ }); 
 app.listen(PORT, () => {
   console.log('Online');
 });
