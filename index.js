@@ -4,7 +4,7 @@ const express = require('express');
 
 const fs = require('fs');
 
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
- // importando funcionalidades de validação
+ // importando funcionalidades 
 const {
   authemail,
   authpaswd,
@@ -63,7 +63,7 @@ app.post('/login', authpaswd, authemail, (req, res) => {
 }); 
 
 // req-5
- app.put('/talker/:id', authToken, authname, authAge, authTalk, authdata,
+app.put('/talker/:id', authToken, authname, authAge, authTalk, authdata,
   req5);
 
 // req-6
@@ -73,8 +73,8 @@ app.delete('/talker/:id', authToken, req6, (req, res) => {
 });  
 
 // req-7
-app.get('/talker/search:q', authToken, req7, (req, res) => {
-res.status(200).send(req.query);
+app.get('/search', authToken, req7, (req, res) => {
+res.status(200).send(req.query.q);
 });
 
 app.listen(PORT, () => {
