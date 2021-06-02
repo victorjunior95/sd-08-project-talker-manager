@@ -14,12 +14,12 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
-
+// 1 - Crie o endpoint GET /talker 
 app.get('/talker', async (req, res) => {
   const file = await fsfunctions.readDataTalkers();
   res.status(200).json(file);
 });
-
+// 2 - Crie o endpoint GET /talker/:id
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
   const file = await fsfunctions.readDataTalkers();
@@ -30,8 +30,10 @@ app.get('/talker/:id', async (req, res) => {
     res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   }
 });
+// 3 - Crie o endpoint POST /login
 app.post('/login', middlewares.login);
 
+// 4 - Crie o endpoint POST /talker
 app.post('/talker', middlewares.validationToken, middlewares.validationName, 
 middlewares.validationAge, middlewares.validationTalker, middlewares.validationDate,
 middlewares.validationRate, async (req, res) => {
