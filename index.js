@@ -32,6 +32,17 @@ app.get('/talker/:id', async (req, res) => {
 });
 app.post('/login', middlewares.login);
 
+app.post('/talker', middlewares.validationToken, middlewares.validationName, 
+middlewares.validationAge, middlewares.validationTalker, middlewares.validationDate,
+middlewares.validationRate, async (req, res) => {
+  const file = await fsfunctions.readDataTalkers();
+  const registreTalker = req.body;
+  registreTalker.id = file.length + 1;
+  file.push(registreTalker);
+  await fsfunctions.writeDataTalkers(file);
+  res.status(201).json(registreTalker);
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
