@@ -82,6 +82,7 @@ router.get('/:id', async (req, res, next) => {
   talkers = await readTalkers(talkers);
   const id = Number(req.params.id);
   // console.log(`get /id body: ${req.body} id: ${id} typeOf id : ${typeof (id)}`);
+  // teste
   const talkerId = talkers.find((talker) => talker.id === Number(id));
   if (!talkerId) {
      res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
