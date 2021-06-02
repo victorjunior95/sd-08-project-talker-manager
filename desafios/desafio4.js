@@ -90,12 +90,12 @@ const verificaTodos = (name, age, talk, authorization) => {
 const addTalker = async (name, age, talk, authorization) => {
   const verificatodosIsValid = verificaTodos(name, age, talk, authorization);
   if (verificatodosIsValid) return verificatodosIsValid;
-
   const { watchedAt, rate } = talk;
 
   const all = await readAllTalkers();
+  const idMax = all.map((id) => id.id);
   const newTalker = {
-    id: all.length + 1,
+    id: Math.max(...idMax) + 1,
     name,
     age,
     talk: {
