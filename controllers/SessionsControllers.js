@@ -7,15 +7,15 @@ module.exports = {
     const { email, password } = request.body;
 
     if (!email) {
-      response.status(400).json({ message: 'O campo \'email\' é obrigatório' });
+      response.status(400).send({ message: 'O campo \'email\' é obrigatório' });
     } else if (!REG_EX.test(email)) {
-      response.status(400).json({ message: 'O \'email\' deve ter o formato \'email@email.com\'' });
+      response.status(400).send({ message: 'O \'email\' deve ter o formato \'email@email.com\'' });
     } else if (!password) {
-      response.status(400).json({ message: 'O campo \'password\' é obrigatório' });
+      response.status(400).send({ message: 'O campo \'password\' é obrigatório' });
     } else if (password.length < 6) {
-      response.status(400).json({ message: 'O \'password\' deve ter pelo menos 6 caracteres' });
+      response.status(400).send({ message: 'O \'password\' deve ter pelo menos 6 caracteres' });
     }
     
-    response.status(200).json({ token: crypto.randomBytes(16).toString('hex') });
+    response.status(200).send({ token: crypto.randomBytes(16).toString('hex') });
   },
 };
