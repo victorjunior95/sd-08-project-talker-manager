@@ -8,6 +8,7 @@ const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
 const talker = require('./talker');
+const login = require('./login');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -15,6 +16,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/talker', talker);
+app.use('/login', login);
 
 app.listen(PORT, () => {
   console.log('Online');
