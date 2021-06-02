@@ -58,7 +58,7 @@ middlewares.validationRate, async (req, res) => {
   await fsfunctions.writeDataTalkers(verifyTalker);
   res.status(200).json(editTalker);
   });
-
+  
 //  // 6 - Crie o endpoint DELETE /talker/:id
 //  app.delete('/talker/:id', middlewares.validationToken, async (req, res) => {
 //   const id = Number(req.params.id);
