@@ -10,7 +10,7 @@ function preencheids() {
 
 preencheids();
 
-// refaore essa função depois para não precisar de arr
+// refatore essa função depois para não precisar de arr
 const req5 = (req, res) => {
   const arr = [];
   console.log(typeof arr);

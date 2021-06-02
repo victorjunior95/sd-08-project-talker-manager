@@ -10,6 +10,7 @@ const authTalk = require('./authTalk');
 const authdata = require('./authdata');
 const req5 = require('./req5');
 const req6 = require('./req6');
+const req7 = require('./req7');
 
 module.exports = {
   authemail,
@@ -18,6 +19,7 @@ module.exports = {
   req2,
   req5,
   req6,
+  req7,
   authToken,
   authname,
   authAge,

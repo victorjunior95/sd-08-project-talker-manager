@@ -10,7 +10,6 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
@@ -28,6 +27,7 @@ const {
   req2,
   req5,
   req6,
+  req7,
   authToken,
   authname,
   authAge,
@@ -73,7 +73,9 @@ app.delete('/talker/:id', authToken, req6, (req, res) => {
 });  
 
 // req-7
-app.get('/talker/search?q=Ke');
+app.get('/talker/search:q', authToken, req7, (req, res) => {
+res.status(200).send(req.query);
+});
 
 app.listen(PORT, () => {
   console.log('Online');
