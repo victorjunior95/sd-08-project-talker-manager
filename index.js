@@ -1,4 +1,5 @@
 const express = require('express');
+const rescue = require('express-rescue');
 const bodyParser = require('body-parser');
 const fsfunctions = require('./fs-functions');
 const middlewares = require('./middlewares');
@@ -47,7 +48,7 @@ middlewares.validationRate, async (req, res) => {
 // 5 - Crie o endpoint PUT /talker/:id
 app.put('/talker/:id', middlewares.validationToken, middlewares.validationName, 
 middlewares.validationAge, middlewares.validationTalker, middlewares.validationDate,
-middlewares.validationRate, async (req, res) => {
+middlewares.validationRate, rescue(async (req, res) => {
   const id = Number(req.params.id);
   const file = await fsfunctions.readDataTalkers();
   const editTalker = { ...req.body, id };
@@ -57,16 +58,16 @@ middlewares.validationRate, async (req, res) => {
   });
   await fsfunctions.writeDataTalkers(verifyTalker);
   res.status(200).json(editTalker);
-  });
+  }));
   
-//  // 6 - Crie o endpoint DELETE /talker/:id
-//  app.delete('/talker/:id', middlewares.validationToken, async (req, res) => {
-//   const id = Number(req.params.id);
-//   const path = await fsfunctions.readDataTalkers();
-//   const verifyDeleteById = path.find((data) => data.id !== id);
-//   await fsfunctions.writeDataTalkers(verifyDeleteById);
-//   res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
-//  }); 
+ // 6 - Crie o endpoint DELETE /talker/:id
+ app.delete('/talker/:id', middlewares.validationToken, rescue(async (req, res) => {
+  const id = Number(req.params.id);
+    const file = await fsfunctions.readDataTalkers();
+    const veridyDeleteById = file.find((data) => data.id !== id);
+    await fsfunctions.writeDataTalkers(veridyDeleteById);
+    res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+ })); 
 app.listen(PORT, () => {
   console.log('Online');
 });
