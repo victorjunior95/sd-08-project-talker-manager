@@ -44,6 +44,20 @@ middlewares.validationRate, async (req, res) => {
   await fsfunctions.writeDataTalkers(file);
   res.status(201).json(registreTalker);
 });
+// 5 - Crie o endpoint PUT /talker/:id
+app.put('/talker/:id', middlewares.validationToken, middlewares.validationName, 
+middlewares.validationAge, middlewares.validationTalker, middlewares.validationDate,
+middlewares.validationRate, async (req, res) => {
+  const id = Number(req.params.id);
+  const file = await fsfunctions.readDataTalkers();
+  const editTalker = { ...req.body, id };
+  const verifyTalker = file.map((data) => {
+    if (data.id === id) return editTalker;
+    return data;
+  });
+  await fsfunctions.writeDataTalkers(verifyTalker);
+  res.status(200).json(editTalker);
+  });
 
 app.listen(PORT, () => {
   console.log('Online');
