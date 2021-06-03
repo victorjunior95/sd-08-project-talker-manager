@@ -22,7 +22,7 @@ app.get('/teste', (_request, response) => {
 
 app.get('/talker', async (_request, response) => {
   try {
-    const resposta =  await getAllTalkers();
+    const resposta = await getAllTalkers();
     response.status(HTTP_OK_STATUS).send(resposta);
   } catch (err) {
     response.status(500).send(`erro encontrado: ${err.message}`);
