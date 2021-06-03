@@ -16,6 +16,6 @@ module.exports = {
       response.status(400).send({ message: 'O \'password\' deve ter pelo menos 6 caracteres' });
     }
     
-    response.status(200).send({ token: crypto.randomBytes(16).toString('hex') });
+    return response.status(200).send({ token: crypto.randomBytes(16).toString('hex') });
   },
 };

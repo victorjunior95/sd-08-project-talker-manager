@@ -4,7 +4,7 @@ module.exports = {
   index(_request, response) {
     const talkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
     
-    response.status(200).json(talkers);
+    return response.status(200).send(talkers);
   },
 
   search(request, response) {
@@ -14,10 +14,10 @@ module.exports = {
     const searchTerm = talkers.filter(({ name }) => name.includes(q));
 
     if (searchTerm) {
-      response.status(200).json(searchTerm);
+      return response.status(200).send(searchTerm);
     }
 
-    response.status(200).json(talkers);
+    return response.status(200).send(talkers);
   },
 
   id(request, response) {
@@ -27,10 +27,10 @@ module.exports = {
     const talkerById = talkers.find(({ id }) => id === Number(requestId));
 
     if (talkerById) {
-      response.status(200).json(talkerById);
+      response.status(200).send(talkerById);
     }
 
-    response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    return response.status(404).send({ message: 'Pessoa palestrante não encontrada' });
   },
 
   create(request, response) {
@@ -42,7 +42,7 @@ module.exports = {
     talkers.push(createTalker);
     fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(talkers));
     
-    response.status(201).json(createTalker);
+    return response.status(201).send(createTalker);
   },
 
   update(request, response) {
@@ -53,7 +53,7 @@ module.exports = {
     talkers[id - 1] = { id: Number(id), ...request.body };
     fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(talkers));
 
-    response.status(200).json(talkers[id - 1]);
+    return response.status(200).send(talkers[id - 1]);
   },
 
   delete(request, response) {
@@ -66,6 +66,6 @@ module.exports = {
     talkers.splice(index, 1);
     fs.writeFileSync(`${__dirname}/../talker.json`, JSON.stringify(talkers));
 
-    response.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+    return response.status(200).send({ message: 'Pessoa palestrante deletada com sucesso' });
   },
 };
