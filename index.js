@@ -4,6 +4,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 const getTalker = require('./utils/getAll');
 const getById = require('./utils/getById');
+const login = require('./Routes/login');
 
 const app = express();
 app.use(express.json());
@@ -40,6 +41,8 @@ app.get('/talker/:id', async (_req, res) => {
   }
   return res.status(200).send(talkerById);
 });
+
+app.use('/login', login);
 
 app.listen(PORT, () => {
   console.log('Online');
