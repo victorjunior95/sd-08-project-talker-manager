@@ -40,11 +40,15 @@ app.get('/talker/:id', async (request, response) => {
     const { id } = request.params;
     const idParse = parseInt(id, 10);
     const talkerFound = await getTalkerById(idParse);
-    response.status(HTTP_OK_STATUS).send(talkerFound);
+    if (talkerFound) {
+      response.status(HTTP_OK_STATUS).send(talkerFound);
+    } else {
+      response.status(404).send({
+        message: 'Pessoa palestrante não encontrada',
+      });
+    }
   } catch (err) {
-    response.status(404).send({
-      message: 'Pessoa palestrante não encontrada',
-    });
+    response.status(500).send({ err });
   }
 });
 
