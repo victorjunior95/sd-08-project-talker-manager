@@ -9,8 +9,10 @@ const talkValidation = require('./validations/talkValidation');
 
 const router = express.Router();
 
+const archivePath = './talker.json';
+
 router.get('/', rescue(async (_, res) => {
-    const talkers = await fs.readFile('./talker.json')
+    const talkers = await fs.readFile(archivePath)
         .then((data) => JSON.parse(data));
 
     res.status(200).json(talkers);
@@ -19,7 +21,7 @@ router.get('/', rescue(async (_, res) => {
 router.get('/:id', rescue(async (req, res) => {
     const { id } = req.params;
 
-    const talkers = await fs.readFile('./talker.json')
+    const talkers = await fs.readFile(archivePath)
         .then((data) => JSON.parse(data));
 
     const talker = talkers.find((t) => parseInt(t.id, 10) === parseInt(id, 10));
@@ -41,7 +43,7 @@ router.post('/',
     rescue(async (req, res) => {
         const { name, age, talk } = req.body;
 
-        const talkers = await fs.readFile('./talker.json')
+        const talkers = await fs.readFile(archivePath)
             .then((data) => JSON.parse(data));
 
         const newUser = {
@@ -53,9 +55,36 @@ router.post('/',
 
         talkers.push(newUser);
 
-        await fs.writeFile('./talker.json', JSON.stringify(talkers));
+        await fs.writeFile(archivePath, JSON.stringify(talkers));
 
         res.status(201).json(newUser);
+    }));
+
+router.put('/:id',
+    validateToken,
+    nameValidation,
+    ageValidation,
+    talkValidation.validateTalk,
+    talkValidation.validateRate,
+    talkValidation.validateWatchedAt,
+    rescue(async (req, res) => {
+        const { name, age, talk } = req.body;
+        const { id } = req.params;
+
+        const talkers = await fs.readFile(archivePath)
+            .then((data) => JSON.parse(data));
+
+        const updatedUser = { id: Number(id), name, age, talk };
+
+        talkers.forEach((t, index) => {
+            if (parseInt(t.id, 10) === parseInt(id, 10)) {
+                talkers[index] = updatedUser;
+            }
+        });
+
+        await fs.writeFile(archivePath, JSON.stringify(talkers));
+
+        res.status(200).json(updatedUser);
     }));
 
 module.exports = router;
