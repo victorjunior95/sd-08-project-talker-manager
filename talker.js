@@ -2,6 +2,11 @@ const express = require('express');
 const rescue = require('express-rescue');
 const fs = require('fs/promises');
 
+const validateToken = require('./validations/tokenValidation');
+const nameValidation = require('./validations/nameValidation');
+const ageValidation = require('./validations/ageValidation');
+const talkValidation = require('./validations/talkValidation');
+
 const router = express.Router();
 
 router.get('/', rescue(async (_, res) => {
@@ -25,5 +30,32 @@ router.get('/:id', rescue(async (req, res) => {
 
     res.status(200).json(talker);
 }));
+
+router.post('/',
+    validateToken,
+    nameValidation,
+    ageValidation,
+    talkValidation.validateTalk,
+    talkValidation.validateRate,
+    talkValidation.validateWatchedAt,
+    rescue(async (req, res) => {
+        const { name, age, talk } = req.body;
+
+        const talkers = await fs.readFile('./talker.json')
+            .then((data) => JSON.parse(data));
+
+        const newUser = {
+            id: talkers.length + 1,
+            name,
+            age,
+            talk,
+        };
+
+        talkers.push(newUser);
+
+        await fs.writeFile('./talker.json', JSON.stringify(talkers));
+
+        res.status(201).json(newUser);
+    }));
 
 module.exports = router;
