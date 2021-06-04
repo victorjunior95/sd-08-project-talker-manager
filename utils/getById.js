@@ -12,6 +12,4 @@ async function getById(id) {
   return talker;
 }
 
-// getById(1).then((data) => console.log(data));
-
 module.exports = getById;

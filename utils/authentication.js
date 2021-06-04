@@ -38,8 +38,3 @@ function getToken(email, password) {
 }
 
 module.exports = { validateEmail, validatePassword, getToken };
-
-// console.log(validateEmail('rod.mail.com') === true ? 'sim' : 'nao');
-// console.log(validatePassword());
-
-// console.log(regexEmail('rod.vgo@gmail.com'));
