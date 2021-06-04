@@ -13,7 +13,7 @@ const getAllTalkers = () => JSON.parse(fs.readFileSync('./talker.json', 'utf-8')
 
 const getTalkerById = (id) => {
   const allTalkers = getAllTalkers();
-  const talker = allTalkers.filter((elem) => elem.id == id);
+  const talker = allTalkers.filter((elem) => elem.id === id);
   console.log(talker[0]);
   return talker[0];
 };
@@ -39,7 +39,7 @@ app.get('/talker', async (_request, response) => {
 app.get('/talker/:id', async (request, response) => {
   try {
     const { id } = request.params;
-    idParse = parseInt(id, 10);
+    const idParse = parseInt(id, 10);
     const talkerFound = await getTalkerById(idParse);
     response.status(HTTP_OK_STATUS).send(talkerFound);
   } catch (err) {
