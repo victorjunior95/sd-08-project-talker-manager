@@ -32,7 +32,7 @@ function getToken(email, password) {
   // const email = validateEmail();
   // const password = validatePassword();
   if (email && password) {
-    const token = crypto.randomBytes(16).toString('hex');
+    const token = crypto.randomBytes(8).toString('hex');
     return token;
   }
 }
