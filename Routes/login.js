@@ -19,7 +19,7 @@ router.post('/', (_req, res) => {
     return res.status(400).send(validPassword);
   }
   if (validEmail === true && validPassword === true) {
-    return res.status(200).send(token);
+    return res.status(200).send(JSON.stringify(token));
   }
 });
 
