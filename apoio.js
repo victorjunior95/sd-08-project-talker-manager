@@ -27,16 +27,3 @@ readFilePromise("./talker.json") // A função me promete que vai ler o arquivo
 //   const talker = allTalkers.filter((elem) => elem.id == id);
 //   return talker;
 // };
-
-// app.get("/talker/:id", async (request, response) => {
-//   try {
-//     const { id } = request.params;
-//     idParse = parseInt(id, 10);
-//     const talkerFound = await getTalkerById(idParse);
-//     response.status(HTTP_OK_STATUS).send(talkerFound);
-//   } catch (err) {
-//     response.status(404).send({
-//       message: "Pessoa palestrante não encontrada",
-//     });
-//   }
-// });
