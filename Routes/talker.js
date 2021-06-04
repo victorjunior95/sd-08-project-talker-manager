@@ -10,7 +10,7 @@ router.get('/', async (_req, res) => {
   return res.status(200).send(talkers);
 });
 
-router.get('/talker/:id', async (_req, res) => {
+router.get('/:id', async (_req, res) => {
   const { id } = _req.params;
   const talkerById = await getById(Number(id));
   if (!talkerById) {
