@@ -18,25 +18,6 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-// app.get(
-//   '/talker',
-//   rescue(async (_req, res) => {
-//     const talkers = await getTalker();
-//     return res.status(200).send(talkers);
-//   }),
-// );
-
-// app.get('/talker/:id', async (_req, res) => {
-//   const { id } = _req.params;
-//   const talkerById = await getById(Number(id));
-//   if (!talkerById) {
-//     return res
-//       .status(404)
-//       .send({ message: 'Pessoa palestrante não encontrada' });
-//   }
-//   return res.status(200).send(talkerById);
-// });
-
 app.use('/talker', talker);
 app.use('/login', login);
 

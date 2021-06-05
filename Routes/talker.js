@@ -2,6 +2,15 @@ const express = require('express');
 
 const getTalker = require('../utils/getAll');
 const getById = require('../utils/getById');
+const tokenMiddleware = require('../middlewares/tokenMiddleware');
+const { setNewTalker } = require('../utils/createNewTalker');
+const ageMiddleware = require('../middlewares/ageMiddleware');
+const nameMiddleware = require('../middlewares/nameMiddleware');
+const {
+  talkMiddleware,
+  rateMiddleware,
+  dateMiddleware,
+} = require('../middlewares/talkMiddleware');
 
 const router = express.Router();
 
@@ -20,5 +29,22 @@ router.get('/:id', async (_req, res) => {
   }
   return res.status(200).send(talkerById);
 });
+
+router.use();
+
+router.post(
+  '/',
+  tokenMiddleware,
+  nameMiddleware,
+  ageMiddleware,
+  talkMiddleware,
+  rateMiddleware,
+  dateMiddleware,
+  async (_req, res) => {
+    const newTalker = _req.body;
+    setNewTalker(newTalker);
+    return res.status(201).send(newTalker);
+  },
+);
 
 module.exports = router;
