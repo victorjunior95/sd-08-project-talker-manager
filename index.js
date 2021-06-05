@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const talker = require('./middlewares/talker');
+const talker = require('./Routes/talker');
+const login = require('./Routes/login');
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,6 +14,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.use('/login', login);
 app.use('/talker', talker);
 
 app.listen(PORT, () => {
