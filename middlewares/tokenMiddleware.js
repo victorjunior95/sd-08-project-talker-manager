@@ -1,10 +1,10 @@
 const tokenMiddleware = (_req, res, next) => {
-  const { Authorization } = _req.headers;
-  if (!Authorization) {
+  const { authorization } = _req.headers;
+  if (!authorization) {
     return res.status(401).send({ message: 'Token não encontrado' });
   }
-  if (Authorization.length < 16) {
-    return res.status(401).json({ message: 'Token inválido' });
+  if (authorization.toString().length < 16) {
+    return res.status(401).send({ message: 'Token inválido' });
   }
   next();
 };

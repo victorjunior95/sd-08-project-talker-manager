@@ -1,5 +1,5 @@
 const validateDate = (date) => {
-  const regexDate = !/^\d{1,2}\/\d{1,2}\/\d{4}$/;
+  const regexDate = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
   return regexDate.test(date);
 };
 

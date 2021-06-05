@@ -2,7 +2,7 @@ const express = require('express');
 
 const getTalker = require('../utils/getAll');
 const getById = require('../utils/getById');
-const tokenMiddleware = require('../middlewares/tokenMiddleware');
+const { tokenMiddleware } = require('../middlewares/tokenMiddleware');
 const { setNewTalker } = require('../utils/createNewTalker');
 const ageMiddleware = require('../middlewares/ageMiddleware');
 const nameMiddleware = require('../middlewares/nameMiddleware');
@@ -30,7 +30,7 @@ router.get('/:id', async (_req, res) => {
   return res.status(200).send(talkerById);
 });
 
-router.use();
+// router.use();
 
 router.post(
   '/',
@@ -43,7 +43,7 @@ router.post(
   async (_req, res) => {
     const newTalker = _req.body;
     setNewTalker(newTalker);
-    return res.status(201).send(newTalker);
+    res.status(201).send(newTalker);
   },
 );
 
