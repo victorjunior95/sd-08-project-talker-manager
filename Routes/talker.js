@@ -35,11 +35,11 @@ router.get('/:id', async (_req, res) => {
 router.post(
   '/',
   tokenMiddleware,
+  dateMiddleware,
   nameMiddleware,
   ageMiddleware,
-  talkMiddleware,
   rateMiddleware,
-  dateMiddleware,
+  talkMiddleware,
   async (_req, res) => {
     const newTalker = _req.body;
     const talker = await setNewTalker(newTalker);
