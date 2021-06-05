@@ -42,8 +42,8 @@ router.post(
   dateMiddleware,
   async (_req, res) => {
     const newTalker = _req.body;
-    setNewTalker(newTalker);
-    res.status(201).send(newTalker);
+    const talker = await setNewTalker(newTalker);
+    res.status(201).send(talker);
   },
 );
 

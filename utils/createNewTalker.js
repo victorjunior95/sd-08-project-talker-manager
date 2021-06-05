@@ -16,6 +16,7 @@ async function setNewTalker(newTalker) {
   const talker = { ...newTalker, id };
   data.push(talker);
   await fs.writeFile(filePath, JSON.stringify(data));
+  return talker;
 }
 
 // const newt = {
