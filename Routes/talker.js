@@ -9,7 +9,7 @@ const nameMiddleware = require('../middlewares/nameMiddleware');
 const {
   talkMiddleware,
   rateMiddleware,
-  dateMiddleware,
+  // dateMiddleware,
 } = require('../middlewares/talkMiddleware');
 
 const router = express.Router();
@@ -35,11 +35,10 @@ router.get('/:id', async (_req, res) => {
 router.post(
   '/',
   tokenMiddleware,
-  dateMiddleware,
   nameMiddleware,
   ageMiddleware,
-  rateMiddleware,
   talkMiddleware,
+  rateMiddleware,
   async (_req, res) => {
     const newTalker = _req.body;
     const talker = await setNewTalker(newTalker);
