@@ -63,9 +63,6 @@ const tokenGenerate = (size) => {
   return token;
 };
 
-// const Tken = tokenGenerate(16);
-
-// console.log(Tken, Tken.length);
 module.exports = {
   getSyncData,
   // fsPromiseData1,
