@@ -1,6 +1,6 @@
 const express = require('express');
 const rescue = require('express-rescue');
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 
 const validateToken = require('./validations/tokenValidation');
 const nameValidation = require('./validations/nameValidation');
