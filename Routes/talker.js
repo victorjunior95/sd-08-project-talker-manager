@@ -1,5 +1,12 @@
 const app = require('../utils/express');
 const readFile = require('../utils/readFile');
+const tokenMiddleware = require('../middlewares/validation/token');
+const nameMiddleware = require('../middlewares/validation/name');
+const ageMiddleware = require('../middlewares/validation/age');
+const talkMiddleware = require('../middlewares/validation/talk');
+const watchedAtMiddleware = require('../middlewares/validation/watchedAt');
+const rateMiddleware = require('../middlewares/validation/rate');
+const writeFile = require('../utils/writeFile');
 
 const path = `${__dirname}/../talker.json`;
 
@@ -32,5 +39,21 @@ app.get('/:talkerID', async (req, res) => {
     res.json({ message: 'Ocorreu um erro inesperado' });
   }
 });
+
+app.post('/',
+  tokenMiddleware,
+  nameMiddleware,
+  ageMiddleware,
+  talkMiddleware,
+  watchedAtMiddleware,
+  rateMiddleware,
+  async (req, res) => {
+    try {
+      const talker = await writeFile(path, req.body);
+      res.status(201).json(talker);
+    } catch (err) {
+      res.json({ message: 'Ocorreu um erro inesperado' });
+    }
+  });
 
 module.exports = app;
