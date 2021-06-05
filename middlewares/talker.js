@@ -1,13 +1,13 @@
 const app = require('../utils/express');
 const readFile = require('../utils/readFile');
 
-const data = `${__dirname}/../talker.json`;
+const path = `${__dirname}/../talker.json`;
 
 app.get('/', async (req, res) => {
   try {
-    const fileContent = await readFile(data);
+    const data = await readFile(path);
     res.status(200);
-    res.json(fileContent);
+    res.json(data);
   } catch (err) {
     res.status(500);
     res.json({ message: 'Ocorreu um erro inesperado' });
