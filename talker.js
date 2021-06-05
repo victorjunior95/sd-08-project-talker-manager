@@ -11,6 +11,19 @@ const router = express.Router();
 
 const archivePath = './talker.json';
 
+router.get('/search', validateToken, rescue(async (req, res) => {
+    const { query } = req.query;
+
+    const talkers = await fs.readFile(archivePath)
+        .then((data) => JSON.parse(data));
+
+    if (!query) return res.status(200).json(talkers);
+
+    const filteredTalkers = talkers.filter((t) => t.name.includes(query));
+
+    res.status(200).json(filteredTalkers);
+}));
+
 router.get('/', rescue(async (_, res) => {
     const talkers = await fs.readFile(archivePath)
         .then((data) => JSON.parse(data));
