@@ -4,8 +4,14 @@ const validateDate = (date) => {
 };
 
 const talkMiddleware = (_req, res, next) => {
-  const { watchedAt, rate } = _req.body.talk;
-  if (!watchedAt || !rate) {
+  const { talk } = _req.body.talk;
+  if (!talk) {
+    return res.status(400).send({
+      message:
+        'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    });
+  }
+  if (!talk.watchedAt || !talk.rate) {
     return res.status(400).send({
       message:
         'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
