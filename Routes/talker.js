@@ -7,8 +7,10 @@ const talkMiddleware = require('../middlewares/validation/talk');
 const watchedAtMiddleware = require('../middlewares/validation/watchedAt');
 const rateMiddleware = require('../middlewares/validation/rate');
 const writeFile = require('../utils/writeFile');
+const modifyFile = require('../utils/modifyFile');
 
 const path = `${__dirname}/../talker.json`;
+const errorMessage = 'Ocorreu um erro inesperado';
 
 app.get('/', async (req, res) => {
   try {
@@ -17,7 +19,7 @@ app.get('/', async (req, res) => {
     res.json(data);
   } catch (err) {
     res.status(500);
-    res.json({ message: 'Ocorreu um erro inesperado' });
+    res.json({ message: errorMessage });
   }
 });
 
@@ -36,7 +38,7 @@ app.get('/:talkerID', async (req, res) => {
     }
   } catch (err) {
     res.status(500);
-    res.json({ message: 'Ocorreu um erro inesperado' });
+    res.json({ message: errorMessage });
   }
 });
 
@@ -52,7 +54,35 @@ app.post('/',
       const talker = await writeFile(path, req.body);
       res.status(201).json(talker);
     } catch (err) {
-      res.json({ message: 'Ocorreu um erro inesperado' });
+      res.json({ message: errorMessage });
+    }
+  });
+
+  app.put('/:id',
+  tokenMiddleware,
+  nameMiddleware,
+  ageMiddleware,
+  talkMiddleware,
+  watchedAtMiddleware,
+  rateMiddleware,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const talker = modifyFile(path, req.body, id, 'edit');
+      res.status(200).json(talker);
+    } catch (err) {
+      res.send({ message: errorMessage });
+    }
+  });
+
+  app.delete('/:id',
+  tokenMiddleware,
+  async (req, res) => {
+    try {
+      await modifyFile(path, req.body, req.params.id, 'delete');
+      res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+    } catch (err) {
+      res.send({ message: errorMessage });
     }
   });
 
