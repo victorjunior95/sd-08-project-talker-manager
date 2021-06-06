@@ -68,7 +68,7 @@ app.post('/',
   async (req, res) => {
     try {
       const { id } = req.params;
-      const talker = modifyFile(path, req.body, id, 'edit');
+      const talker = await modifyFile(path, req.body, id, 'edit');
       res.status(200).json(talker);
     } catch (err) {
       res.send({ message: errorMessage });
