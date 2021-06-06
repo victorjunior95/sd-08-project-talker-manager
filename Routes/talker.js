@@ -23,25 +23,6 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.get('/:talkerID', async (req, res) => {
-  try {
-    const data = await readFile(path);
-    const { talkerID } = req.params;
-    const filteredID = data.find(({ id }) => id === Number(talkerID));
-
-    if (filteredID) {
-      res.status(200);
-      res.json(filteredID);
-    } else {
-      res.status(404);
-      res.json({ message: 'Pessoa palestrante não encontrada' });
-    }
-  } catch (err) {
-    res.status(500);
-    res.json({ message: errorMessage });
-  }
-});
-
 app.post('/',
   tokenMiddleware,
   nameMiddleware,
@@ -71,7 +52,7 @@ app.post('/',
       const talker = await modifyFile(path, req.body, id, 'edit');
       res.status(200).json(talker);
     } catch (err) {
-      res.send({ message: errorMessage });
+      res.json({ message: errorMessage });
     }
   });
 
@@ -82,8 +63,41 @@ app.post('/',
       await modifyFile(path, req.body, req.params.id, 'delete');
       res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
     } catch (err) {
-      res.send({ message: errorMessage });
+      res.json({ message: errorMessage });
     }
   });
 
+  app.get('/search', tokenMiddleware, async (req, res) => {
+    try {
+      const { q } = req.query;
+      const data = await readFile(path);
+
+      if (!q) return res.status(200).json(data);
+
+      const fillTalkers = data.filter(({ name }) => name.toLowerCase().includes(q.toLowerCase()));
+      res.status(200).send(fillTalkers);
+    } catch (err) {
+      res.json({ message: errorMessage });
+    }
+  });
+
+  app.get('/:talkerID', async (req, res) => {
+    try {
+      const data = await readFile(path);
+      const { talkerID } = req.params;
+      const filteredID = data.find(({ id }) => id === Number(talkerID));
+  
+      if (filteredID) {
+        res.status(200);
+        res.json(filteredID);
+      } else {
+        res.status(404);
+        res.json({ message: 'Pessoa palestrante não encontrada' });
+      }
+    } catch (err) {
+      res.status(500);
+      res.json({ message: errorMessage });
+    }
+  });
+  
 module.exports = app;
