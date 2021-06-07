@@ -16,6 +16,15 @@ const searchByQuery = require('../utils/searchByQuery');
 
 const router = express.Router();
 
+router.get('/search', tokenMiddleware, async (_req, res) => {
+  const search = _req.query.q;
+  const response = await searchByQuery(search);
+  if (!search) {
+    return res.status(200).send(response);
+  }
+  return res.status(200).send(response);
+});
+
 router.get('/', async (_req, res) => {
   const talkers = await getTalker();
   return res.status(200).send(talkers);
@@ -69,15 +78,6 @@ router.delete('/:id', tokenMiddleware, async (_req, res) => {
   return res
     .status(200)
     .send({ message: 'Pessoa palestrante deletada com sucesso' });
-});
-
-router.get('/search', tokenMiddleware, async (_req, res) => {
-  const search = _req.query.q;
-  const response = await searchByQuery(search);
-  if (!search) {
-    return res.status(200).send(response);
-  }
-  return res.status(200).send(response);
 });
 
 module.exports = router;
