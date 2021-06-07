@@ -20,8 +20,7 @@ const getTalkerById = (id) => {
 
 const generateToken = () => {
   return Math.random().toString(18).substr(2);
-  
-}
+};
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -58,10 +57,10 @@ app.get('/talker/:id', async (request, response) => {
   }
 });
 
-app.post('/login', authMiddleware ,async (req, res)=> {
-  const token = generateToken();
-  res.status(HTTP_OK_STATUS).json({"token": token})
-})
+app.post('/login', authMiddleware, async (req, res) => {
+const token = generateToken();
+res.status(HTTP_OK_STATUS).json({ 'token': token });
+});
 
 app.listen(PORT, () => {
   console.log('Online');
