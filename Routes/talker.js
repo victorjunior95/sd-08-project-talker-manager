@@ -19,9 +19,7 @@ const router = express.Router();
 router.get('/search', tokenMiddleware, async (_req, res) => {
   const search = _req.query.q;
   const response = await searchByQuery(search);
-  if (!search) {
-    return res.status(200).send(response);
-  }
+
   return res.status(200).send(response);
 });
 
