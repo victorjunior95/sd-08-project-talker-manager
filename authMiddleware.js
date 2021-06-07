@@ -14,7 +14,7 @@ function authEmail(req, res, next) {
   next();
 }
 
-function authPassword (req, res, next) {
+function authPassword(req, res, next) {
   const { password } = req.body;
   if (!password) {
     return res.status(400).json({
