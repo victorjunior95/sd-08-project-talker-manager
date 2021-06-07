@@ -1,4 +1,4 @@
-const authMiddleware = (req, res, next) => {
+function authMiddleware(req, res, next) {
   const { email, password } = req.body;
   if (!email) {
     return res.status(400).json({
@@ -22,6 +22,6 @@ const authMiddleware = (req, res, next) => {
     });
   }
   next();
-};
+}
 
-module.exports = authMiddleware
+module.exports = authMiddleware;
