@@ -12,6 +12,7 @@ const talkValidation = require('./talkValidation');
 const talkWatchedAtValidation = require('./talkWatchedAtValidation');
 const talkRateValidation = require('./talkRateValidation');
 const putTalker = require('./putTalker');
+const deleteTalker = require('./deleteTalker');
 
 module.exports = {
   getTalkers,
@@ -28,4 +29,5 @@ module.exports = {
   talkWatchedAtValidation,
   talkRateValidation,
   putTalker,
+  deleteTalker,
 };

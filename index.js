@@ -45,6 +45,12 @@ app.put(
   middlewares.putTalker,
 );
 
+app.delete(
+  '/talker/:id',
+  middlewares.tokenValidation,
+  middlewares.deleteTalker,
+);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
