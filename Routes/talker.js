@@ -11,6 +11,7 @@ const {
   rateMiddleware,
 } = require('../middlewares/talkMiddleware');
 const editTalker = require('../utils/editTalker');
+const deleteTalker = require('../utils/deleteTalker');
 
 const router = express.Router();
 
@@ -60,5 +61,11 @@ router.put(
     res.status(200).send(editedTalker);
   },
 );
+
+router.delete('/:id', tokenMiddleware, async (_req, res) => {
+  const { id } = _req.params;
+  await deleteTalker(Number(id));
+  res.status(200).send({ message: 'Pessoa palestrante deletada com sucesso' });
+});
 
 module.exports = router;
