@@ -6,9 +6,6 @@ async function editTalker(id, newTalker) {
   const response = await fs.readFile(filePath, 'utf-8');
   const data = JSON.parse(response);
   const index = data.findIndex((talker) => talker.id === id);
-  if (index === -1) {
-    return null;
-  }
 
   const editedTalker = { ...newTalker, id };
   data.splice(index, 1, editedTalker);
