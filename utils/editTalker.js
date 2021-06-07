@@ -13,15 +13,15 @@ async function editTalker(id, newTalker) {
   return editedTalker;
 }
 
-const abc = {
-  name: 'Danielle Santos',
-  age: 56,
-  talk: {
-    watchedAt: '22/10/2019',
-    rate: 5,
-  },
-};
+// const abc = {
+//   name: 'Danielle Santos',
+//   age: 56,
+//   talk: {
+//     watchedAt: '22/10/2019',
+//     rate: 5,
+//   },
+// };
 
-editTalker(6, abc).then((item) => console.log(item));
+// editTalker(6, abc).then((item) => console.log(item));
 
-// module.exports = editTalker;
+module.exports = editTalker;
