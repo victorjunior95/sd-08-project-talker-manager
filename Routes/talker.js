@@ -12,6 +12,7 @@ const {
 } = require('../middlewares/talkMiddleware');
 const editTalker = require('../utils/editTalker');
 const deleteTalker = require('../utils/deleteTalker');
+const searchByQuery = require('../utils/searchByQuery');
 
 const router = express.Router();
 
@@ -68,6 +69,15 @@ router.delete('/:id', tokenMiddleware, async (_req, res) => {
   return res
     .status(200)
     .send({ message: 'Pessoa palestrante deletada com sucesso' });
+});
+
+router.get('/search', tokenMiddleware, async (_req, res) => {
+  const search = _req.query.q;
+  const response = await searchByQuery(search);
+  if (!search) {
+    return res.status(200).send(response);
+  }
+  return res.status(200).send(response);
 });
 
 module.exports = router;
