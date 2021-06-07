@@ -65,7 +65,9 @@ router.put(
 router.delete('/:id', tokenMiddleware, async (_req, res) => {
   const { id } = _req.params;
   await deleteTalker(Number(id));
-  res.status(200).send({ message: 'Pessoa palestrante deletada com sucesso' });
+  return res
+    .status(200)
+    .send({ message: 'Pessoa palestrante deletada com sucesso' });
 });
 
 module.exports = router;
