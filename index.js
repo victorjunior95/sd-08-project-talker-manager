@@ -11,7 +11,7 @@ const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
 const getAllTalkers = () =>
-  JSON.parse(fs.readFileSync('./talker.json", "utf-8'));
+  JSON.parse(fs.readFileSync('./talker.json', 'utf-8'));
 
 const getTalkerById = (id) => {
   const allTalkers = getAllTalkers();
@@ -62,7 +62,7 @@ app.post(
   authMiddleware.authPassword,
   async (req, res) => {
     const token = generateToken();
-    res.status(HTTP_OK_STATUS).json({ token: token });
+    res.status(HTTP_OK_STATUS).json({ token });
   },
 );
 
