@@ -2,6 +2,7 @@
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
+const authMiddleware = require('./authMiddleware');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,6 +17,11 @@ const getTalkerById = (id) => {
   const talker = allTalkers.filter((elem) => elem.id === id);
   return talker[0];
 };
+
+const generateToken = () => {
+  return Math.random().toString(18).substr(2);
+  
+}
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -51,6 +57,11 @@ app.get('/talker/:id', async (request, response) => {
     response.status(500).send({ err });
   }
 });
+
+app.post('/login', authMiddleware ,async (req, res)=> {
+  const token = generateToken();
+  res.status(HTTP_OK_STATUS).json({"token": token})
+})
 
 app.listen(PORT, () => {
   console.log('Online');
