@@ -56,9 +56,7 @@ router.put(
     const { id } = _req.params;
     const newTalker = _req.body;
     const editedTalker = await editTalker(Number(id), newTalker);
-    if (editedTalker === null) {
-      return res.status(400).send();
-    }
+
     return res.status(200).send(editedTalker);
   },
 );
