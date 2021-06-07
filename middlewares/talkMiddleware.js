@@ -1,8 +1,3 @@
-// const validateDate = (date) => {
-//   const regexDate = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
-//   return regexDate.test(date);
-// };
-
 const talkMiddleware = (_req, res, next) => {
   const { talk } = _req.body;
   if (!talk) {
@@ -34,17 +29,5 @@ const rateMiddleware = (_req, res, next) => {
   }
   next();
 };
-
-// const dateMiddleware = (_req, res, next) => {
-//   const { watchedAt } = _req.body.talk;
-//   const date = validateDate(watchedAt);
-//   if (!date) {
-//     return res
-//       .status(400)
-//       .send({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
-//   }
-
-//   next();
-// };
 
 module.exports = { talkMiddleware, rateMiddleware };
