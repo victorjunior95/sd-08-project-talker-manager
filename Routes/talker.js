@@ -50,12 +50,16 @@ router.put(
   nameMiddleware,
   ageMiddleware,
   talkMiddleware,
+  rateMiddleware,
 
   async (_req, res) => {
     const { id } = _req.params;
     const newTalker = _req.body;
     const editedTalker = await editTalker(Number(id), newTalker);
-    res.status(200).send(editedTalker);
+    if (editedTalker === null) {
+      return res.status(400).send();
+    }
+    return res.status(200).send(editedTalker);
   },
 );
 
