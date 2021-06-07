@@ -63,7 +63,7 @@ app.post(
   async (req, res) => {
     const token = generateToken();
     res.status(HTTP_OK_STATUS).json({ token: token });
-  }
+  },
 );
 
 app.listen(PORT, () => {
