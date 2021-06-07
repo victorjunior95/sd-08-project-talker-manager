@@ -1,16 +1,17 @@
 // Leonardo Sardinha
-const fs = require('fs');
-const express = require('express');
-const bodyParser = require('body-parser');
-const authMiddleware = require('./authMiddleware');
+const fs = require("fs");
+const express = require("express");
+const bodyParser = require("body-parser");
+const authMiddleware = require("./authMiddleware");
 
 const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
-const PORT = '3000';
+const PORT = "3000";
 
-const getAllTalkers = () => JSON.parse(fs.readFileSync('./talker.json', 'utf-8'));
+const getAllTalkers = () =>
+  JSON.parse(fs.readFileSync("./talker.json", "utf-8"));
 
 const getTalkerById = (id) => {
   const allTalkers = getAllTalkers();
@@ -18,20 +19,18 @@ const getTalkerById = (id) => {
   return talker[0];
 };
 
-const generateToken = () => {
-  return Math.random().toString(18).substr(2);
-};
+const generateToken = () => Math.random().toString(18).substr(2);
 
 // não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (_request, response) => {
+app.get("/", (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/teste', (_request, response) => {
-  response.status(HTTP_OK_STATUS).send('Teste do aplicativo');
+app.get("/teste", (_request, response) => {
+  response.status(HTTP_OK_STATUS).send("Teste do aplicativo");
 });
 
-app.get('/talker', async (_request, response) => {
+app.get("/talker", async (_request, response) => {
   try {
     const resposta = await getAllTalkers();
     response.status(HTTP_OK_STATUS).send(resposta);
@@ -40,7 +39,7 @@ app.get('/talker', async (_request, response) => {
   }
 });
 
-app.get('/talker/:id', async (request, response) => {
+app.get("/talker/:id", async (request, response) => {
   try {
     const { id } = request.params;
     const idParse = parseInt(id, 10);
@@ -49,7 +48,7 @@ app.get('/talker/:id', async (request, response) => {
       response.status(HTTP_OK_STATUS).send(talkerFound);
     } else {
       response.status(404).send({
-        message: 'Pessoa palestrante não encontrada',
+        message: "Pessoa palestrante não encontrada",
       });
     }
   } catch (err) {
@@ -57,13 +56,18 @@ app.get('/talker/:id', async (request, response) => {
   }
 });
 
-app.post('/login', authMiddleware, async (req, res) => {
-const token = generateToken();
-res.status(HTTP_OK_STATUS).json({ 'token': token });
-});
+app.post(
+  "/login",
+  authMiddleware.authEmail,
+  authMiddleware.authPassword,
+  async (req, res) => {
+    const token = generateToken();
+    res.status(HTTP_OK_STATUS).json({ token: token });
+  }
+);
 
 app.listen(PORT, () => {
-  console.log('Online');
+  console.log("Online");
 });
 
 getTalkerById(1);
