@@ -36,7 +36,7 @@ module.exports = {
       const talkerById = talkers.find(({ id }) => id === Number(requestId));
 
       if (talkerById) {
-        response.status(200).send(talkerById);
+        return response.status(200).send(talkerById);
       }
 
       return response.status(404).send({ message: 'Pessoa palestrante não encontrada' });
