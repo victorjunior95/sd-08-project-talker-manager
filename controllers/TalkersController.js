@@ -7,7 +7,7 @@ module.exports = {
     return response.status(200).send(talkers);
   },
 
-  search(request, response) {
+  indexBySearch(request, response) {
     const { q } = request.query;
     
     const talkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));
@@ -20,7 +20,7 @@ module.exports = {
     return response.status(200).send(talkers);
   },
 
-  id(request, response) {
+  indexById(request, response) {
     const { id: requestId } = request.params;
 
     const talkers = JSON.parse(fs.readFileSync(`${__dirname}/../talker.json`));

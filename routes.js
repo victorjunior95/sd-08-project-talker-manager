@@ -1,18 +1,17 @@
-const express = require('express');
-const SessionsController = require('./controllers/SessionsControllers');
-const TalkersControllers = require('./controllers/TalkersControllers');
+const routes = require('express').Router();
 
-const tokenMiddleware = require('./middlewares/token');
-const ageMiddleware = require('./middlewares/age');
-const nameMiddleware = require('./middlewares/name');
-const talkMiddleware = require('./middlewares/talk');
-const talkIsValidMiddleware = require('./middlewares/talkIsValid');
+const SessionsController = require('./controllers/SessionsController');
+const TalkersControllers = require('./controllers/TalkersController');
 
-const routes = express.Router();
+const tokenMiddleware = require('./middlewares/TokenMiddleware');
+const ageMiddleware = require('./middlewares/AgeMiddleware');
+const nameMiddleware = require('./middlewares/NameMiddleware');
+const talkMiddleware = require('./middlewares/TalkMiddleware');
+const talkIsValidMiddleware = require('./middlewares/TalkIsValidMiddleware');
 
 routes.get('/talker', TalkersControllers.index);
-routes.get('/talker/search', tokenMiddleware, TalkersControllers.search);
-routes.get('/talker/:id', TalkersControllers.id);
+routes.get('/talker/search', tokenMiddleware, TalkersControllers.indexBySearch);
+routes.get('/talker/:id', TalkersControllers.indexById);
 routes.create('/talker',
   ageMiddleware,
   nameMiddleware,
