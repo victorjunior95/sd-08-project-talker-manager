@@ -32,6 +32,25 @@ async function setSpeaker(content) {
 ------------------------- ROUTERS -----------------------------
 */
 
+router.get('/search', 
+  validateToken, 
+  rescue(async (req, res) => {
+    const talkers = await getSpeakers();
+    const { query } = req.query;
+
+    console.log(query);
+
+    if(!query) {
+      res.status(200).send(talkers);
+    };
+
+    const filteredTalkers = talkers.filter((talker) => talker.name.includes(query));
+
+    console.log(filteredTalkers);
+
+    res.status(200).send(filteredTalkers);
+}));
+
 router.get('/', rescue(async (_req, res) => {
   const talkers = await getSpeakers();
   res.status(200).json(talkers);
@@ -47,14 +66,23 @@ router.get('/:id', rescue(async (req, res) => {
   res.status(200).send(talker);
 }));
 
-// router.get('/search?q=searchTerm', rescue(async (req, res) => {
-//   const talkers = await getSpeakers();
-//   const talker = talkers.find(({ id }) => parseInt(id, 10) === parseInt(req.params.id, 10));
-//   if(!talker) {
-//     res.status(404).send({ "message": "Pessoa palestrante não encontrada" });
-//   };
+// router.get('/search', 
+//   validateToken, 
+//   rescue(async (req, res) => {
+//     const talkers = await getSpeakers();
+//     const { query } = req.query;
 
-//   res.status(200).send(talker);
+//     console.log(query);
+
+//     if(!query) {
+//       res.status(200).send(talkers);
+//     };
+
+//     const filteredTalkers = talkers.filter((talker) => talker.name.includes(query));
+
+//     console.log(filteredTalkers);
+
+//     res.status(200).send(filteredTalkers);
 // }));
 
 router.post('/', 
