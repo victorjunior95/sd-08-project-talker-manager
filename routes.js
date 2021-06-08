@@ -8,24 +8,24 @@ const ageMiddleware = require('./middlewares/AgeMiddleware');
 const nameMiddleware = require('./middlewares/NameMiddleware');
 const talkMiddleware = require('./middlewares/TalkMiddleware');
 const talkIsValidMiddleware = require('./middlewares/TalkIsValidMiddleware');
+const loginMiddleware = require('./middlewares/LoginMiddleware');
 
 routes.get('/talker', TalkersControllers.index);
 routes.get('/talker/search', tokenMiddleware, TalkersControllers.indexBySearch);
 routes.get('/talker/:id', TalkersControllers.indexById);
-routes.post('/talker',
-  ageMiddleware,
-  nameMiddleware,
-  talkMiddleware,
-  talkIsValidMiddleware,
-  TalkersControllers.create);
-routes.put('/talker/:id',
-  ageMiddleware,
-  nameMiddleware,
-  talkMiddleware,
-  talkIsValidMiddleware,
-  TalkersControllers.update);
-routes.delete('/talker/:id', tokenMiddleware, TalkersControllers.delete);
 
-routes.post('/login', SessionsController.create);
+routes.post('/login', loginMiddleware, SessionsController.create);
+
+routes.use(tokenMiddleware);
+
+routes.delete('/talker/:id', TalkersControllers.delete);
+
+routes.use(nameMiddleware);
+routes.use(ageMiddleware);
+routes.use(talkMiddleware);
+routes.use(talkIsValidMiddleware);
+
+routes.post('/talker', TalkersControllers.create);
+routes.put('/talker/:id', TalkersControllers.update);
 
 module.exports = routes;
