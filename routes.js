@@ -12,7 +12,7 @@ const talkIsValidMiddleware = require('./middlewares/TalkIsValidMiddleware');
 routes.get('/talker', TalkersControllers.index);
 routes.get('/talker/search', tokenMiddleware, TalkersControllers.indexBySearch);
 routes.get('/talker/:id', TalkersControllers.indexById);
-routes.create('/talker',
+routes.post('/talker',
   ageMiddleware,
   nameMiddleware,
   talkMiddleware,
