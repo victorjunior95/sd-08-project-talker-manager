@@ -5,11 +5,13 @@ module.exports = (request, response, next) => {
   const isValid = DATE_REGEX.test(talk.watchedAt);
 
   if (!isValid) {
-    response
+    return response
       .status(400)
       .send({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
-  } else if (!Number.isInteger(talk.rate) || talk.rate < 1 || talk.rate > 5) {
-    response
+  }
+  
+  if (!Number.isInteger(talk.rate) || talk.rate < 1 || talk.rate > 5) {
+    return response
       .status(400)
       .send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }

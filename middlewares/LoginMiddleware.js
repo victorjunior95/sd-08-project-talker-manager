@@ -4,13 +4,13 @@ module.exports = (request, response, next) => {
   const { email, password } = request.body;
 
   if (!email) {
-    response.status(400).send({ message: 'O campo "email" é obrigatório' });
-  } else if (!REG_EX.test(email)) {
-    response.status(400).send({ message: 'O "email" deve ter o formato "email@email.com"' });
-  } else if (!password) {
-    response.status(400).send({ message: 'O campo "password" é obrigatório' });
-  } else if (password.length < 6) {
-    response.status(400).send({ message: 'O "password" deve ter pelo menos 6 caracteres' });
+    return response.status(400).send({ message: 'O campo "email" é obrigatório' });
+  } if (!REG_EX.test(email)) {
+    return response.status(400).send({ message: 'O "email" deve ter o formato "email@email.com"' });
+  } if (!password) {
+    return response.status(400).send({ message: 'O campo "password" é obrigatório' });
+  } if (password.length < 6) {
+    return response.status(400).send({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
 
   return next();
