@@ -66,25 +66,6 @@ router.get('/:id', rescue(async (req, res) => {
   res.status(200).send(talker);
 }));
 
-// router.get('/search', 
-//   validateToken, 
-//   rescue(async (req, res) => {
-//     const talkers = await getSpeakers();
-//     const { query } = req.query;
-
-//     console.log(query);
-
-//     if(!query) {
-//       res.status(200).send(talkers);
-//     };
-
-//     const filteredTalkers = talkers.filter((talker) => talker.name.includes(query));
-
-//     console.log(filteredTalkers);
-
-//     res.status(200).send(filteredTalkers);
-// }));
-
 router.post('/', 
   validateToken, 
   validateName, 
