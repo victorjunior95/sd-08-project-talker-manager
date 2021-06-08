@@ -40,9 +40,9 @@ router.get('/search',
 
     console.log(query);
 
-    if(!query) {
+    if (!query) {
       res.status(200).send(talkers);
-    };
+    }
 
     const filteredTalkers = talkers.filter((talker) => talker.name.includes(query));
 
