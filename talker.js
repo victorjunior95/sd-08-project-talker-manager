@@ -6,7 +6,7 @@ const {
   validateToken,
   validateName,
   validateAge,
-  validateTalk
+  validateTalk,
 } = require('./talkerMiddleware');
 
 const router = express.Router();
@@ -16,13 +16,13 @@ const router = express.Router();
 */
 
 async function getSpeakers() {
-  return await readFile(`${__dirname}/talker.json`, 'utf-8')
+  return readFile(`${__dirname}/talker.json`, 'utf-8')
   .then((data) => JSON.parse(data));
-};
+}
 
 async function setSpeaker(content) {
   const newData = JSON.stringify(content);
-  return await writeFile(`${__dirname}/talker.json`, newData);
+  return writeFile(`${__dirname}/talker.json`, newData);
 }
 /*
 ------------------------- UTILS -----------------------------
@@ -40,9 +40,9 @@ router.get('/', rescue(async (_req, res) => {
 router.get('/:id', rescue(async (req, res) => {
   const talkers = await getSpeakers();
   const talker = talkers.find(({ id }) => parseInt(id, 10) === parseInt(req.params.id, 10));
-  if(!talker) {
-    res.status(404).send({ "message": "Pessoa palestrante não encontrada" });
-  };
+  if (!talker) {
+    res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
+  }
 
   res.status(200).send(talker);
 }));
@@ -57,30 +57,40 @@ router.get('/:id', rescue(async (req, res) => {
 //   res.status(200).send(talker);
 // }));
 
-router.post('/', validateToken, validateName, validateAge, validateTalk, rescue(async (req, res) => {
-  const talkers = await getSpeakers();
-  const { name, age, talk } = req.body;
-  const id = talkers.length + 1;
-  const newTalker = { name, age, id, talk};
+router.post('/', 
+  validateToken, 
+  validateName, 
+  validateAge, 
+  validateTalk, 
+  rescue(async (req, res) => {
+    const talkers = await getSpeakers();
+    const { name, age, talk } = req.body;
+    const id = talkers.length + 1;
+    const newTalker = { name, age, id, talk };
 
-  talkers.push(newTalker);
+    talkers.push(newTalker);
 
-  await setSpeaker(talkers);
+    await setSpeaker(talkers);
 
-  res.status(201).send(newTalker);
+    res.status(201).send(newTalker);
 }));
 
-router.put('/:id', validateToken, validateName, validateAge, validateTalk, rescue(async (req, res) => {
-  const talkers = await getSpeakers();
-  const { name, age, talk } = req.body;
-  const { id } = req.params;
-  const editedTalker = { name, age, id: Number(id), talk };
+router.put('/:id', 
+  validateToken, 
+  validateName, 
+  validateAge, 
+  validateTalk, 
+  rescue(async (req, res) => {
+    const talkers = await getSpeakers();
+    const { name, age, talk } = req.body;
+    const { id } = req.params;
+    const editedTalker = { name, age, id: Number(id), talk };
 
-  talkers[id - 1] = editedTalker;
+    talkers[id - 1] = editedTalker;
 
-  await setSpeaker(talkers);
+    await setSpeaker(talkers);
 
-  res.status(200).send(editedTalker);
+    res.status(200).send(editedTalker);
 }));
 
 router.delete('/:id', validateToken, rescue(async (req, res) => {
@@ -91,7 +101,7 @@ router.delete('/:id', validateToken, rescue(async (req, res) => {
 
   await setSpeaker(talkers);
 
-  res.status(200).send({ "message": "Pessoa palestrante deletada com sucesso" });
+  res.status(200).send({ message: 'Pessoa palestrante deletada com sucesso' });
 }));
 
 /*
