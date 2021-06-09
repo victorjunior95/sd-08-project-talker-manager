@@ -2,7 +2,9 @@
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
-const authMiddleware = require('./authMiddleware');
+const { authEmail, authPassword } = require('./authMiddleware');
+const { validToken, validNameAndAge, validTalker } = require('./postMiddleware');
+const { restart } = require('nodemon');
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,7 +21,7 @@ const getTalkerById = (id) => {
   return talker[0];
 };
 
-const generateToken = () => Math.random().toString(18).substr(2);
+const generateToken = () => Math.random().toString(20);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -58,13 +60,26 @@ app.get('/talker/:id', async (request, response) => {
 
 app.post(
   '/login',
-  authMiddleware.authEmail,
-  authMiddleware.authPassword,
-  async (req, res) => {
+  authEmail,
+  authPassword,
+  async (_req, res) => {
     const token = generateToken();
     res.status(HTTP_OK_STATUS).json({ token });
   },
 );
+
+app.post('/talker', validToken, validNameAndAge, validTalker, (req, res) => {
+  try {
+  const newTalker = req.body;
+  const allTalkers = getAllTalkers();
+  newTalker["id"] = allTalkers.length + 1
+  allTalkers.push(newTalker);
+  fs.writeFileSync('./talker.json', JSON.stringify(allTalkers));
+  res.status(201).json(allTalkers);
+  } catch (err) {
+    res.status.send({ err })
+  }
+})
 
 app.listen(PORT, () => {
   console.log('Online');

@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 
 function readFilePromise(fileName) {
   return new Promise((resolve, reject) => {
@@ -9,7 +9,7 @@ function readFilePromise(fileName) {
   });
 }
 
-readFilePromise('./talker.json') // A função me promete que vai ler o arquivo
+readFilePromise("./talker.json") // A função me promete que vai ler o arquivo
   .then((content) => {
     // Caso ela cumpra o que prometeu
     console.log(`Lido arquivo com ${content} bytes`); // Escrevo o resultado no console
@@ -27,3 +27,4 @@ readFilePromise('./talker.json') // A função me promete que vai ler o arquivo
 //   const talker = allTalkers.filter((elem) => elem.id == id);
 //   return talker;
 // };
+
