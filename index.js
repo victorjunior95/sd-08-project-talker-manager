@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { authEmail, authPassword } = require('./authMiddleware');
 const { validToken, validNameAndAge, validTalker } = require('./postMiddleware');
-const { restart } = require('nodemon');
 
 const app = express();
 app.use(bodyParser.json());
@@ -72,12 +71,12 @@ app.post('/talker', validToken, validNameAndAge, validTalker, (req, res) => {
   try {
   const newTalker = req.body;
   const allTalkers = getAllTalkers();
-  newTalker["id"] = allTalkers.length + 1
+  newTalker.id = allTalkers.length + 1
   allTalkers.push(newTalker);
   fs.writeFileSync('./talker.json', JSON.stringify(allTalkers));
   res.status(201).json(allTalkers);
   } catch (err) {
-    res.status.send({ err })
+    res.status.send({ err });
   }
 })
 
