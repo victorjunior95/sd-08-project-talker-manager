@@ -9,10 +9,6 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
-// não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (_request, response) => {
-  response.status(HTTP_OK_STATUS).send();
-});
 // requisito 1
 app.get('/talker', middlewares.getTalker);
 // requisito 2
@@ -37,17 +33,10 @@ talks,
 middlewares.rate, 
 middlewares.watchedAt,
 middlewares.editTalker); 
-// async (req, res) => {
-//   const id = Number(req.params.id);
-//   const file = await readTalker();
-//   const editTalker = { ...req.body, id };
-//   const verifyTalker = file.map((data) => {
-//     if (data.id === id) return editTalker;
-//     return data;
-//   });
-//   await writeTalker(verifyTalker);
-//   res.status(200).json(editTalker);
-// });
+
+app.get('/', (_request, response) => {
+  response.status(HTTP_OK_STATUS).send();
+});
 
 app.listen(PORT, () => {
   console.log('Online');
