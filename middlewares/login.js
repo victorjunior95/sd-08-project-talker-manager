@@ -8,10 +8,10 @@ module.exports = (req, res) => {
     const verifyPassword = validate.password(password);
     
     if (typeof verifyEmail === 'object') {
-        return res.status(400).json(verifyEmail);
+        return res.status(400).send(verifyEmail);
     }
     if (typeof verifyPassword === 'object') {
-        return res.status(400).json(verifyPassword);
+        return res.status(400).send(verifyPassword);
     }
     return res.status(200).json({ token: tokenNumber });
 };
