@@ -9,6 +9,7 @@ const rate = require('./rate');
 const watchedAt = require('./watchedAt');
 const newTalker = require('./newTalker');
 const editTalker = require('./editTalker');
+const deleteTalkers = require('./deleteTalkers');
 
 module.exports = {
     getTalker,
@@ -22,4 +23,5 @@ module.exports = {
     watchedAt,
     newTalker,
     editTalker,
+    deleteTalkers,
 };
