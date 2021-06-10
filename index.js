@@ -28,7 +28,27 @@ talks,
 middlewares.rate, 
 middlewares.watchedAt, 
 middlewares.newTalker);
- 
+// requisito 5
+app.put('/talker/:id', 
+middlewares.token, 
+middlewares.name, 
+middlewares.age,
+talks, 
+middlewares.rate, 
+middlewares.watchedAt,
+middlewares.editTalker); 
+// async (req, res) => {
+//   const id = Number(req.params.id);
+//   const file = await readTalker();
+//   const editTalker = { ...req.body, id };
+//   const verifyTalker = file.map((data) => {
+//     if (data.id === id) return editTalker;
+//     return data;
+//   });
+//   await writeTalker(verifyTalker);
+//   res.status(200).json(editTalker);
+// });
+
 app.listen(PORT, () => {
   console.log('Online');
 });

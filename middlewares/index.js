@@ -8,6 +8,7 @@ const age = require('./age');
 const rate = require('./rate');
 const watchedAt = require('./watchedAt');
 const newTalker = require('./newTalker');
+const editTalker = require('./editTalker');
 
 module.exports = {
     getTalker,
@@ -20,4 +21,5 @@ module.exports = {
     rate,
     watchedAt,
     newTalker,
+    editTalker,
 };
