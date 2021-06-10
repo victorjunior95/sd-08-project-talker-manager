@@ -6,9 +6,9 @@ module.exports = async (req, res) => {
     const { name, age, talk } = req.body;
 
     const talker = await readTalker();
-    // console.log(talker);
+    console.log(talker);
     const modifyTalker = talker.find(({ id }) => Number(id) === Number(reqId));
-    // console.log(modifyTalker);
+    console.log(modifyTalker);
     const edit = {
         id: Number(reqId),
         name,
