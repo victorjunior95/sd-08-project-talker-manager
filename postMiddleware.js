@@ -19,12 +19,12 @@ function validName(req, res, next) {
   const { name } = newTalker;
   if (!name) {
     return res.status(400).send({
-      message: 'O campo \"name\" é obrigatório',
+      message: 'O campo "name" é obrigatório',
     });
   }
   if (name.length < 3) {
     return res.status(400).send({
-      message: 'O \"name\" deve ter pelo menos 3 caracteres',
+      message: 'O "name" deve ter pelo menos 3 caracteres',
     });
   }
   next();
@@ -35,7 +35,7 @@ function validAge(req, res, next) {
   const { age } = newTalker;
   if (!age) {
     return res.status(400).send({
-      message: 'O campo \"age\" é obrigatório' });
+      message: 'O campo "age" é obrigatório' });
   }
   if (age < 18) {
     return res.status(400).send({
@@ -47,16 +47,16 @@ function validAge(req, res, next) {
 
 function validTalker(req, res, next) {
   const newTalker = req.body;
-  const { talk } = newTalker
-  if (!talk ) {
+  const { talk } = newTalker;
+  if (!talk) {
     return res.status(400).send({
-      message: 'O campo \"talk\" é obrigatório e \"watchedAt\" e \"rate\" não podem ser vazios',
+      message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
   }
   const { watchedAt, rate } = talk;
-  if (!rate || !watchedAt ) {
+  if (!rate || !watchedAt) {
     return res.status(400).send({
-      message: 'O campo \"talk\" é obrigatório e \"watchedAt\" e \"rate\" não podem ser vazios',
+      message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
   }
   next();
@@ -64,18 +64,18 @@ function validTalker(req, res, next) {
 
 function validTalkerContent(req, res, next) {
   const newTalker = req.body;
-  const { talk } = newTalker
+  const { talk } = newTalker;
   const { watchedAt, rate } = talk;
   const dateFormat = /(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/;
   if (!dateFormat.test(watchedAt)) {
     return res.status(400).send({
-      message: 'O campo \"watchedAt\" deve ter o formato \"dd/mm/aaaa\"',
+      message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
     });
   }
   if (!Number.isInteger(rate) || rate < 1 || rate > 5) {
     return res.status(400).send({
       message:
-        'O campo \"rate\" deve ser um inteiro de 1 à 5',
+        'O campo "rate" deve ser um inteiro de 1 à 5',
     });
   }
   next();
