@@ -37,6 +37,20 @@ app.get('/teste', (_request, response) => {
   response.status(HTTP_OK_STATUS).send('Teste do aplicativo');
 });
 
+app.get('/talker/search', validToken, (req, res, next) => {
+  try {
+  const allTalkers = getAllTalkers();
+  const serchTerm = req.query.q.toLowerCase();
+  if (!serchTerm) {
+    return next();
+  } 
+  const foundElement = allTalkers.filter((elem) => elem.name.toLowerCase().includes(serchTerm));
+  res.status(200).json(foundElement);
+  } catch (err) {
+  res.status(500).send({ err });
+  }
+});
+
 app.get('/talker', async (_request, response) => {
   try {
     const resposta = await getAllTalkers();
