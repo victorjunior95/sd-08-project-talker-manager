@@ -54,7 +54,7 @@ function validTalker(req, res, next) {
     });
   }
   const { watchedAt, rate } = talk;
-  if (!rate || !watchedAt) {
+  if (typeof rate === 'undefined' || !watchedAt) {
     return res.status(400).send({
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     });
@@ -72,7 +72,7 @@ function validTalkerContent(req, res, next) {
       message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
     });
   }
-  if (!Number.isInteger(rate) || rate < 1 || rate > 5) {
+  if (!Number.isInteger(parseInt(rate, 10)) || parseInt(rate, 10) < 1 || parseInt(rate, 10) > 5) {
     return res.status(400).send({
       message:
         'O campo "rate" deve ser um inteiro de 1 à 5',

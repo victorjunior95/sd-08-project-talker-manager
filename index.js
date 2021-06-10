@@ -87,6 +87,22 @@ validAge, validTalker, validTalkerContent, (req, res) => {
   }
 });
 
+app.put('/talker/:id', validToken, validName, 
+validAge, validTalker, validTalkerContent, async (req, res) => {
+  try {
+  const newId = parseInt(req.params.id, 10);
+  const newTalker = req.body;
+  newTalker.id = newId;
+  const allTalkers = getAllTalkers();
+  const talkersWithExcludedById = allTalkers.filter((talker) => talker.id !== newId);
+  talkersWithExcludedById.push(newTalker);
+  fs.writeFileSync('./talker.json', JSON.stringify(talkersWithExcludedById));
+  res.status(200).json(newTalker);
+  } catch (err) {
+  res.status(500).send({ err });
+  }
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
