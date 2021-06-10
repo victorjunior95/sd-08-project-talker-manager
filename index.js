@@ -3,7 +3,7 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { authEmail, authPassword } = require('./authMiddleware');
-const { validToken, validNameAndAge, validTalker } = require('./postMiddleware');
+const { validToken, validTalker, validAge, validName } = require('./postMiddleware');
 
 const app = express();
 app.use(bodyParser.json());
@@ -72,7 +72,7 @@ app.post(
   },
 );
 
-app.post('/talker', validToken, validNameAndAge, validTalker, (req, res) => {
+app.post('/talker', validToken, validName, validAge, validTalker, (req, res) => {
   try {
   const newTalker = req.body;
   const allTalkers = getAllTalkers();

@@ -13,9 +13,9 @@ function validToken(req, res, next) {
   next();
 }
 
-function validNameAndAge(req, res, next) {
+function validName(req, res, next) {
   const newTalker = req.body;
-  const { name, age } = newTalker;
+  const { name } = newTalker;
   if (!name) {
     return res.status(400).send({
       message: 'O campo "name" é obrigatório',
@@ -26,10 +26,20 @@ function validNameAndAge(req, res, next) {
       message: 'O "name" deve ter pelo menos 3 caracteres',
     });
   }
+  next();
+}
+
+function validAge(req, res, next) {
+  const newTalker = req.body;
+  const { age } = newTalker;
   if (!age) {
     return res.status(400).send({
-      message: 'O campo "age" é obrigatório',
-    });
+      message: 'O campo "age" é obrigatório' });
+  }
+  if (age < 18) {
+    return res.status(400).send({
+      message: 'A pessoa palestrante deve ser maior de idade',
+    }); 
   }
   next();
 }
@@ -55,7 +65,8 @@ function validTalker(req, res, next) {
 }
 
 module.exports = {
-  validNameAndAge,
+  validName,
+  validAge,
   validToken,
   validTalker,
 };
