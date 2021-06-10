@@ -10,6 +10,7 @@ const watchedAt = require('./watchedAt');
 const newTalker = require('./newTalker');
 const editTalker = require('./editTalker');
 const deleteTalkers = require('./deleteTalkers');
+const searchTalker = require('./searchTalker');
 
 module.exports = {
     getTalker,
@@ -24,4 +25,5 @@ module.exports = {
     newTalker,
     editTalker,
     deleteTalkers,
+    searchTalker,
 };

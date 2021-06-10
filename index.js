@@ -15,6 +15,8 @@ app.get('/', (_request, response) => {
 
 // requisito 1
 app.get('/talker', middlewares.getTalker);
+// requisito 7
+app.get('/talker/search', middlewares.token, middlewares.searchTalker);
 // requisito 2
 app.get('/talker/:id', middlewares.talkerId);
 // requisito 3
@@ -40,7 +42,7 @@ app.put(
   middlewares.watchedAt,
   middlewares.editTalker,
 );
-
+// requisito 6
 app.delete('/talker/:id', middlewares.token, middlewares.deleteTalkers);
 
 app.listen(PORT, () => {
