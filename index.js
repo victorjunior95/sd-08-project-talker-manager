@@ -23,7 +23,7 @@ const getTalkerById = (id) => {
 const generateToken = () => {
   const randonToken1 = Math.random().toString(20).substr(2);
   const randonToken2 = Math.random().toString(20).substr(2);
-  const token = (randonToken1 + randonToken2).slice(0,16);
+  const token = (randonToken1 + randonToken2).slice(0, 16);
   return token;
 };
 
