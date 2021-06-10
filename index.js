@@ -20,7 +20,12 @@ const getTalkerById = (id) => {
   return talker[0];
 };
 
-const generateToken = () => Math.random().toString(20);
+const generateToken = () => {
+  const randonToken1 = Math.random().toString(20).substr(2);
+  const randonToken2 = Math.random().toString(20).substr(2);
+  const token = (randonToken1 + randonToken2).slice(0,16);
+  return token;
+};
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -76,7 +81,7 @@ app.post('/talker', validToken, validNameAndAge, validTalker, (req, res) => {
   fs.writeFileSync('./talker.json', JSON.stringify(allTalkers));
   res.status(201).json(allTalkers);
   } catch (err) {
-    res.status.send({ err });
+    res.status(500).send({ err });
   }
 });
 
