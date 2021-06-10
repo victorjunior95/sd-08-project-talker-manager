@@ -25,14 +25,14 @@ middlewares.rate,
 middlewares.watchedAt, 
 middlewares.newTalker);
 // requisito 5
-app.put('/talker/:id', 
-middlewares.token, 
-middlewares.name, 
-middlewares.age,
-talks, 
-middlewares.rate, 
-middlewares.watchedAt,
-middlewares.editTalker); 
+// app.put('/talker/:id', 
+// middlewares.token, 
+// middlewares.name, 
+// middlewares.age,
+// talks, 
+// middlewares.rate, 
+// middlewares.watchedAt,
+// middlewares.editTalker); 
 
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
