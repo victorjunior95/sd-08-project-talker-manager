@@ -5,7 +5,7 @@ function validToken(req, res, next) {
       message: 'Token não encontrado',
     });
   }
-  if (token.length !== 16) {
+  if (token.length !== 16 || typeof token !== 'string') {
     return res.status(400).send({
       message: 'Token inválido',
     });
