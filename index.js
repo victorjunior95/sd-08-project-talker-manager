@@ -3,7 +3,8 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { authEmail, authPassword } = require('./authMiddleware');
-const { validToken, validTalker, validAge, validName } = require('./postMiddleware');
+const { validToken, validTalker, 
+  validTalkerContent, validAge, validName } = require('./postMiddleware');
 
 const app = express();
 app.use(bodyParser.json());
@@ -72,14 +73,15 @@ app.post(
   },
 );
 
-app.post('/talker', validToken, validName, validAge, validTalker, (req, res) => {
+app.post('/talker', validToken, validName, 
+validAge, validTalker, validTalkerContent, (req, res) => {
   try {
   const newTalker = req.body;
   const allTalkers = getAllTalkers();
   newTalker.id = allTalkers.length + 1;
   allTalkers.push(newTalker);
   fs.writeFileSync('./talker.json', JSON.stringify(allTalkers));
-  res.status(201).json(allTalkers);
+  res.status(201).json(newTalker);
   } catch (err) {
     res.status(500).send({ err });
   }

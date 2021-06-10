@@ -1,12 +1,13 @@
 function validToken(req, res, next) {
-  const { token } = req.headers;
-  if (!token) {
+  const { authorization } = req.headers;
+  console.log(authorization);
+  if (!authorization) {
     return res.status(401).send({
       message: 'Token não encontrado',
     });
   }
-  if (token.length !== 16 || typeof token !== 'string') {
-    return res.status(400).send({
+  if (authorization.length !== 16 || typeof authorization !== 'string') {
+    return res.status(401).send({
       message: 'Token inválido',
     });
   }
@@ -18,12 +19,12 @@ function validName(req, res, next) {
   const { name } = newTalker;
   if (!name) {
     return res.status(400).send({
-      message: 'O campo "name" é obrigatório',
+      message: 'O campo \"name\" é obrigatório',
     });
   }
   if (name.length < 3) {
     return res.status(400).send({
-      message: 'O "name" deve ter pelo menos 3 caracteres',
+      message: 'O \"name\" deve ter pelo menos 3 caracteres',
     });
   }
   next();
@@ -34,7 +35,7 @@ function validAge(req, res, next) {
   const { age } = newTalker;
   if (!age) {
     return res.status(400).send({
-      message: 'O campo "age" é obrigatório' });
+      message: 'O campo \"age\" é obrigatório' });
   }
   if (age < 18) {
     return res.status(400).send({
@@ -46,19 +47,35 @@ function validAge(req, res, next) {
 
 function validTalker(req, res, next) {
   const newTalker = req.body;
-  const {
-    talk: { watchedAt, rate },
-  } = newTalker;
+  const { talk } = newTalker
+  if (!talk ) {
+    return res.status(400).send({
+      message: 'O campo \"talk\" é obrigatório e \"watchedAt\" e \"rate\" não podem ser vazios',
+    });
+  }
+  const { watchedAt, rate } = talk;
+  if (!rate || !watchedAt ) {
+    return res.status(400).send({
+      message: 'O campo \"talk\" é obrigatório e \"watchedAt\" e \"rate\" não podem ser vazios',
+    });
+  }
+  next();
+}
+
+function validTalkerContent(req, res, next) {
+  const newTalker = req.body;
+  const { talk } = newTalker
+  const { watchedAt, rate } = talk;
   const dateFormat = /(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/;
   if (!dateFormat.test(watchedAt)) {
     return res.status(400).send({
-      message: 'O campo "rate" deve ser um inteiro de 1 à 5',
+      message: 'O campo \"watchedAt\" deve ter o formato \"dd/mm/aaaa\"',
     });
   }
   if (!Number.isInteger(rate) || rate < 1 || rate > 5) {
     return res.status(400).send({
       message:
-        'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+        'O campo \"rate\" deve ser um inteiro de 1 à 5',
     });
   }
   next();
@@ -68,5 +85,6 @@ module.exports = {
   validName,
   validAge,
   validToken,
+  validTalkerContent,
   validTalker,
 };
