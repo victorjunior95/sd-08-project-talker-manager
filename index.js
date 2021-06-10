@@ -88,7 +88,7 @@ validAge, validTalker, validTalkerContent, (req, res) => {
 });
 
 app.put('/talker/:id', validToken, validName, 
-validAge, validTalker, validTalkerContent, async (req, res) => {
+validAge, validTalker, validTalkerContent, (req, res) => {
   try {
   const newId = parseInt(req.params.id, 10);
   const newTalker = req.body;
@@ -98,6 +98,18 @@ validAge, validTalker, validTalkerContent, async (req, res) => {
   talkersWithExcludedById.push(newTalker);
   fs.writeFileSync('./talker.json', JSON.stringify(talkersWithExcludedById));
   res.status(200).json(newTalker);
+  } catch (err) {
+  res.status(500).send({ err });
+  }
+});
+
+app.delete('/talker/:id', validToken, (req, res) => {
+  try {
+  const idToDelete = parseInt(req.params.id, 10);
+  const allTalkers = getAllTalkers();
+  const talkersWithExcludedById = allTalkers.filter((talker) => talker.id !== idToDelete);
+  fs.writeFileSync('./talker.json', JSON.stringify(talkersWithExcludedById));
+  res.status(200).send({ message: 'Pessoa palestrante deletada com sucesso' });
   } catch (err) {
   res.status(500).send({ err });
   }
