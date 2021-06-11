@@ -45,7 +45,7 @@ app.get('/talker/search', validToken, (req, res, next) => {
     return next();
   } 
   const foundElement = allTalkers.filter((elem) => elem.name.toLowerCase().includes(serchTerm));
-  res.status(200).json(foundElement);
+  res.status(200).send(foundElement);
   } catch (err) {
   res.status(500).send({ err });
   }
