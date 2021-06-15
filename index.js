@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const loginMiddleware = require('./middlewares/loginMiddleware');
 
 const getTalkers = () => JSON.parse(fs.readFileSync('./talker.json', 'utf-8'));
 
@@ -14,6 +15,8 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
+app.post('/login', loginMiddleware);
 
 app.get('/talker/:id', (req, res) => {
   try {
