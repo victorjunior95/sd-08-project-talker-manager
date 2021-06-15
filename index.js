@@ -16,52 +16,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-// Req01 Buscar array
-app.get('/talker', async (req, resp) => {
-  const data = JSON.parse(await fs.readFile(path, 'utf-8'));
-  resp.status(200).json(data);
-});
-
-// Req02 buscar id no array
-app.get('/talker/:id', async (req, resp) => {
-  const { id } = req.params;
-  // console.log(`id solicitado: ${id}`);
-  const data = JSON.parse(await fs.readFile(path, 'utf-8'));
-  // console.log(data);
-  const searchId = data.find((el) => el.id === Number(id));
-  // console.log(searchId);
-  if (!searchId) {
-    return resp.status(404).json({ message: 'Pessoa palestrante não encontrada' });
-  }
-  return resp.status(200).json(searchId);
-});
-
-// Req03 Fazer Login / Receber Token
-function loginCheck(req, resp, next) {
-  const { email, password } = req.body;
-  const emailRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
-  const emailCheckFormat = emailRegex.test(email);
-  if (!email) {
-    return resp.status(400).json({ message: 'O campo "email" é obrigatório' });
-  }
-  if (!emailCheckFormat) {
-    return resp.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
-  }
-  if (!password) {
-    return resp.status(400).json({ message: 'O campo "password" é obrigatório' });
-  }
-  if (password.toString().length < 6) {
-    return resp.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
-  }
-  return next();
-}
-
-app.post('/login', loginCheck, async (req, resp) => {
-  const token = crypto.randomBytes(8).toString('hex');
-  return resp.status(200).json({ token });
-});
-
-// Req04 add novo item no  / Validações
+// Middlewares de Validações
 function tokenCheck(req, resp, next) {
   const { authorization } = req.headers;
   if (!authorization) {
@@ -137,6 +92,63 @@ function nameCheck(req, resp, next) {
     return next();
   }
 
+// Req07 Busca queryParam (Rota)
+app.get('/talker/search', tokenCheck, async (req, resp) => {
+  const { q } = req.query;
+  const data = JSON.parse(await fs.readFile(path, 'utf-8'));
+  const searchName = data.filter((el) => el.name.includes(q));
+  if (!q) {
+    return resp.status(200).json(data);
+  }
+  return resp.status(200).json(searchName);
+});
+
+// Req01 Buscar array
+app.get('/talker', async (req, resp) => {
+  const data = JSON.parse(await fs.readFile(path, 'utf-8'));
+  resp.status(200).json(data);
+});
+
+// Req02 buscar id no array
+app.get('/talker/:id', async (req, resp) => {
+  const { id } = req.params;
+  // console.log(`id solicitado: ${id}`);
+  const data = JSON.parse(await fs.readFile(path, 'utf-8'));
+  // console.log(data);
+  const searchId = data.find((el) => el.id === Number(id));
+  // console.log(searchId);
+  if (!searchId) {
+    return resp.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+  }
+  return resp.status(200).json(searchId);
+});
+
+// Req03 Fazer Login / Receber Token
+function loginCheck(req, resp, next) {
+  const { email, password } = req.body;
+  const emailRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
+  const emailCheckFormat = emailRegex.test(email);
+  if (!email) {
+    return resp.status(400).json({ message: 'O campo "email" é obrigatório' });
+  }
+  if (!emailCheckFormat) {
+    return resp.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
+  }
+  if (!password) {
+    return resp.status(400).json({ message: 'O campo "password" é obrigatório' });
+  }
+  if (password.toString().length < 6) {
+    return resp.status(400).json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
+  }
+  return next();
+}
+
+app.post('/login', loginCheck, async (req, resp) => {
+  const token = crypto.randomBytes(8).toString('hex');
+  return resp.status(200).json({ token });
+});
+
+// Req04 add novo item
 app.post('/talker', tokenCheck, nameCheck, ageCheck, talkCheck, existRateDate, rateCheck, dateCheck,
   async (req, resp) => {
   const data = JSON.parse(await fs.readFile(path, 'utf-8'));
