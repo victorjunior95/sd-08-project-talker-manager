@@ -16,13 +16,13 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-// Req01
+// Req01 Buscar array
 app.get('/talker', async (req, resp) => {
   const data = JSON.parse(await fs.readFile(path, 'utf-8'));
   resp.status(200).json(data);
 });
 
-// Req02
+// Req02 buscar id no array
 app.get('/talker/:id', async (req, resp) => {
   const { id } = req.params;
   // console.log(`id solicitado: ${id}`);
@@ -36,7 +36,7 @@ app.get('/talker/:id', async (req, resp) => {
   return resp.status(200).json(searchId);
 });
 
-// Req03
+// Req03 Fazer Login / Receber Token
 function loginCheck(req, resp, next) {
   const { email, password } = req.body;
   const emailRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
@@ -61,7 +61,7 @@ app.post('/login', loginCheck, async (req, resp) => {
   return resp.status(200).json({ token });
 });
 
-// Req04
+// Req04 add novo item no  / Validações
 function tokenCheck(req, resp, next) {
   const { authorization } = req.headers;
   if (!authorization) {
@@ -147,7 +147,7 @@ app.post('/talker', tokenCheck, nameCheck, ageCheck, talkCheck, existRateDate, r
   return resp.status(201).json(newTalker);
 });
 
-// Req05
+// Req05 Atualizar item no array pelo ID
 // método findIndex(https://www.javascripttutorial.net/es6/javascript-array-findindex/)
 app.put('/talker/:id', tokenCheck, nameCheck, ageCheck, talkCheck,
   existRateDate, rateCheck, dateCheck,
@@ -166,6 +166,16 @@ app.put('/talker/:id', tokenCheck, nameCheck, ageCheck, talkCheck,
   console.log(data);
   await fs.writeFile(path, JSON.stringify(data));
   return resp.status(200).json(data[talkerIndex]);
+});
+
+// Req06 Deletar item do array pelo ID
+app.delete('/talker/:id', tokenCheck, async (req, resp) => {
+  const { id } = req.params;
+  const data = JSON.parse(await fs.readFile(path, 'utf-8'));
+  const talkerIndex = data.findIndex((el) => el.id === Number(id));
+  data.splice(talkerIndex, 1);
+  await fs.writeFile(path, JSON.stringify(data));
+  return resp.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
 });
 
 app.listen(PORT, () => {
