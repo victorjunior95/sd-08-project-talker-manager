@@ -144,7 +144,28 @@ app.post('/talker', tokenCheck, nameCheck, ageCheck, talkCheck, existRateDate, r
   newTalker.id = data.length + 1;
   data.push(newTalker);
   await fs.writeFile(path, JSON.stringify(data));
-  resp.status(201).json(newTalker);
+  return resp.status(201).json(newTalker);
+});
+
+// Req05
+// método findIndex(https://www.javascripttutorial.net/es6/javascript-array-findindex/)
+app.put('/talker/:id', tokenCheck, nameCheck, ageCheck, talkCheck,
+  existRateDate, rateCheck, dateCheck,
+  async (req, resp) => {
+  const { id } = req.params;
+  const { name, age, talk } = req.body;
+  const data = JSON.parse(await fs.readFile(path, 'utf-8'));
+  const talkerIndex = data.findIndex((el) => el.id === Number(id));
+  console.log(talkerIndex);
+  console.log('-----');
+  console.log(data[talkerIndex]);
+  console.log('-----');
+  data[talkerIndex] = { name, age, id: Number(id), talk };
+  console.log(data[talkerIndex]);
+  console.log('-----');
+  console.log(data);
+  await fs.writeFile(path, JSON.stringify(data));
+  return resp.status(200).json(data[talkerIndex]);
 });
 
 app.listen(PORT, () => {
