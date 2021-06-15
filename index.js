@@ -1,11 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs').promises;
+const talker = require('./service');
 
 const app = express();
 app.use(bodyParser.json());
 
-const path = './talker.json';
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
@@ -14,9 +13,9 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker', async (_request, response) => {
-  const data = await fs.readFile(path, 'utf-8');
-  return response.status(200).json(await JSON.parse(data));
+app.get('/talker', async (_req, res) => {
+  const data = await talker();
+  return res.status(200).json(data);
 });
 
 app.listen(PORT, () => {
