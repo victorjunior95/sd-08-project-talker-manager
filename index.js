@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const talker = require('./service');
 const middlewares = require('./middlewares');
+const newTalker = require('./write');
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,6 +30,17 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 app.post('/login', middlewares.login);
+
+app.post('/talker', middlewares.token, middlewares.name,
+ middlewares.age, middlewares.talk, middlewares.watchedAt,
+  middlewares.rate, async (req, res) => {
+    const talkers = await await talker();
+    const otherTalker = req.body;
+    otherTalker.id = talkers.length + 1;
+    talkers.push(otherTalker);
+    await newTalker(talkers);
+    res.status(201).json(otherTalker);
+  });
 
 app.listen(PORT, () => {
   console.log('Online');
