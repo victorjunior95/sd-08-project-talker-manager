@@ -45,15 +45,15 @@ app.post('/talker', middlewares.token, middlewares.name,
 app.put('/talker/:id', middlewares.token, middlewares.name,
 middlewares.age, middlewares.talk, middlewares.watchedAt,
  middlewares.rate, async (req, res) => {
-   const { id } = req.params;
-   const talkers = await talker();
-   const otherTalker = { ...req.body, id };
-   const edited = talkers.map((item) => {
-     if (item.id === id) return newTalker;
-     return item;
-   });
-   await newTalker(edited);
-   res.status(200).json(otherTalker);
+  const id = Number(req.params.id);
+  const talkers = await talker();
+  const otherTalker = { ...req.body, id };
+  const editedTalker = talkers.map((item) => {
+    if (item.id === id) return otherTalker;
+    return talker;
+  });
+  await newTalker(editedTalker);
+  res.status(200).json(otherTalker);
 });
 
 app.listen(PORT, () => {
