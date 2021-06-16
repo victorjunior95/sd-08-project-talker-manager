@@ -42,6 +42,20 @@ app.post('/talker', middlewares.token, middlewares.name,
     res.status(201).json(otherTalker);
   });
 
+  app.put('/talker/:id', middlewares.token, middlewares.name,
+ middlewares.age, middlewares.talk, middlewares.watchedAt,
+  middlewares.rate, async (req, res) => {
+    const { id } = req.params;
+    const talkers = await talker();
+    const otherTalker = { ...req.body, id };
+    const edited = talkers.map((item) => {
+      if (item.id === id) return newTalker;
+      return item;
+    });
+    await newTalker(edited);
+    res.status(201).json(otherTalker);
+  });
+
 app.listen(PORT, () => {
   console.log('Online');
 });
