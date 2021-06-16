@@ -56,6 +56,14 @@ middlewares.age, middlewares.talk, middlewares.watchedAt,
   res.status(200).json(otherTalker);
 });
 
+app.delete('/talker/:id', middlewares.token, async (req, res) => {
+  const id = Number(req.params.id);
+  const talkers = await talker();
+  const deleted = talkers.find((item) => item.id !== id);
+  await newTalker(deleted);
+  res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+});
+
 app.listen(PORT, () => {
   console.log('Onlinee');
 });
