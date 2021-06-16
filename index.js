@@ -53,9 +53,9 @@ middlewares.age, middlewares.talk, middlewares.watchedAt,
      return item;
    });
    await newTalker(edited);
-   res.status(201).json(otherTalker);
+   res.status(200).json(otherTalker);
 });
 
 app.listen(PORT, () => {
-  console.log('Online');
+  console.log('Onlinee');
 });
