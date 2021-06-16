@@ -48,7 +48,7 @@ app.post('/login', (req, res) => {
   const errNoEmail = 'O campo "email" é obrigatório';
   const errNoPassword = 'O campo "password" é obrigatório';
   const errEmailInvalid = 'O "email" deve ter o formato "email@email.com"';
-  const errPasswordInvalid = 'O "password" deve ter pelo menos 6 caracteres"';
+  const errPasswordInvalid = 'O "password" deve ter pelo menos 6 caracteres';
 
   const { email, password } = req.body;
 
