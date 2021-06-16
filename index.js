@@ -1,6 +1,7 @@
 const express = require('express');
 
-const routTalker = require('./src/routes/talkerRoute')
+const routTalker = require('./src/routes/talkerRoute');
+
 const app = express();
 app.use(express.json());
 
