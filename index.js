@@ -116,7 +116,6 @@ app.put(
       const talkers = getTalkerJSON();
       const DATA = req.body;
       const talkerIdUpdate = parseInt(req.params.id, 10);
-      DATA.id = talkerIdUpdate;
 
       const updatedTalkers = talkers.map((t) => t.id).includes(talkerIdUpdate)
         ? talkers 
