@@ -73,7 +73,7 @@ app.post('/talker',
     const { name, age, talk } = req.body;
     fs.readFile(database, (err, data) => {
       const talkers = JSON.parse(data.toString('utf-8'));
-      const id = talkers.length;
+      const id = talkers.length + 1;
       talkers.push({ name, age, id, talk });
 
       fs.writeFileSync(database, JSON.stringify(talkers));
