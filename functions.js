@@ -4,6 +4,11 @@ const validateDate = require('validate-date');
 
 const findTalkerByID = (talkers, id) => talkers.find((e) => e.id === Number(id));
 
+const findTalkersByName = (allTalkers, talkerName) => {
+ const find = allTalkers.filter((e) => e.name.toLowerCase().includes(talkerName.toLowerCase()));
+ return find;
+};
+
 const removeTalkerById = (talkers, id) => talkers.filter((e) => e.id !== Number(id));
 
 const editTalker = (talker, body) => {
@@ -65,4 +70,5 @@ module.exports = {
   removeTalkerById,
   editTalker,
   changeEditedTalker,
+  findTalkersByName,
 };

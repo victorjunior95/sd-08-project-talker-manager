@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const { MESSAGES } = require('./messages');
 const { auth } = require('./middlewares/authorization');
-const { findTalkerByID, generateToken, removeTalkerById, editTalker,
+const { findTalkerByID, generateToken, removeTalkerById, editTalker, findTalkersByName,
   verifyEmailAndPassword, addIdToTalk, changeEditedTalker } = require('./functions');
 const { nameAndAgeVerificarions, talkVerifications, 
   talkExists } = require('./middlewares/talkerVerifier');
@@ -19,6 +19,19 @@ const TALKER_PATH = './talker.json';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
+app.get(
+  '/talker/search',
+  auth,
+  (req, res) => {
+    const allTalkers = JSON.parse(fs.readFileSync(TALKER_PATH, 'utf8'));
+    if (req.query.q) {
+      const talkersByName = findTalkersByName(allTalkers, req.query.q);
+      return res.status(HTTP_OK_STATUS).send(talkersByName);
+    }
+    return res.status(HTTP_OK_STATUS).send(allTalkers);
+  },
+);
 
 app.get('/talker', (_request, response) => {
   const getAllTalkers = fs.readFileSync(TALKER_PATH, 'utf8');
