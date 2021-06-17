@@ -118,7 +118,7 @@ app.put(
       const talkerIdUpdate = parseInt(req.params.id, 10);
       DATA.id = talkerIdUpdate;      
       const updatedTalkers = talkers.map((talker) => {
-        if (talker.id.includes(talkerIdUpdate)) {
+        if (talker.id === (talkerIdUpdate)) {
           return { ...DATA };
         }
         return talker;
