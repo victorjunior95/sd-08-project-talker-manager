@@ -113,11 +113,6 @@ const isValidDate = (date) => {
   return validateDate(date, 'boolean', 'dd/mm/yyyy');
 };
 
-const verifyRateValueAndFormat = (rate) => {
-  if (!Number.isInteger(rate) || rate < 1 || rate > 5) return false;
-  return true;
-};
-
 function verifyTalkCamp(request, response, next) {
   const { talk: { watchedAt, rate } } = request.body;
   const validDate = isValidDate(watchedAt);
@@ -125,8 +120,8 @@ function verifyTalkCamp(request, response, next) {
  return response.status(400)
   .send({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' }); 
 }
-  const isValidRate = verifyRateValueAndFormat(rate);
-  if (!isValidRate) {
+  
+  if (!Number.isInteger(rate, 10) || parseInt(rate, 10) < 1 || parseInt(rate, 10) > 5) {
  return response.status(400)
   .send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' }); 
 }
@@ -163,21 +158,6 @@ app.post(
 );
 
 // req 05
-function editTalker(talker, body) {
-  const editedTalker = {
-    ...talker,
-    ...body,
-  };
-  return editedTalker;
-}
-
-function changeEditedTalker(allTalkers, editedTalker) {
-  const editedTalkersList = allTalkers.map((e) => {
-    if (e.id === editedTalker.id) return editedTalker;
-    return e;
-  });
-  return editedTalkersList;
-}
 
 app.put(
   '/talker/:id',
@@ -185,18 +165,19 @@ app.put(
   verifyNameAndAge,
   verifyTalkCamp,
   verifyTalkExist,
-  async (request, response) => {
+   (request, response) => {
     try {
-    const { body } = request;
-    const readAllTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
-    const talker = await findByID(readAllTalkers, request.params.id);
-    const editedTalker = await editTalker(talker, body);
-    const newTalkersList = await changeEditedTalker(readAllTalkers, editedTalker);
-    fs.writeFileSync(TALKER_ARC, JSON.stringify(newTalkersList, null, '\t'));
-    return response.status(HTTP_OK_STATUS).send(editedTalker);
-    } catch (err) {
-      response.status(400).send({ err });
-    }
+      const newId = parseInt(request.params.id, 10);
+      const newTalker = request.body;
+      newTalker.id = newId;
+      const readAllTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
+      const talkersWithExcludedById = readAllTalkers.filter((talker) => talker.id !== newId);
+      talkersWithExcludedById.push(newTalker);
+      fs.writeFileSync('./talker.json', JSON.stringify(talkersWithExcludedById));
+      response.status(200).json(newTalker);
+      } catch (err) {
+        response.status(500).send({ err });
+      }
   },
 );
 
