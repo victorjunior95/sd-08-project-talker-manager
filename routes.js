@@ -44,9 +44,8 @@ const createTalker = async (req, res) => {
   return res.status(201).json(objectToSaveNewTalker);
 };
 
-const updateTalker = async (req, res) => {
+const updateTalker = async (req, _res) => {
   const readFileResponse = readFile();
-  const { name, age, talk } = req.body;
 
   const updateTalkerArr = readFileResponse.map((talker) => {
     if (talker.id === req.params.id) {
