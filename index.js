@@ -97,7 +97,7 @@ app.get('/talker/:id', (req, res) => {
     const person = talkers.find((talker) => talker.id === idParam);
 
     if (person) return res.status(200).send(person);
-  
+    
      return res.status(404).send({ message: M.NOT_FOUND_PERSON });
   } catch (err) {
     return res.status(500).send({ err });
@@ -116,10 +116,11 @@ app.put(
       const talkers = getTalkerJSON();
       const DATA = req.body;
       const talkerIdUpdate = parseInt(req.params.id, 10);
+      DATA.id = talkerIdUpdate;
 
       const updatedTalkers = talkers.map((t) => t.id).includes(talkerIdUpdate)
-        ? talkers 
-        : [...talkers, DATA];
+        ? { ...DATA }
+        : talkers.id;
 
       fs.writeFileSync('talker.json', JSON.stringify(updatedTalkers));
       res.status(200).json(DATA);
