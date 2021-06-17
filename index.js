@@ -113,36 +113,44 @@ const isValidDate = (date) => {
   return validateDate(date, 'boolean', 'dd/mm/yyyy');
 };
 
+function verifyTalkExist(request, response, next) {
+  const newTalker = request.body;
+  const { talk } = newTalker;
+  if (!talk) {
+    return response.status(400).send({
+      message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    });
+  }
+  const { watchedAt, rate } = talk;
+  if (typeof rate === 'undefined' || !watchedAt) {
+    return response.status(400).send({
+      message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    });
+  }
+  next();
+}
+
 function verifyTalkCamp(request, response, next) {
-  const { talk: { watchedAt, rate } } = request.body;
+  const newTalker = request.body;
+  const { talk } = newTalker;
+  const { watchedAt, rate } = talk;
   const validDate = isValidDate(watchedAt);
   if (!validDate) {
  return response.status(400)
   .send({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' }); 
 }
-  
   if (!Number.isInteger(rate, 10) || parseInt(rate, 10) < 1 || parseInt(rate, 10) > 5) {
  return response.status(400)
   .send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' }); 
 }
   next();
 }
-
-function verifyTalkExist(request, response, next) {
-  const { talk } = request.body;
-  if (!talk || !talk.watchedAt || (!talk.rate && talk.rate !== 0)) { 
-    return response.status(400)
-    .send({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
-  }
-  next();
-}
-
 app.post(
   '/talker',
   verifyToken,
   verifyNameAndAge,
-  verifyTalkCamp,
   verifyTalkExist,
+  verifyTalkCamp,
 (request, response) => {
   try {
   const newTalker = request.body;
@@ -163,8 +171,8 @@ app.put(
   '/talker/:id',
   verifyToken,
   verifyNameAndAge,
-  verifyTalkCamp,
   verifyTalkExist,
+  verifyTalkCamp,
    (request, response) => {
     try {
       const newId = parseInt(request.params.id, 10);
@@ -176,7 +184,7 @@ app.put(
       fs.writeFileSync('./talker.json', JSON.stringify(talkersWithExcludedById));
       response.status(200).json(newTalker);
       } catch (err) {
-        response.status(500).send({ err });
+        response.status(400).send({ err });
       }
   },
 );
