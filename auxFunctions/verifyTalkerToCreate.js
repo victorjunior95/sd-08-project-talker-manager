@@ -46,18 +46,49 @@ const verifyRate = (req, res) => {
   }
 };
 
+const verifyTalk = (talk, res) => {
+  if (!(talk)) {
+    return res
+    .status(400)
+    .json({
+      message:
+        'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    });
+  }
+};
+
+const verifyTalkWatched = ({ watchedAt }, res) => {
+  if (!(watchedAt)) {
+    return res
+    .status(400)
+    .json({
+      message:
+        'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    });
+  }
+};
+
+const verifyTalkRate = ({ rate }, res) => {
+  if (!(rate)) {
+    return res
+    .status(400)
+    .json({
+      message:
+        'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
+    });
+  }
+};
 const verifyDateAndRate = (req, res, next) => {
   const { talk } = req.body;
 
-  if (!talk || (talk.watchedAt) !== undefined || !(talk.rate) !== undefined) {
-    return res
-      .status(400)
-      .json({
-        message:
-          'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
-      });
-  }
+  const isNotTalk = verifyTalk(talk, res);
+  const isNotWatched = verifyTalkWatched(talk, res);
+  const isNotRate = verifyTalkRate(talk, res);
 
+  if (isNotTalk) return isNotRate;
+  if (isNotWatched) return isNotWatched;
+  if (isNotRate) return isNotRate;
+  
   verifyDateFormat(req, res);
   verifyRate(req, res);
   next();
