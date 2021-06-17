@@ -19,9 +19,9 @@ function validateLogin(req, res, next) {
 }
 
 function authenticateRequest(req, res, next) {
-  const { token } = req.headers;
-  if (!token) return res.status(401).json({ message: 'Token não encontrado' });
-  if (token.length < 16) {
+  const { Authorization } = req.headers;
+  if (!Authorization) return res.status(401).json({ message: 'Token não encontrado' });
+  if (Authorization.length < 16) {
     return res.status(401).json({
       message: 'Token inválido',
     }); 
