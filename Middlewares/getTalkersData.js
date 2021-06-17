@@ -1,9 +1,8 @@
-const { talkers } = require('../Helpers');
+const fs = require('fs').promises;
 
-const getTalkersData = (_req, res) => {
-  const talkersData = talkers();
-  if (talkersData.length === 0) return res.status(200).json([]);
-  return res.status(200).json(talkersData);
+const getTalkersData = async (req, res) => {
+  const data = await fs.readFile('./talker.json', 'utf8');
+  res.status(200).json(JSON.parse(data));
 };
 
 module.exports = getTalkersData;

@@ -1,10 +1,12 @@
 const bodyParser = require('body-parser');
-const { express } = require('../Helpers');
+const express = require('express');
+
 const {
   validateTalk,
   validateTalker,
   validateToken,
 } = require('../Validation');
+
 const {
   createTalker,
   deleteTalker,
@@ -24,9 +26,15 @@ talker.get(
   searchTalkerByName,
 );
 
-talker.get('/talker', getTalkersData);
+talker.get(
+  '/talker',
+  getTalkersData,
+);
 
-talker.get('/talker/:id', searchTalkerById);
+talker.get(
+  '/talker/:id',
+  searchTalkerById,
+);
 
 talker.post(
   '/talker',
