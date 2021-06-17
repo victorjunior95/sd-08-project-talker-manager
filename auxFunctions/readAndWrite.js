@@ -11,9 +11,7 @@ const readFile = () => {
   }
 };
 
-const writeIntoFile = async (fileName, content) => {
-  await writeFile(fileName, JSON.stringify(content));
-};
+const writeIntoFile = async (fileName, content) => writeFile(fileName, JSON.stringify(content));
 
 module.exports = {
   readFile,

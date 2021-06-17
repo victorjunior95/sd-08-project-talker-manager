@@ -4,8 +4,9 @@ const {
   handleSearchForId,
   handleTalkersRequest,
   createTalker,
-  // deleteTalker,
-  // searchByTerm,
+  deleteTalker,
+  searchByTerm,
+  updateTalker,
 } = require('./routes');
 const {
   verifyAge,
@@ -29,6 +30,8 @@ app.get('/', (_request, response) => {
 
 app.get('/talker/:id', handleSearchForId);
 
+app.get('/talker/search?q=searchTerm', verifyToken, searchByTerm);
+
 app.get('/talker', handleTalkersRequest);
 
 app.post('/login', verifyLogin);
@@ -42,9 +45,9 @@ app.post(
   createTalker,
 );
 
-// app.delete('/talker/:id', deleteTalker);
+app.delete('/talker/:id', verifyToken, deleteTalker);
 
-// app.get('/talker/search?q=searchTerm', searchByTerm);
+app.put('/talker/:id', verifyToken, verifyName, verifyAge, verifyDateAndRate, updateTalker);
 
 app.listen(PORT, () => {
   console.log('Online');

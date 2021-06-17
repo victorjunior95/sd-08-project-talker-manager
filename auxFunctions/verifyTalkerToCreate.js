@@ -49,7 +49,7 @@ const verifyRate = (req, res) => {
 const verifyDateAndRate = (req, res, next) => {
   const { talk } = req.body;
 
-  if (!talk || !(talk.watchedAt) || !(talk.rate)) {
+  if (!talk || (talk.watchedAt) !== undefined || !(talk.rate) !== undefined) {
     return res
       .status(400)
       .json({
@@ -57,6 +57,7 @@ const verifyDateAndRate = (req, res, next) => {
           'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
       });
   }
+
   verifyDateFormat(req, res);
   verifyRate(req, res);
   next();
