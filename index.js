@@ -90,15 +90,6 @@ app.post(
   },
 );
 
-app.get('/talker/:id', (request, response) => {
-  const { id } = request.params;
-  const getTalker = getTalkerJSON();
-  const talkerById = getTalker.find((talker) => talker.id === parseInt(id, 10));
-
-  return talkerById 
-   ? response.status(200).json(talkerById)
-   : response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
-=======
 app.get('/talker/:id', (req, res) => {
   try {
     const talkers = getTalkerJSON();
@@ -107,19 +98,18 @@ app.get('/talker/:id', (req, res) => {
 
     if (person) return res.status(200).send(person);
     
-     return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
+     return res.status(404).send({ message: M.NOT_FOUND_PERSON });
   } catch (err) {
     return res.status(500).send({ err });
   }
->>>>>>> 2b98d0a38d72eccac1bb19eaca79a9d3796e7a1d
 });
 
 app.put(
   '/talker/:id',
   middleware.validationAndRegexToken,
   middleware.nameAndAgeValidation,
-  middleware.validateRateAndWatchedatPayload,
   middleware.validateTalkPayload,
+  middleware.validateRateAndWatchedatPayload,
 
   (req, res) => {
     try {
@@ -127,9 +117,12 @@ app.put(
       const DATA = req.body;
       const talkerIdUpdate = parseInt(req.params.id, 10);
       DATA.id = talkerIdUpdate;      
-      const updatedTalkers = talkers.map((t) => t.id).includes(talkerIdUpdate)
-        ? talkers 
-        : [...talkers, DATA];
+      const updatedTalkers = talkers.map((talker) => {
+        if (talker.id === (talkerIdUpdate)) {
+          return { ...DATA };
+        }
+        return talker;
+      });
       fs.writeFileSync('talker.json', JSON.stringify(updatedTalkers));
       res.status(200).json(DATA);
     } catch (err) {
