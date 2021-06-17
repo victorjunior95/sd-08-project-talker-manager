@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const crypto = require('crypto');
 const utils = require('./utils/fs-utils');
+const validation = require('./utils/validation');
 
 const app = express();
 app.use(bodyParser.json());
@@ -8,7 +10,7 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
-app.get('/talker', async (req, res) => {
+app.get('/talker', async (_req, res) => {
   try {
     const data = await utils.getData();
 
@@ -35,6 +37,12 @@ app.get('/talker/:id', async (req, res) => {
     console.error(`Erro ao ler o arquivo: ${err.path}`);
     console.log(err);
   }
+});
+
+app.post('/login', validation.validate, (_req, res) => {
+  const token = crypto.randomBytes(8).toString('hex');
+
+  return res.status(HTTP_OK_STATUS).send({ token });
 });
 
 // não remova esse endpoint, e para o avaliador funcionar
