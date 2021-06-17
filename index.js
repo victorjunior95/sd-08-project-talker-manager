@@ -32,7 +32,7 @@ app.get('/talker/search', validateToken, async (req, res) => {
   const talkersList = JSON.parse(await fs.readFile(talkerJSON, 'utf-8'));
   const search = talkersList.filter((talker) => talker.name.includes(q));  
   if (search) {
-    res.status(200).json(search);
+    return res.status(200).json(search);
   }
   return res.status(200).json(talkersList);
 });
@@ -80,7 +80,7 @@ app.put('/talker/:id', validateToken, validateName, validateAge, validateTalk,
   const talkersList = JSON.parse(await fs.readFile(talkerJSON, 'utf-8'));
   const talkerByID = talkersList.find((talker) => talker.id === id);
   talkersList[talkerByID] = { name, age, id: parseInt(id, 10), talk };
-  fs.writeFileSync(talkerJSON, JSON.stringify(talkersList));
+  await fs.writeFile(talkerJSON, JSON.stringify(talkersList));
   return res.status(200).json(talkersList);
 });
 
