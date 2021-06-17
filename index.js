@@ -120,7 +120,7 @@ app.put(
 
       const updatedTalkers = talkers.map((t) => t.id).includes(talkerIdUpdate)
         ? { ...DATA }
-        : talkers.id;
+        : { ...talkers };
 
       fs.writeFileSync('talker.json', JSON.stringify(updatedTalkers));
       res.status(200).json(DATA);
