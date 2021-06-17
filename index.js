@@ -48,7 +48,6 @@ app.post('/login', validation.validateLogin, (_req, res) => {
 app.post('/talker', validation.authenticateRequest, validation.validateTalker, async (req, res) => {
   try {
     const previousTalkers = await utils.getData();
-    console.log(previousTalkers);
     previousTalkers.push(req.body);
     utils.writeData(previousTalkers);
     return res.status(201).send(req.body);
