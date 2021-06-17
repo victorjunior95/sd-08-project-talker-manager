@@ -106,7 +106,9 @@ app.put('/talker/:id',
   });
 
 // 6 - Crie o endpoint DELETE `/talker/:id`
-app.delete();
+// app.delete('/talker/:id', middlewares.token, (req, res) => {
+
+// });
 
 // 7 - Crie o endpoint GET `/talker/search?q=searchTerm`
 
