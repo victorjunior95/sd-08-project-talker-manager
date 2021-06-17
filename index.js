@@ -98,7 +98,7 @@ app.get('/talker/:id', (req, res) => {
 
     if (person) return res.status(200).send(person);
     
-     return res.status(404).send({ message: M.NOT_FOUND_PERSON });
+     return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
   } catch (err) {
     return res.status(500).send({ err });
   }
@@ -118,8 +118,8 @@ app.put(
       const talkerIdUpdate = parseInt(req.params.id, 10);
       DATA.id = talkerIdUpdate;      
       const updatedTalkers = talkers.map((t) => t.id).includes(talkerIdUpdate)
-        ? { ...DATA }
-        : { ...talkers };
+        ? talkers 
+        : [...talkers, DATA];
       fs.writeFileSync('talker.json', JSON.stringify(updatedTalkers));
       res.status(200).json(DATA);
     } catch (err) {
