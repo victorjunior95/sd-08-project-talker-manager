@@ -3,9 +3,17 @@ const bodyParser = require('body-parser');
 const {
   handleSearchForId,
   handleTalkersRequest,
-  handleLogin,
-  postTalker,
+  createTalker,
+  // deleteTalker,
+  // searchByTerm,
 } = require('./routes');
+const {
+  verifyAge,
+  verifyDateAndRate,
+  verifyLogin,
+  verifyName,
+  verifyToken,
+} = require('./auxFunctions');
 
 const app = express();
 
@@ -23,9 +31,20 @@ app.get('/talker/:id', handleSearchForId);
 
 app.get('/talker', handleTalkersRequest);
 
-app.use('/login', handleLogin);
+app.post('/login', verifyLogin);
 
-app.post('/talker', postTalker);
+app.post(
+  '/talker',
+  verifyToken,
+  verifyName,
+  verifyAge,
+  verifyDateAndRate,
+  createTalker,
+);
+
+// app.delete('/talker/:id', deleteTalker);
+
+// app.get('/talker/search?q=searchTerm', searchByTerm);
 
 app.listen(PORT, () => {
   console.log('Online');

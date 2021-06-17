@@ -1,17 +1,19 @@
-const validateToken = (token) => {
+const validateToken = (authorization) => {
     const numberToComperToken = 16;
-    if (!token) { 
+    if (!authorization) { 
         return { message: 'Token não encontrado' };
     }
-    if (token.length < numberToComperToken) {
+    if (authorization.length < numberToComperToken) {
        return { message: 'Token inválido' };
     }
 };
-const verifyToken = (authorization, res) => {
-    const isTokenValid = validateToken(authorization);
-    if (isTokenValid) {
-     return res.status(401).json(isTokenValid);
+const verifyToken = (req, res, next) => {
+    const { authorization } = req.headers;
+    const isNotTokenValid = validateToken(authorization);
+    if (isNotTokenValid) {
+     return res.status(401).json(isNotTokenValid);
     }
+    next();
 };
 
 module.exports = verifyToken;

@@ -1,4 +1,6 @@
-const verifyName = (name, res) => {
+const verifyName = (req, res, next) => {
+  const { name } = req.body;
+
   if (!name) {
     return res.status(400).json({ message: 'O campo "name" é obrigatório' });
   }
@@ -7,9 +9,12 @@ const verifyName = (name, res) => {
       .status(400)
       .json({ message: 'O "name" deve ter pelo menos 3 caracteres' });
   }
+  next();
 };
 
-const verifyAge = (age, res) => {
+const verifyAge = (req, res, next) => {
+  const { age } = req.body;
+
   if (!age) {
     return res.status(400).json({ message: 'O campo "age" é obrigatório' });
   }
@@ -18,9 +23,12 @@ const verifyAge = (age, res) => {
       .status(400)
       .json({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
+  next();
 };
 
-const verifyDateFormat = ({ watchedAt }, res) => {
+const verifyDateFormat = (req, res) => {
+  const { talk: { watchedAt } } = req.body;
+
   if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(watchedAt)) {
     return res
       .status(400)
@@ -28,7 +36,9 @@ const verifyDateFormat = ({ watchedAt }, res) => {
   }
 };
 
-const verifyRate = ({ rate }, res) => {
+const verifyRate = (req, res) => {
+  const { talk: { rate } } = req.body;
+
   if (rate > 5 || rate < 1) {
     return res
       .status(400)
@@ -36,7 +46,9 @@ const verifyRate = ({ rate }, res) => {
   }
 };
 
-const verifyDateAndRate = (talk, res) => {
+const verifyDateAndRate = (req, res, next) => {
+  const { talk } = req.body;
+
   if (!talk || !(talk.watchedAt) || !(talk.rate)) {
     return res
       .status(400)
@@ -45,8 +57,9 @@ const verifyDateAndRate = (talk, res) => {
           'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
       });
   }
-  verifyDateFormat(talk, res);
-  verifyRate(talk, res);
+  verifyDateFormat(req, res);
+  verifyRate(req, res);
+  next();
 };
 
 module.exports = {

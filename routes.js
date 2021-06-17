@@ -4,14 +4,9 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const {
-  verifyName,
-  verifyToken,
-  verifyAge,
-  verifyDateAndRate,
-  verifyLogin,
+  readFile,
+  writeIntoFile,
 } = require('./auxFunctions');
-
-const { readFile } = require('./readAndWrite');
 
 app.use(bodyParser.json());
 
@@ -34,30 +29,52 @@ const handleSearchForId = (req, res) => {
   return res.status(200).send(talkerFilterById);
 };
 
-const handleLogin = (req, res) => {
-  const { email, password } = req.body;
-  verifyLogin(email, password, res);
-};
-
-const postTalker = (req, res) => {
-  const { authorization } = req.headers;
+const createTalker = async (req, res) => {
+  const arrTalkers = await readFile();
   const { name, age, talk } = req.body;
+  const objectToSaveNewTalker = {
+    id: arrTalkers.length + 1,
+    name,
+    age,
+    talk: {
+      watchedAt: talk.watchedAt,
+      rate: talk.rate,
+    },
+  };
+  arrTalkers.push(objectToSaveNewTalker);
+  await writeIntoFile('./talker.json', arrTalkers);
 
-  const isTokenValid = verifyToken(authorization, res);
-  const isNameValid = verifyName(name, res);
-  const isAgeValid = verifyAge(age, res);
-  const isTalkValid = verifyDateAndRate(talk, res);
-
-  if (isTalkValid) return isTalkValid;
-  if (isTokenValid) return isTokenValid;
-  if (isNameValid) return isNameValid;
-  if (isAgeValid) return isAgeValid;
-  return res.status(201).json();
+  return res.status(201).json(objectToSaveNewTalker);
 };
+
+// const deleteTalker = (req, res) => {
+//   const { authorization } = req.headers;
+//   const isTokenValid = verifyToken(authorization, res);
+//   if (isTokenValid) return isTokenValid;
+
+//   const readFileResponse = readFile();
+//   const talkerFilterById = readFileResponse.filter(
+//     (talker) => talker.id.toString() !== req.params.id,
+//   )[0];
+// };
+
+// const searchByTerm = (req, res) => {
+//   const { authorization } = req.headers;
+//   const { q } = req.query;
+//   const readFileResponse = readFile();
+
+//   const isTokenValid = verifyToken(authorization, res);
+//   if (isTokenValid) return isTokenValid;
+
+//   const talkerSearchQ = readFileResponse.filter((talker) => talker.includes(q));
+
+//   res.status(200).json(talkerSearchQ);
+// };
 
 module.exports = {
   handleTalkersRequest,
   handleSearchForId,
-  handleLogin,
-  postTalker,
+  createTalker,
+  // deleteTalker,
+  // searchByTerm,
 };

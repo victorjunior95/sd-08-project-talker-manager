@@ -16,8 +16,9 @@ const generateToken = (length) => {
   return result;
 };
 
-const verifyLogin = (email, password, res) => {
-  const numberToComper = 6;
+const numberToComper = 6;
+const verifyLogin = (req, res) => {
+  const { email, password } = req.body;
   if (!email) {
     return res.status(400).json({ message: 'O campo "email" é obrigatório' });
   } if (!validateEmail(email)) {

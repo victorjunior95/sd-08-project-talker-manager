@@ -1,6 +1,7 @@
 const { verifyName, verifyAge, verifyDateAndRate } = require('./verifyTalkerToCreate');
 const verifyToken = require('./verifyToken');
 const verifyLogin = require('./verifyLogin');
+const { readFile, writeIntoFile } = require('./readAndWrite');
 
 module.exports = {
     verifyName,
@@ -8,4 +9,6 @@ module.exports = {
     verifyToken,
     verifyDateAndRate,
     verifyLogin,
+    readFile,
+    writeIntoFile,
 };
