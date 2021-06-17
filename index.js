@@ -116,12 +116,13 @@ app.put(
       const talkers = getTalkerJSON();
       const DATA = req.body;
       const talkerIdUpdate = parseInt(req.params.id, 10);
-      DATA.id = talkerIdUpdate;
-
-      const updatedTalkers = talkers.map((t) => t.id).includes(talkerIdUpdate)
-        ? { ...DATA }
-        : { ...talkers };
-
+      DATA.id = talkerIdUpdate;      
+      const updatedTalkers = talkers.map((talker) => {
+        if (talker.id.includes(talkerIdUpdate)) {
+          return { ...DATA };
+        }
+        return talker;
+      });
       fs.writeFileSync('talker.json', JSON.stringify(updatedTalkers));
       res.status(200).json(DATA);
     } catch (err) {
@@ -129,6 +130,10 @@ app.put(
     }
   },
 );
+ // Não entendo o porquê desta função não ser executada??
+ // const updatedTalkers = talkers.map((t) => t.id).includes(talkerIdUpdate)
+      //   ? { ...DATA }
+      //   : { ...talkers };
 
 app.delete('/talker/:id', middleware.validationAndRegexToken, (req, res) => {
   try {
