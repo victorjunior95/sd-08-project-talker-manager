@@ -2,8 +2,8 @@ const utils = require('../utils');
 
 const BAD_REQUEST_STATUS = 400;
 
-const errNoAge = 'O campo "name" é obrigatório';
-const errAgeInvalid = 'O "name" deve ter pelo menos 3 caracteres';
+const errNoAge = 'O campo "age" é obrigatório';
+const errAgeInvalid = 'A pessoa palestrante deve ser maior de idade';
 
 module.exports = (req, res, next) => {
   const { age } = req.body;
