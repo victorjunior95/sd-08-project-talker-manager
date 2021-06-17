@@ -24,7 +24,7 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', async (req, res) => {
   const talkersList = JSON.parse(await fs.readFile(talkerJSON, 'utf-8'));
-  res.status(200).json(talkersList);
+  return res.status(200).json(talkersList);
 });
 
 app.get('/talker/search', validateToken, async (req, res) => {
@@ -34,7 +34,7 @@ app.get('/talker/search', validateToken, async (req, res) => {
   if (search) {
     res.status(200).json(search);
   }
-  res.status(200).json(talkersList);
+  return res.status(200).json(talkersList);
 });
 
 app.get('/talker/:id', async (req, res) => {
