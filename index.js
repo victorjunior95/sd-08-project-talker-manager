@@ -1,7 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const {
+  handleSearchForId,
+  handleTalkersRequest,
+  handleLogin,
+  postTalker,
+} = require('./routes');
 
 const app = express();
+
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
@@ -11,6 +18,14 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
+app.get('/talker/:id', handleSearchForId);
+
+app.get('/talker', handleTalkersRequest);
+
+app.use('/login', handleLogin);
+
+app.post('/talker', postTalker);
 
 app.listen(PORT, () => {
   console.log('Online');
