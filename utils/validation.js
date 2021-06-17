@@ -60,7 +60,7 @@ function checkTalkRate(rate) {
 }
 
 function checkTalkFields(talk) {
-  if (talk && (talk.watchedAt || talk.rate || talk.rate === 0)) {
+  if (talk && (talk.watchedAt && (talk.rate || talk.rate === 0))) {
     return false;
   }
   return true;
