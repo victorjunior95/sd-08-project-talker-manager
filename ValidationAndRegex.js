@@ -45,16 +45,6 @@ const nameAndAgeValidation = (req, res, next) => {
   next();
 };
 
-const validateTalkPayload = (req, res, next) => {
-  const { talk } = req.body;
-
-  if (!talk) return res.status(400).send({ message: M.RF_TWR });
-
-  if (!talk.rate || !talk.watchedAt) return res.status(400).send({ message: M.RF_TWR });
-
-  next();
-};
-
 const validateRateAndWatchedatPayload = (req, res, next) => {
   const { rate, watchedAt } = req.body.talk;
   const isRateValid = Number.isInteger(rate) && rate >= 1 && rate <= 5;
@@ -65,6 +55,23 @@ const validateRateAndWatchedatPayload = (req, res, next) => {
 
   if (!REGEX_DATA.test(watchedAt)) return res.status(400).send({ message: M.FORMATATION_DATE });
 
+  next();
+};
+
+const validateTalkPayload = (req, res, next) => {
+  const { talk } = req.body;
+  console.log('xablau', req.body);
+
+  if (!talk) {
+    return res.status(400).send({
+      message: M.RF_TWR,
+    });
+  }
+  if (talk.rate === undefined || talk.watchedAt === undefined) {
+    return res.status(400).send({
+      message: M.RF_TWR,
+    });
+  }
   next();
 };
 
