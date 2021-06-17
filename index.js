@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const loginMiddleware = require('./middlewares/loginMiddleware');
+// const fs = require('fs');
+const login = require('./middlewares/login');
+const validateToken = require('./middlewares/validateToken');
+const createTalker = require('./createTalker');
 
-const getTalkers = () => JSON.parse(fs.readFileSync('./talker.json', 'utf-8'));
+const getTalkers = require('./services/getTalkers');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,7 +18,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.post('/login', loginMiddleware);
+app.post('/login', login);
 
 app.get('/talker/:id', (req, res) => {
   try {
@@ -41,6 +43,8 @@ app.get('/talker', (_req, res) => {
     res.status(500).send(err.message);
   }
 });
+
+app.post('/talker', validateToken, createTalker); 
 
 app.listen(PORT, () => {
   console.log('Online');

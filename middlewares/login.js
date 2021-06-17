@@ -1,11 +1,9 @@
-const crypto = require('crypto-js');
-
-const hash = crypto.MD5().toString();
+const crypto = require('crypto');
 
 const validateEmail = (email, res) => {
   const emailRgx = /[a-z]\w+@\w+.\w+/;
 
-  if (!email || email === '') {
+  if (!email || email === undefined) {
     return res.status(400).send({ message: 'O campo "email" é obrigatório' });
   }
 
@@ -17,7 +15,7 @@ const validateEmail = (email, res) => {
 };
 
 const validatePass = (pass, res) => {
-  if (!pass || pass === '') {
+  if (!pass || pass === undefined) {
     return res
       .status(400)
       .send({ message: 'O campo "password" é obrigatório' });
@@ -37,11 +35,7 @@ module.exports = (req, res) => {
 
   validatePass(password, res);
 
-  console.log(hash);
+  const hash = crypto.randomBytes(8).toString('hex');
 
-  const token = hash.substr(0, 16);
-
-  console.log(token.length);
-
-  return res.status(200).send({ token });
+  return res.status(200).send({ token: hash });
 };
