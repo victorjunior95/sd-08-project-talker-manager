@@ -90,26 +90,22 @@ app.post(
   },
 );
 
-app.get('/talker/:id', (req, res) => {
-  try {
-    const talkers = getTalkerJSON();
-    const idParam = parseInt(req.params.id, 10);
-    const person = talkers.find((talker) => talker.id === idParam);
+app.get('/talker/:id', (request, response) => {
+  const { id } = request.params;
+  const getTalker = getTalkerJSON();
+  const talkerById = getTalker.find((talker) => talker.id === parseInt(id, 10));
 
-    if (person) return res.status(200).send(person);
-    
-     return res.status(404).send({ message: M.NOT_FOUND_PERSON });
-  } catch (err) {
-    return res.status(500).send({ err });
-  }
+  return talkerById 
+   ? response.status(200).json(talkerById)
+   : response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
 app.put(
   '/talker/:id',
   middleware.validationAndRegexToken,
   middleware.nameAndAgeValidation,
-  middleware.validateTalkPayload,
   middleware.validateRateAndWatchedatPayload,
+  middleware.validateTalkPayload,
 
   (req, res) => {
     try {
