@@ -28,12 +28,15 @@ app.get('/talker', (_request, response) => {
 });
 
 // req 02
+function findByID(talkers, id) {
+  return talkers.find((talke) => talke.id === Number(id));
+}
 
 app.get('/talker/:id', (request, response) => {
   const readAllTalkers = fs.readFileSync(TALKER_ARC, 'utf8');
 
   const talkers = readAllTalkers ? JSON.parse(readAllTalkers) : null;
-  const talker = talkers.find((talke) => talke.id === Number(request.params.id));
+  const talker = findByID(talkers, request.params.id);
 
   if (!talker) return response.status(404).send({ message: 'Pessoa palestrante não encontrada' });
   return response.status(HTTP_OK_STATUS).send(talker);
@@ -132,22 +135,91 @@ const addIdToTalk = (talkers, body) => {
   return newTalker;
 };
 
-app.post('/talker', verifyToken, verifyNameAndAge, verifyTalkCamp,
-verifyTalkExist, (request, response) => {
+app.post(
+  '/talker',
+  verifyToken,
+  verifyNameAndAge,
+  verifyTalkCamp,
+  verifyTalkExist,
+(request, response) => {
   const { body } = request;
   const readAllTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
   const incrementIdToTalker = addIdToTalk(readAllTalkers, body);
   const addTalkes = [...readAllTalkers, incrementIdToTalker];
   fs.writeFileSync(TALKER_ARC, JSON.stringify(addTalkes, null, '\t'));
   return response.status(201).send(incrementIdToTalker);
-});
+},
+);
 
+// req 05
+function editTalker(talker, body) {
+  const editedTalker = {
+    ...talker,
+    ...body,
+  };
+  return editedTalker;
+}
+
+function changeEditedTalker(allTalkers, editedTalker) {
+  const editedTalkersList = allTalkers.map((e) => {
+    if (e.id === editedTalker.id) return editedTalker;
+    return e;
+  });
+  return editedTalkersList;
+}
+
+app.put(
+  '/talker/:id',
+  verifyToken,
+  verifyNameAndAge,
+  verifyTalkCamp,
+  verifyTalkExist,
+  (request, response) => {
+    const { body } = request;
+    const readAllTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
+    const talker = findByID(readAllTalkers, request.params.id);
+    const editedTalker = editTalker(talker, body);
+    const newTalkersList = changeEditedTalker(readAllTalkers, editedTalker);
+    fs.writeFileSync(TALKER_ARC, JSON.stringify(newTalkersList, null, '\t'));
+    return response.status(HTTP_OK_STATUS).send(editedTalker);
+  },
+);
+
+// req 06
+function removeTalkerById(talkers, id) {
+  return talkers.filter((talke) => talke.id !== Number(id));
+}
+
+app.delete(
+  '/talker/:id',
+  verifyToken,
+  (request, response) => {
+    const allTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
+    const newTalkerList = removeTalkerById(allTalkers, request.params.id);
+    fs.writeFileSync(TALKER_ARC, JSON.stringify(newTalkerList, null, '\t'));
+    return response.status(HTTP_OK_STATUS)
+    .send({ message: 'Pessoa palestrante deletada com sucesso' });
+  },
+);
+
+// req 07
+function findTalkersByName(allTalkers, talkerName) {
+  const find = allTalkers.filter((e) => e.name.toLowerCase().includes(talkerName.toLowerCase()));
+ return find;
+}
+
+app.get(
+  '/talker/search',
+  verifyToken,
+  (request, response) => {
+    const allTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
+    if (request.query.q) {
+      const talkersByName = findTalkersByName(allTalkers, request.query.q);
+      return response.status(HTTP_OK_STATUS).send(talkersByName);
+    }
+    return response.status(HTTP_OK_STATUS).send(allTalkers);
+  },
+);
 app.listen(PORT, () => {
   console.log('Online');
 });
-
-// req 05
-
-// req 06
-
-// req 07
