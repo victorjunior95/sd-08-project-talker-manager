@@ -7,7 +7,7 @@ const errDateInvalid = 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"';
 const errRateInvalid = 'O campo "rate" deve ser um inteiro de 1 à 5';
 
 module.exports = (req, res, next) => {
-  const { talk } = req.headers;
+  const { talk } = req.body;
   if (utils.validTalk(talk)) return res.status(BAD_REQUEST_STATUS).json({ message: errNoTalk });
 
   const isDateValidate = utils.validDate(talk.watchedAt);
