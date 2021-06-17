@@ -53,7 +53,7 @@ function validateAge(age) {
 }
 
 function checkTalkRate(rate) {
-  if (typeof rate === 'number' && rate > 1 && rate < 5) {
+  if (typeof rate === 'number' && rate >= 1 && rate <= 5) {
     return false;
   }
   return true;

@@ -82,6 +82,20 @@ app.put(
   },
 );
 
+app.delete('/talker/:id', validation.authenticateRequest, async (req, res) => {
+    const { id } = req.params;
+    try {
+      const talkers = await utils.getData();
+      const others = talkers.filter((object) => object.id !== Number(id));
+      utils.writeData([...others]);
+      return res.status(200).json({
+        message: 'Pessoa palestrante deletada com sucesso',
+      });
+    } catch (err) {
+      console.log(err);
+    }
+});
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
