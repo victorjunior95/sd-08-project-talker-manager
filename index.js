@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const login = require('./middlewares/login');
 const validateToken = require('./middlewares/validateToken');
 const createTalker = require('./createTalker');
+const updateTalker = require('./updateTalker');
 
 const getTalkers = require('./services/getTalkers');
 
@@ -43,6 +44,8 @@ app.get('/talker', (_req, res) => {
     res.status(500).send(err.message);
   }
 });
+
+app.put('/talker/:id', validateToken, updateTalker);
 
 app.post('/talker', validateToken, createTalker); 
 
