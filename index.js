@@ -10,7 +10,6 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const CREATED_STATUS = 201;
 const BAD_REQUEST_STATUS = 400;
-// const UNAUTHORIZED_STATUS = 401;
 const NOT_FOUND_STATUS = 404;
 
 const PORT = '3000';
@@ -119,6 +118,17 @@ app.delete('/talker/:id', middlewares.token, (req, res) => {
 });
 
 // 7 - Crie o endpoint GET `/talker/search?q=searchTerm`
+app.get('/talker/search', middlewares.token, (req, res) => {
+  const search = req.query.q;
+
+  fs.readFile(database, (err, data) => {
+    const talkers = JSON.parse(data.toString('utf-8'));
+    if (!search) return res.status(HTTP_OK_STATUS).json();
+
+    const searchFilter = talkers.filter((talker) => talker.name.includes(search));
+    return res.status(HTTP_OK_STATUS).json(searchFilter);
+  });
+});
 
 app.listen(PORT, () => {
   console.log('Online');
