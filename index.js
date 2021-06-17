@@ -171,20 +171,31 @@ app.post(
 );
 
 // req 05
-function editTalker(talker, body) {
-  const editedTalker = {
-    ...talker,
-    ...body,
-  };
-  return editedTalker;
-}
+// function editTalker(talker, body) {
+//   const editedTalker = {
+//     ...talker,
+//     ...body,
+//   };
+//   return editedTalker;
+// }
 
-function changeEditedTalker(allTalkers, editedTalker) {
-  const editedTalkersList = allTalkers.map((e) => {
-    if (e.id === editedTalker.id) return editedTalker;
-    return e;
-  });
-  return editedTalkersList;
+// function changeEditedTalker(allTalkers, editedTalker) {
+//   const editedTalkersList = allTalkers.map((e) => {
+//     if (e.id === editedTalker.id) return editedTalker;
+//     return e;
+//   });
+//   return editedTalkersList;
+// }
+
+async function editTalker(id, newTalker) {
+  const response = await fs.readFile(TALKER_ARC, 'utf-8');
+  const data = JSON.parse(response);
+  const index = data.findIndex((talker) => talker.id === id);
+
+  const editedTalker = { ...newTalker, id };
+  data.splice(index, 1, editedTalker);
+  await fs.writeFile(TALKER_ARC, JSON.stringify(data));
+  return editedTalker;
 }
 
 app.put(
@@ -194,13 +205,18 @@ app.put(
   verifyTalkCamp,
   verifyTalkExist,
   async (request, response) => {
-    const { body } = request;
-    const readAllTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
-    const talker = await findByID(readAllTalkers, request.params.id);
-    const editedTalker = await editTalker(talker, body);
-    const newTalkersList = await changeEditedTalker(readAllTalkers, editedTalker);
-    fs.writeFileSync(TALKER_ARC, JSON.stringify(newTalkersList, null, '\t'));
-    return response.status(HTTP_OK_STATUS).send(editedTalker);
+    // const { body } = request;
+    // const readAllTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
+    // const talker = await findByID(readAllTalkers, request.params.id);
+    // const editedTalker = await editTalker(talker, body);
+    // const newTalkersList = await changeEditedTalker(readAllTalkers, editedTalker);
+    // fs.writeFileSync(TALKER_ARC, JSON.stringify(newTalkersList, null, '\t'));
+    // return response.status(HTTP_OK_STATUS).send(editedTalker);
+    const { id } = request.params;
+    const newTalker = request.body;
+    const editedTalker = await editTalker(Number(id), newTalker);
+
+    response.status(HTTP_OK_STATUS).send(editedTalker);
   },
 );
 
