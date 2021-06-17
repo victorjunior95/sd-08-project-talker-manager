@@ -90,7 +90,6 @@ app.post(
   },
 );
 
-<<<<<<< HEAD
 app.get('/talker/:id', (request, response) => {
   const { id } = request.params;
   const getTalker = getTalkerJSON();
