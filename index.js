@@ -193,12 +193,12 @@ app.put(
   verifyNameAndAge,
   verifyTalkCamp,
   verifyTalkExist,
-  (request, response) => {
+  async (request, response) => {
     const { body } = request;
     const readAllTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
-    const talker = findByID(readAllTalkers, request.params.id);
-    const editedTalker = editTalker(talker, body);
-    const newTalkersList = changeEditedTalker(readAllTalkers, editedTalker);
+    const talker = await findByID(readAllTalkers, request.params.id);
+    const editedTalker = await editTalker(talker, body);
+    const newTalkersList = await changeEditedTalker(readAllTalkers, editedTalker);
     fs.writeFileSync(TALKER_ARC, JSON.stringify(newTalkersList, null, '\t'));
     return response.status(HTTP_OK_STATUS).send(editedTalker);
   },
