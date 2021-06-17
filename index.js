@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const { MESSAGES } = require('./messages');
 const { auth } = require('./middlewares/authorization');
-const { findTalkerByID, generateToken, 
+const { findTalkerByID, generateToken, removeTalkerById,
   verifyEmailAndPassword, addIdToTalk } = require('./functions');
 const { nameAndAgeVerificarions, talkVerifications, 
   talkExists } = require('./middlewares/talkerVerifier');
@@ -51,6 +51,17 @@ app.post('/talker', auth, nameAndAgeVerificarions, talkExists, talkVerifications
   fs.writeFileSync(TALKER_PATH, JSON.stringify(addTalkes, null, '\t'));
   return res.status(201).send(talkerWithId);
 });
+
+app.delete(
+  '/talker/:id',
+  auth,
+  (req, res) => {
+    const allTalkers = JSON.parse(fs.readFileSync(TALKER_PATH, 'utf8'));
+    const newTalkerList = removeTalkerById(allTalkers, req.params.id);
+    fs.writeFileSync(TALKER_PATH, JSON.stringify(newTalkerList, null, '\t'));
+    return res.status(HTTP_OK_STATUS).send({ message: MESSAGES.removeTalker });
+  },
+);
 
 app.listen(PORT, () => {
   console.log('Online');

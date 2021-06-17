@@ -14,6 +14,7 @@ const MESSAGES = {
   invalidDateFormat: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
   invalidRating: 'O campo "rate" deve ser um inteiro de 1 à 5',
   noEmptyTalk: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios', 
+  removeTalker: 'Pessoa palestrante deletada com sucesso',
 };
 
 module.exports = {

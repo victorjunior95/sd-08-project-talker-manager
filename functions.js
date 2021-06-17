@@ -4,6 +4,8 @@ const validateDate = require('validate-date');
 
 const findTalkerByID = (talkers, id) => talkers.find((e) => e.id === Number(id));
 
+const removeTalkerById = (talkers, id) => talkers.filter((e) => e.id !== Number(id));
+
 const generateToken = () => randtoken.generate(16);
 
 const verifyEmailAndPassword = (email, password, MESSAGES) => {
@@ -44,4 +46,5 @@ module.exports = {
   addIdToTalk,
   isValidDate,
   verifyRateValueAndFormat,
+  removeTalkerById,
 };
