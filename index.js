@@ -5,6 +5,7 @@ const login = require('./middlewares/login');
 const validateToken = require('./middlewares/validateToken');
 const createTalker = require('./createTalker');
 const updateTalker = require('./updateTalker');
+const deleteTalker = require('./deleteTalker');
 
 const getTalkers = require('./services/getTalkers');
 
@@ -48,6 +49,8 @@ app.get('/talker', (_req, res) => {
 app.put('/talker/:id', validateToken, updateTalker);
 
 app.post('/talker', validateToken, createTalker); 
+
+app.delete('/talker/:id', validateToken, deleteTalker);
 
 app.listen(PORT, () => {
   console.log('Online');
