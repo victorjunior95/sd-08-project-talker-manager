@@ -81,6 +81,29 @@ app.post('/talker',
     });
   });
 
+app.put('/talker/:id',
+  middlewares.token,
+  middlewares.name,
+  middlewares.age,
+  middlewares.talk,
+  (req, res) => {
+    const { id } = req.params;
+    const { name, age, talk } = req.body;
+
+    fs.readFile(database, (err, data) => {
+      const updateTalker = { id, name, age, talk };
+
+      const talkers = JSON.parse(data.toString('utf-8'));
+      const talkerMap = talkers.map((talker) => {
+        if (talker.id === parseInt(id, 10)) return updateTalker;
+        return talker;
+      });
+
+      fs.writeFileSync(database, JSON.stringify(talkerMap));
+      return res.status(HTTP_OK_STATUS).json(updateTalker);
+    });
+  });
+
 app.listen(PORT, () => {
   console.log('Online');
 });
