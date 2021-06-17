@@ -87,11 +87,14 @@ const validateTalk = (talk, res) => {
 };
 
 const createTalker = (newTalker) => {
-  const currentTalkers = getTalkers();
-  currentTalkers.push(newTalker);
-  console.log(currentTalkers, newTalker);
-  const talkerReady = JSON.stringify(currentTalkers);
+  const currTalkers = getTalkers();
+  const talker = newTalker;
+  talker.id = (currTalkers[currTalkers.length - 1].id) + 1;
+  currTalkers.push(talker);
+  console.log(talker);
+  const talkerReady = JSON.stringify(currTalkers);
   fs.writeFileSync('./talker.json', talkerReady, 'utf-8');
+  return talker;
 };
 
 module.exports = (req, res) => {
@@ -102,9 +105,9 @@ module.exports = (req, res) => {
     validateAge(age, res);
     validateTalk(talk, res);
 
-    createTalker(newTalker);
+    const talker = createTalker(newTalker);
 
-    return res.status(201).send({ newTalker });
+    return res.status(201).send({ ...talker });
   } catch (err) {
     res.status(500).send(err.message);
   }
