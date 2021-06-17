@@ -128,7 +128,7 @@ function verifyTalkCamp(request, response, next) {
   const isValidRate = verifyRateValueAndFormat(rate);
   if (!isValidRate) {
  return response.status(400)
-  .send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' }); 
+  .send({ message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios' }); 
 }
   next();
 }
@@ -169,7 +169,7 @@ app.post(
   fs.writeFileSync(TALKER_ARC, JSON.stringify(addTalkes));
   return response.status(201).send(incrementIdToTalker); 
 } catch (err) {
-  response.status(500).send({ err });
+  response.status(400).send({ err });
 }
 },
 );
@@ -198,6 +198,7 @@ app.put(
   verifyTalkCamp,
   verifyTalkExist,
   async (request, response) => {
+    try {
     const { body } = request;
     const readAllTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
     const talker = await findByID(readAllTalkers, request.params.id);
@@ -205,6 +206,9 @@ app.put(
     const newTalkersList = await changeEditedTalker(readAllTalkers, editedTalker);
     fs.writeFileSync(TALKER_ARC, JSON.stringify(newTalkersList, null, '\t'));
     return response.status(HTTP_OK_STATUS).send(editedTalker);
+    } catch (err) {
+      response.status(400).send({ err });
+    }
   },
 );
 
