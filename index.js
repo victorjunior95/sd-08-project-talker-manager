@@ -48,13 +48,39 @@ app.post('/login', validation.validateLogin, (_req, res) => {
 app.post('/talker', validation.authenticateRequest, validation.validateTalker, async (req, res) => {
   try {
     const previousTalkers = await utils.getData();
-    previousTalkers.push(req.body);
+    const lastId = previousTalkers[previousTalkers.length - 1].id;
+    const newTalker = {
+      id: lastId + 1,
+      ...req.body,
+    };
+    previousTalkers.push(newTalker);
     utils.writeData(previousTalkers);
-    return res.status(201).send(req.body);
+    return res.status(201).send(newTalker);
   } catch (err) {
     console.log(err);
   }
 });
+
+app.put(
+  '/talker/:id',
+  validation.authenticateRequest,
+  validation.validateTalker,
+  async (req, res) => {
+    const { id } = req.params;
+    try {
+      const talkers = await utils.getData();
+      const others = talkers.filter((object) => object.id !== Number(id));
+      const talker = {
+        id,
+        ...req.body,
+      };
+      utils.writeData([...others, talker]);
+      return res.status(200).send(talker);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
