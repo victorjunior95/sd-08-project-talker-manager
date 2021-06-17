@@ -1,9 +1,11 @@
-const { verifyName, verifyAge, verifyTalk } = require('./verifyTalkerPost');
+const { verifyName, verifyAge, verifyDateAndRate } = require('./verifyTalkerToCreate');
 const verifyToken = require('./verifyToken');
+const verifyLogin = require('./verifyLogin');
 
 module.exports = {
     verifyName,
     verifyAge,
     verifyToken,
-    verifyTalk,
+    verifyDateAndRate,
+    verifyLogin,
 };

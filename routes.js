@@ -3,9 +3,15 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const { verifyName, verifyToken, verifyAge, verifyTalk } = require('./auxFunctions');
+const {
+  verifyName,
+  verifyToken,
+  verifyAge,
+  verifyDateAndRate,
+  verifyLogin,
+} = require('./auxFunctions');
 
-const { readFile, validateEmail, generateToken } = require('./functions');
+const { readFile } = require('./readAndWrite');
 
 app.use(bodyParser.json());
 
@@ -20,7 +26,6 @@ const handleSearchForId = (req, res) => {
   const talkerFilterById = readFileResponse.filter(
     (talker) => talker.id.toString() === req.params.id,
   )[0];
-  console.log(talkerFilterById);
   if (!talkerFilterById) {
     return res
       .status(404)
@@ -29,25 +34,9 @@ const handleSearchForId = (req, res) => {
   return res.status(200).send(talkerFilterById);
 };
 
-const numberToComper = 6;
 const handleLogin = (req, res) => {
   const { email, password } = req.body;
-  if (!email) {
-    return res.status(400).json({ message: 'O campo "email" é obrigatório' });
-  } if (!validateEmail(email)) {
-    return res
-      .status(400)
-      .json({ message: 'O "email" deve ter o formato "email@email.com"' });
-  } if (!password) {
-    return res
-      .status(400)
-      .json({ message: 'O campo "password" é obrigatório' });
-  } if (password.length < numberToComper) {
-    return res
-      .status(400)
-      .json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
-  }
-  res.status(200).json({ token: generateToken(16) });
+  verifyLogin(email, password, res);
 };
 
 const postTalker = (req, res) => {
@@ -57,21 +46,13 @@ const postTalker = (req, res) => {
   const isTokenValid = verifyToken(authorization, res);
   const isNameValid = verifyName(name, res);
   const isAgeValid = verifyAge(age, res);
-  const isTalkValid = verifyTalk(talk, res);
+  const isTalkValid = verifyDateAndRate(talk, res);
 
   if (isTalkValid) return isTalkValid;
   if (isTokenValid) return isTokenValid;
   if (isNameValid) return isNameValid;
   if (isAgeValid) return isAgeValid;
-  return res.status(201).json({
-    id: 1,
-    name: 'Danielle Santos',
-    age: 56,
-    talk: {
-      watchedAt: '22/10/2019',
-      rate: 5,
-    },
-  });
+  return res.status(201).json();
 };
 
 module.exports = {

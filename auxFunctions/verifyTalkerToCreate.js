@@ -20,18 +20,24 @@ const verifyAge = (age, res) => {
   }
 };
 
-const verifyTalk = (talk, res) => {
-  if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(talk.watchedAt)) {
+const verifyDateFormat = ({ watchedAt }, res) => {
+  if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(watchedAt)) {
     return res
       .status(400)
       .json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
   }
-  if (talk.rate > 5 || talk.rate < 1) {
+};
+
+const verifyRate = ({ rate }, res) => {
+  if (rate > 5 || rate < 1) {
     return res
       .status(400)
       .json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
-  if (!talk.watchedAt || !talk.rate) {
+};
+
+const verifyDateAndRate = (talk, res) => {
+  if (!talk || !(talk.watchedAt) || !(talk.rate)) {
     return res
       .status(400)
       .json({
@@ -39,10 +45,12 @@ const verifyTalk = (talk, res) => {
           'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
       });
   }
+  verifyDateFormat(talk, res);
+  verifyRate(talk, res);
 };
 
 module.exports = {
   verifyName,
   verifyAge,
-  verifyTalk,
+  verifyDateAndRate,
 };
