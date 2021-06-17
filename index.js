@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs/promises');
+const utils = require('./utils/fs-utils');
 
 const app = express();
 app.use(bodyParser.json());
@@ -10,9 +10,7 @@ const PORT = '3000';
 
 app.get('/talker', async (req, res) => {
   try {
-    const data = await fs.readFile('talker.json', 'utf8')
-      .then((dataJSON) => JSON.parse(dataJSON))
-      .catch((err) => console.log(err));
+    const data = await utils.getData();
 
     if (!data) return res.status(HTTP_OK_STATUS).send([]);
 
@@ -26,9 +24,7 @@ app.get('/talker', async (req, res) => {
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const data = await fs.readFile('talker.json', 'utf8')
-      .then((dataJSON) => JSON.parse(dataJSON))
-      .catch((err) => console.log(err));
+    const data = await utils.getData();
 
     const talker = data.filter((object) => object.id === Number(id));
 
