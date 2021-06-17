@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const { MESSAGES } = require('./messages');
 const { auth } = require('./middlewares/authorization');
-const { findTalkerByID, generateToken, removeTalkerById,
-  verifyEmailAndPassword, addIdToTalk } = require('./functions');
+const { findTalkerByID, generateToken, removeTalkerById, editTalker,
+  verifyEmailAndPassword, addIdToTalk, changeEditedTalker } = require('./functions');
 const { nameAndAgeVerificarions, talkVerifications, 
   talkExists } = require('./middlewares/talkerVerifier');
 
@@ -51,6 +51,23 @@ app.post('/talker', auth, nameAndAgeVerificarions, talkExists, talkVerifications
   fs.writeFileSync(TALKER_PATH, JSON.stringify(addTalkes, null, '\t'));
   return res.status(201).send(talkerWithId);
 });
+
+app.put(
+  '/talker/:id',
+  auth,
+  nameAndAgeVerificarions,
+  talkExists,
+  talkVerifications,
+  (req, res) => {
+    const { body } = req;
+    const allTalkers = JSON.parse(fs.readFileSync(TALKER_PATH, 'utf8'));
+    const talker = findTalkerByID(allTalkers, req.params.id);
+    const editedTalker = editTalker(talker, body);
+    const newTalkersList = changeEditedTalker(allTalkers, editedTalker);
+    fs.writeFileSync(TALKER_PATH, JSON.stringify(newTalkersList, null, '\t'));
+    return res.status(HTTP_OK_STATUS).send(editedTalker);
+  },
+);
 
 app.delete(
   '/talker/:id',

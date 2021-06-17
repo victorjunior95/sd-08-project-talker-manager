@@ -6,6 +6,22 @@ const findTalkerByID = (talkers, id) => talkers.find((e) => e.id === Number(id))
 
 const removeTalkerById = (talkers, id) => talkers.filter((e) => e.id !== Number(id));
 
+const editTalker = (talker, body) => {
+  const editedTalker = {
+    ...talker,
+    ...body,
+  };
+  return editedTalker;
+};
+
+const changeEditedTalker = (allTalkers, editedTalker) => {
+  const editedTalkersList = allTalkers.map((e) => {
+    if (e.id === editedTalker.id) return editedTalker;
+    return e;
+  });
+  return editedTalkersList;
+};
+
 const generateToken = () => randtoken.generate(16);
 
 const verifyEmailAndPassword = (email, password, MESSAGES) => {
@@ -47,4 +63,6 @@ module.exports = {
   isValidDate,
   verifyRateValueAndFormat,
   removeTalkerById,
+  editTalker,
+  changeEditedTalker,
 };
