@@ -1,5 +1,5 @@
 const { readFileSync } = require('fs');
-const { writeFile } = require('fs/promises');
+const { writeFile } = require('fs').promises;
 
 const readFile = () => {
   try {
