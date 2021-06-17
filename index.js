@@ -90,6 +90,20 @@ app.post(
   },
 );
 
+app.get('/talker/:id', (req, res) => {
+  try {
+    const talkers = getTalkerJSON();
+    const idParam = parseInt(req.params.id, 10);
+    const person = talkers.find((talker) => talker.id === idParam);
+
+    if (person) return res.status(200).send(person);
+  
+     return res.status(404).send({ message: M.NOT_FOUND_PERSON });
+  } catch (err) {
+    return res.status(500).send({ err });
+  }
+});
+
 app.put(
   '/talker/:id',
   middleware.validationAndRegexToken,

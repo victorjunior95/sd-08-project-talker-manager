@@ -16,6 +16,7 @@
  const CONDITION_RATE = 'O campo "rate" deve ser um inteiro de 1 à 5';
  const FORMATATION_DATE = 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"';
  const RF_TWR = 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios';
+ const NOT_FOUND_PERSON = 'Pessoa palestrante não encontrada';
 
  module.exports = {
     MESSAGE_TOKEN_NOT_FOUND,
@@ -32,4 +33,5 @@
     REQUIRED_PASSWORD_LENGTH,
     REQUIRED_FIELD_EMAIL,
     FORMATATION_EMAIL,
+    NOT_FOUND_PERSON,
  };
