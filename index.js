@@ -6,6 +6,7 @@ const validateToken = require('./middlewares/validateToken');
 const createTalker = require('./createTalker');
 const updateTalker = require('./updateTalker');
 const deleteTalker = require('./deleteTalker');
+const getTalkersByParams = require('./getTalkersByParams');
 
 const getTalkers = require('./services/getTalkers');
 
@@ -21,6 +22,8 @@ app.get('/', (_request, response) => {
 });
 
 app.post('/login', login);
+
+app.get('/talker/search', validateToken, getTalkersByParams);
 
 app.get('/talker/:id', (req, res) => {
   try {
