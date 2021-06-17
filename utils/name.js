@@ -1,1 +1,1 @@
-module.exports = (name) => name > 2;
+module.exports = (name) => name.length > 2;
