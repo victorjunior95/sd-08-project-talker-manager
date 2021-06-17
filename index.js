@@ -10,13 +10,34 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
-app.get('/talker', async (_req, res) => {
+app.get('/talker/search', validation.authenticateRequest, async (req, res) => {
   try {
-    const data = await utils.getData();
+    let talkers = await utils.getData();
 
-    if (!data) return res.status(HTTP_OK_STATUS).send([]);
+    if (req.query.q) {
+      talkers = talkers.filter(({ name }) => name.includes(req.query.q));
+    }
 
-    return res.status(HTTP_OK_STATUS).send(data);
+    if (!talkers) return res.status(HTTP_OK_STATUS).send([]);
+
+    return res.status(HTTP_OK_STATUS).send(talkers);
+  } catch (err) {
+    console.error(`Erro ao ler o arquivo: ${err.path}`);
+    console.log(err);
+  }
+});
+
+app.get('/talker', async (req, res) => {
+  try {
+    let talkers = await utils.getData();
+
+    if (req.query.search) {
+      talkers = talkers.filter(({ name }) => name.includes(req.query.search));
+    }
+
+    if (!talkers) return res.status(HTTP_OK_STATUS).send([]);
+
+    return res.status(HTTP_OK_STATUS).send(talkers);
   } catch (err) {
     console.error(`Erro ao ler o arquivo: ${err.path}`);
     console.log(err);
