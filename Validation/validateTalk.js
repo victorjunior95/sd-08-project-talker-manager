@@ -11,8 +11,10 @@ const validateRate = (rate) => {
 
 const validateFilledFields = (talk) => {
   const { watchedAt, rate } = talk;
-  if (!talk || watchedAt === undefined || rate === undefined) return false;
-  return true;
+  if (!talk
+    || watchedAt === undefined
+    || rate === undefined) return true;
+  return false;
 };
 
 const validateTalk = (req, res, next) => {
