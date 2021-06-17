@@ -16,6 +16,32 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send('deu certo');
 });
 
+// req 07
+function verifyToken(request, response, next) {
+  const { headers: { authorization } } = request;
+  if (!authorization) return response.status(401).send({ message: 'Token não encontrado' });
+  if (authorization.length !== 16) return response.status(401).send({ message: 'Token inválido' });
+  next();
+}
+
+function findTalkersByName(allTalkers, talkerName) {
+  const find = allTalkers.filter((e) => e.name.toLowerCase().includes(talkerName.toLowerCase()));
+ return find;
+}
+
+app.get(
+  '/talker/search',
+  verifyToken,
+  (request, response) => {
+    const allTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
+    if (request.query.q) {
+      const talkersByName = findTalkersByName(allTalkers, request.query.q);
+      return response.status(HTTP_OK_STATUS).send(talkersByName);
+    }
+    return response.status(HTTP_OK_STATUS).send(allTalkers);
+  },
+);
+
 // req 01
 
 app.get('/talker', (_request, response) => {
@@ -66,13 +92,6 @@ app.post('/login', (request, response) => {
 });
 
 // req 04
-function verifyToken(request, response, next) {
-  const { headers: { authorization } } = request;
-  if (!authorization) return response.status(401).send({ message: 'Token não encontrado' });
-  if (authorization.length !== 16) return response.status(401).send({ message: 'Token inválido' });
-  next();
-}
-
 function verifyNameAndAge(request, response, next) {
   const { name, age } = request.body;
   if (!name) return response.status(400).send({ message: 'O campo "name" é obrigatório' });
@@ -202,24 +221,6 @@ app.delete(
   },
 );
 
-// req 07
-function findTalkersByName(allTalkers, talkerName) {
-  const find = allTalkers.filter((e) => e.name.toLowerCase().includes(talkerName.toLowerCase()));
- return find;
-}
-
-app.get(
-  '/talker/search',
-  verifyToken,
-  (request, response) => {
-    const allTalkers = JSON.parse(fs.readFileSync(TALKER_ARC, 'utf8'));
-    if (request.query.q) {
-      const talkersByName = findTalkersByName(allTalkers, request.query.q);
-      return response.status(HTTP_OK_STATUS).send(talkersByName);
-    }
-    return response.status(HTTP_OK_STATUS).send(allTalkers);
-  },
-);
 app.listen(PORT, () => {
   console.log('Online');
 });
