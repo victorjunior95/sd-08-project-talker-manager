@@ -81,21 +81,22 @@ app.post('/talker',
     });
   });
 
+// 5 - Crie o endpoint PUT `/talker/:id`
 app.put('/talker/:id',
   middlewares.token,
   middlewares.name,
   middlewares.age,
   middlewares.talk,
   (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const { name, age, talk } = req.body;
 
     fs.readFile(database, (err, data) => {
+      const talkers = JSON.parse(data.toString('utf-8'));
       const updateTalker = { id, name, age, talk };
 
-      const talkers = JSON.parse(data.toString('utf-8'));
       const talkerMap = talkers.map((talker) => {
-        if (talker.id === parseInt(id, 10)) return updateTalker;
+        if (talker.id === id) return updateTalker;
         return talker;
       });
 
@@ -103,6 +104,11 @@ app.put('/talker/:id',
       return res.status(HTTP_OK_STATUS).json(updateTalker);
     });
   });
+
+// 6 - Crie o endpoint DELETE `/talker/:id`
+app.delete();
+
+// 7 - Crie o endpoint GET `/talker/search?q=searchTerm`
 
 app.listen(PORT, () => {
   console.log('Online');
