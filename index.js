@@ -106,9 +106,17 @@ app.put('/talker/:id',
   });
 
 // 6 - Crie o endpoint DELETE `/talker/:id`
-// app.delete('/talker/:id', middlewares.token, (req, res) => {
+app.delete('/talker/:id', middlewares.token, (req, res) => {
+  const id = parseInt(req.params.id, 10);
 
-// });
+  fs.readFile(database, (err, data) => {
+    const talkers = JSON.parse(data.toString('utf-8'));
+    const talkerFilter = talkers.filter((talker) => talker.id !== id);
+
+    fs.writeFileSync(database, JSON.stringify(talkerFilter));
+    return res.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante deletada com sucesso' });
+  });
+});
 
 // 7 - Crie o endpoint GET `/talker/search?q=searchTerm`
 
