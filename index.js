@@ -1,7 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const { findTalkerByID, generateToken, verifyEmailAndPassword } = require('./functions');
+const { MESSAGES } = require('./messages');
+const { auth } = require('./middlewares/authorization');
+const { findTalkerByID, generateToken, 
+  verifyEmailAndPassword, addIdToTalk } = require('./functions');
+const { nameAndAgeVerificarions, talkVerifications, 
+  talkExists } = require('./middlewares/talkerVerifier');
 
 const app = express();
 app.use(bodyParser.json());
@@ -9,13 +14,6 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 const TALKER_PATH = './talker.json';
-const MESSAGES = {
-  idNotFound: 'Pessoa palestrante não encontrada',
-  emptyEmail: 'O campo "email" é obrigatório',
-  wrongEmailFormat: 'O "email" deve ter o formato "email@email.com"',
-  emptyPassword: 'O campo "password" é obrigatório',
-  passwordLowerThenSix: 'O "password" deve ter pelo menos 6 caracteres',
-};
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -43,6 +41,15 @@ app.post('/login', (req, res) => {
   if (failedToverify) return res.status(400).send({ message: failedToverify });
   const token = generateToken();
   res.status(200).send({ token });
+});
+
+app.post('/talker', auth, nameAndAgeVerificarions, talkExists, talkVerifications, (req, res) => {
+  const { body } = req;
+  const allTalkers = JSON.parse(fs.readFileSync(TALKER_PATH, 'utf8'));
+  const talkerWithId = addIdToTalk(allTalkers, body);
+  const addTalkes = [...allTalkers, talkerWithId];
+  fs.writeFileSync(TALKER_PATH, JSON.stringify(addTalkes, null, '\t'));
+  return res.status(201).send(talkerWithId);
 });
 
 app.listen(PORT, () => {

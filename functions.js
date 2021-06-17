@@ -1,5 +1,6 @@
 const randtoken = require('rand-token');
 const validator = require('email-validator');
+const validateDate = require('validate-date');
 
 const findTalkerByID = (talkers, id) => talkers.find((e) => e.id === Number(id));
 
@@ -14,8 +15,33 @@ const verifyEmailAndPassword = (email, password, MESSAGES) => {
   return false;
 };
 
+const isValidDate = (date) => {
+  if (date.includes('-')) return false;
+  return validateDate(date, 'boolean', 'dd/mm/yyyy');
+};
+
+const addIdToTalk = (talkers, body) => {
+  const maxId = talkers.reduce((acc, curr) => {
+    if (curr.id > acc) return curr.id;
+    return acc;
+  }, 0);
+  const newTalker = {
+    id: maxId + 1,
+    ...body,
+  };
+  return newTalker;
+};
+
+const verifyRateValueAndFormat = (rate) => {
+  if (!Number.isInteger(rate) || rate < 1 || rate > 5) return false;
+  return true;
+};
+
 module.exports = {
   findTalkerByID,
   generateToken,
   verifyEmailAndPassword,
+  addIdToTalk,
+  isValidDate,
+  verifyRateValueAndFormat,
 };
