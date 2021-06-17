@@ -117,12 +117,9 @@ app.put(
       const DATA = req.body;
       const talkerIdUpdate = parseInt(req.params.id, 10);
       DATA.id = talkerIdUpdate;      
-      const updatedTalkers = talkers.map((talker) => {
-        if (talker.id === (talkerIdUpdate)) {
-          return { ...DATA };
-        }
-        return talker;
-      });
+      const updatedTalkers = talkers.map((t) => t.id).includes(talkerIdUpdate)
+        ? { ...DATA }
+        : { ...talkers };
       fs.writeFileSync('talker.json', JSON.stringify(updatedTalkers));
       res.status(200).json(DATA);
     } catch (err) {

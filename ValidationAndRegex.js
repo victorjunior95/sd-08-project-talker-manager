@@ -57,7 +57,7 @@ const validateTalkPayload = (req, res, next) => {
 
 const validateRateAndWatchedatPayload = (req, res, next) => {
   const { rate, watchedAt } = req.body.talk;
-  const isRateValid = Number.isInteger(rate) && rate >= 1 && rate <= 5;
+  const isRateValid = Number.isInteger(rate) && rate > 1 && rate < 5;
 
   if (!isRateValid) return res.status(400).send({ message: M.CONDITION_RATE });
 
