@@ -53,21 +53,21 @@ function validateAge(age) {
 }
 
 function checkTalkRate(rate) {
-  if (typeof rate !== 'number' || rate < 1 || rate > 5) {
+  if (typeof rate === 'number' && rate > 1 && rate < 5) {
     return false;
   }
   return true;
 }
 
 function checkTalkFields(talk) {
-  if (!talk || !talk.watchedAt || !talk.rate) {
+  if (talk || talk.watchedAt || talk.rate || talk.rate === 0) {
     return false;
   }
   return true;
 }
 
 function validateTalk(talk) {
-  if (!checkTalkFields(talk)) {
+  if (checkTalkFields(talk)) {
     return {
       message: 'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
     };
@@ -77,7 +77,7 @@ function validateTalk(talk) {
       message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"',
     };
   }
-  if (!checkTalkRate(talk.rate)) {
+  if (checkTalkRate(talk.rate)) {
     return {
       message: 'O campo "rate" deve ser um inteiro de 1 à 5',
     };

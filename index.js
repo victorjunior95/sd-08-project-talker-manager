@@ -71,7 +71,7 @@ app.put(
       const talkers = await utils.getData();
       const others = talkers.filter((object) => object.id !== Number(id));
       const talker = {
-        id,
+      id: Number(id),
         ...req.body,
       };
       utils.writeData([...others, talker]);
