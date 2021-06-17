@@ -14,7 +14,7 @@ app.get('/talker', async (req, res) => {
 
     if (!data) return res.status(HTTP_OK_STATUS).send([]);
 
-    res.status(HTTP_OK_STATUS).send(data);
+    return res.status(HTTP_OK_STATUS).send(data);
   } catch (err) {
     console.error(`Erro ao ler o arquivo: ${err.path}`);
     console.log(err);
@@ -30,7 +30,7 @@ app.get('/talker/:id', async (req, res) => {
 
     if (!talker) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 
-    res.status(HTTP_OK_STATUS).send(talker);
+    return res.status(HTTP_OK_STATUS).send(talker);
   } catch (err) {
     console.error(`Erro ao ler o arquivo: ${err.path}`);
     console.log(err);

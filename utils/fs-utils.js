@@ -1,9 +1,7 @@
-const fs = require('fs/promises');
+const fs = require('fs');
 
 function getData() {
-  return fs.readFile('talker.json', 'utf8')
-      .then((dataJSON) => JSON.parse(dataJSON))
-      .catch((err) => console.log(err));
+  return JSON.parse(fs.readFileSync('talker.json', 'utf8'));
 }
 
 module.exports = {
