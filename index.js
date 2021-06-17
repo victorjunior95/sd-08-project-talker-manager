@@ -1,13 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-// const middlewares = require('./middlewares');
+const middlewares = require('./middlewares');
 const utils = require('./utils');
 
 const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
+const CREATED_STATUS = 201;
 const BAD_REQUEST_STATUS = 400;
 // const UNAUTHORIZED_STATUS = 401;
 const NOT_FOUND_STATUS = 404;
@@ -20,14 +21,14 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-// 1 - Crie o endpoint GET `/talker`, que deve retornar um array com todas as pessoas palestrantes cadastradas. Devendo retornar o `status 200`.
+// 1 - Crie o endpoint GET `/talker`
 app.get('/talker', (req, res) => {
   fs.readFile(database, (err, data) => {
     res.status(HTTP_OK_STATUS).json(JSON.parse(data.toString('utf8')));
   });
 });
 
-// 2 - Crie o endpoint GET `/talker/:id, que deve retornar uma pessoa palestrante com base no id da rota. Devendo retornar o `status 200` ao fazer uma requisição `/talker/1`.
+// 2 - Crie o endpoint GET `/talker/:id
 app.get('/talker/:id', (req, res) => {
   const { id } = req.params;
   fs.readFile(database, (err, data) => {
@@ -40,10 +41,7 @@ app.get('/talker/:id', (req, res) => {
   });
 });
 
-// 3 - Crie o endpoint POST `/login`, que deve ser capaz de
-//    a) Retornar um token aleatório de 16 caracteres que deverá ser utilizado nas demais requisições.
-//    b) O corpo da requisição deverá ter email e password
-//      b.1) Caso o campo não seja passado ou esteja vazio retorne um código de `status 400` com
+// 3 - Crie o endpoint POST `/login`
 app.post('/login', (req, res) => {
   const errNoEmail = 'O campo "email" é obrigatório';
   const errNoPassword = 'O campo "password" é obrigatório';
@@ -64,6 +62,24 @@ app.post('/login', (req, res) => {
   const token = utils.generateToken();
   return res.status(HTTP_OK_STATUS).json({ token });
 });
+
+// 4 - Crie o endpoint POST /talker
+app.post('/talker',
+  middlewares.token,
+  middlewares.name,
+  middlewares.age,
+  middlewares.talk,
+  (req, res) => {
+    const { name, age, talk } = req.body;
+    fs.readFile(database, (err, data) => {
+      const talkers = JSON.parse(data.toString('utf-8'));
+      const id = talkers.length;
+      talkers.push({ name, age, id, talk });
+
+      fs.writeFileSync(database, JSON.stringify(talkers));
+      return res.status(CREATED_STATUS).json({ name, age, id, talk });
+    });
+  });
 
 app.listen(PORT, () => {
   console.log('Online');
