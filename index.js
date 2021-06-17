@@ -20,6 +20,19 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+// 7 - Crie o endpoint GET `/talker/search?q=searchTerm`
+app.get('/talker/search', middlewares.token, (req, res) => {
+  const search = req.query.q;
+
+  fs.readFile(database, (err, data) => {
+    const talkers = JSON.parse(data.toString('utf-8'));
+    if (!search) return res.status(HTTP_OK_STATUS).json();
+
+    const searchFilter = talkers.filter((talker) => talker.name.includes(search));
+    return res.status(HTTP_OK_STATUS).json(searchFilter);
+  });
+});
+
 // 1 - Crie o endpoint GET `/talker`
 app.get('/talker', (req, res) => {
   fs.readFile(database, (err, data) => {
@@ -114,19 +127,6 @@ app.delete('/talker/:id', middlewares.token, (req, res) => {
 
     fs.writeFileSync(database, JSON.stringify(talkerFilter));
     return res.status(HTTP_OK_STATUS).json({ message: 'Pessoa palestrante deletada com sucesso' });
-  });
-});
-
-// 7 - Crie o endpoint GET `/talker/search?q=searchTerm`
-app.get('/talker/search', middlewares.token, (req, res) => {
-  const search = req.query.q;
-
-  fs.readFile(database, (err, data) => {
-    const talkers = JSON.parse(data.toString('utf-8'));
-    if (!search) return res.status(HTTP_OK_STATUS).json();
-
-    const searchFilter = talkers.filter((talker) => talker.name.includes(search));
-    return res.status(HTTP_OK_STATUS).json(searchFilter);
   });
 });
 
