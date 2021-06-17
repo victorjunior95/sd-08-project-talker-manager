@@ -90,6 +90,7 @@ app.post(
   },
 );
 
+<<<<<<< HEAD
 app.get('/talker/:id', (request, response) => {
   const { id } = request.params;
   const getTalker = getTalkerJSON();
@@ -98,6 +99,20 @@ app.get('/talker/:id', (request, response) => {
   return talkerById 
    ? response.status(200).json(talkerById)
    : response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+=======
+app.get('/talker/:id', (req, res) => {
+  try {
+    const talkers = getTalkerJSON();
+    const idParam = parseInt(req.params.id, 10);
+    const person = talkers.find((talker) => talker.id === idParam);
+
+    if (person) return res.status(200).send(person);
+    
+     return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
+  } catch (err) {
+    return res.status(500).send({ err });
+  }
+>>>>>>> 2b98d0a38d72eccac1bb19eaca79a9d3796e7a1d
 });
 
 app.put(
@@ -113,12 +128,9 @@ app.put(
       const DATA = req.body;
       const talkerIdUpdate = parseInt(req.params.id, 10);
       DATA.id = talkerIdUpdate;      
-      const updatedTalkers = talkers.map((talker) => {
-        if (talker.id.includes(talkerIdUpdate)) {
-          return { ...DATA };
-        }
-        return talker;
-      });
+      const updatedTalkers = talkers.map((t) => t.id).includes(talkerIdUpdate)
+        ? talkers 
+        : [...talkers, DATA];
       fs.writeFileSync('talker.json', JSON.stringify(updatedTalkers));
       res.status(200).json(DATA);
     } catch (err) {

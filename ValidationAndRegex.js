@@ -57,9 +57,9 @@ const validateTalkPayload = (req, res, next) => {
 
 const validateRateAndWatchedatPayload = (req, res, next) => {
   const { rate, watchedAt } = req.body.talk;
-  const isRateValid = Number.isInteger(rate) && rate >= 1 && rate <= 5;
+  const isRateValid = Number.isInteger(rate) || rate >= 1 || rate < 5;
 
-  if (!isRateValid) return res.status(400).send({ message: M.CONDITION_RATE });
+  if (!isRateValid) return res.status(200).send({ message: M.CONDITION_RATE });
 
   const REGEX_DATA = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
 
